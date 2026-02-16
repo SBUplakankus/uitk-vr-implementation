@@ -1,6 +1,6 @@
 site_name: UITK Implementation
-site_url: https://uitk.dev
-repo_url: https://github.com/your-org/uitk  
+site_url: https://sbuplakankus.github.io/uitk-vr-implementation/
+repo_url: https://github.com/SBUplakankus/uitk-vr-implementation  
 
 theme:
   name: material

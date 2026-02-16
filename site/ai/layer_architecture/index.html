@@ -1,0 +1,1955 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://uitk.dev/ai/layer_architecture/">
+      
+      
+        <link rel="prev" href="../industry_uitk/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/tablet.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Layer Architecture - UITK Implementation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#your-3-layer-architecture-controller-host-view" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="UITK Implementation" class="md-header__button md-logo" aria-label="UITK Implementation" data-md-component="logo">
+      
+  <img src="../../assets/images/tablet.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            UITK Implementation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Layer Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4m0-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/your-org/uitk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="UITK Implementation" class="md-nav__button md-logo" aria-label="UITK Implementation" data-md-component="logo">
+      
+  <img src="../../assets/images/tablet.svg" alt="logo">
+
+    </a>
+    UITK Implementation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/your-org/uitk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/uitk_refs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/shader_graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shader Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/vr_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VR Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/web_to_uss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web To USS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bg_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bagel Game Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../industry_uitk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Industry UITK Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-actually-have" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You Actually Have
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-architecture-in-mvvm-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your Architecture in MVVM Terms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-key-insight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Key Insight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analysis-of-your-startmenucontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis of Your StartMenuController
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysis of Your StartMenuController">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-does-right" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What It Does Right ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minor-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minor Improvements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#improved-version-your-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Improved Version (Your Style)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-add-viewmodel-in-your-3-layer-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Add ViewModel (In Your 3-Layer System)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When to Add ViewModel (In Your 3-Layer System)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-structure-no-viewmodel-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Structure (No ViewModel Needed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-you-need-viewmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When You Need ViewModel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-architecture-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Architecture Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complete Architecture Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-simple-panels-your-startmenu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Simple Panels (Your StartMenu)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-complex-panels-settings-inventory-character-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Complex Panels (Settings, Inventory, Character Sheet)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-structure-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory Structure (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-matrix-do-i-need-viewmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Matrix: Do I Need ViewModel?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-pattern-is-actually-superior-for-unity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your Pattern is Actually Superior for Unity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-your-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference: Your Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Reference: Your Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-simple-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current (Simple Panels)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-viewmodel-complex-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With ViewModel (Complex Panels)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-actually-have" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You Actually Have
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-architecture-in-mvvm-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your Architecture in MVVM Terms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-key-insight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Key Insight
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analysis-of-your-startmenucontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis of Your StartMenuController
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysis of Your StartMenuController">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-does-right" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What It Does Right ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minor-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minor Improvements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#improved-version-your-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Improved Version (Your Style)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-add-viewmodel-in-your-3-layer-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Add ViewModel (In Your 3-Layer System)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When to Add ViewModel (In Your 3-Layer System)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-structure-no-viewmodel-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Structure (No ViewModel Needed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-you-need-viewmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When You Need ViewModel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-architecture-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Architecture Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complete Architecture Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-simple-panels-your-startmenu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Simple Panels (Your StartMenu)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-complex-panels-settings-inventory-character-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Complex Panels (Settings, Inventory, Character Sheet)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-structure-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory Structure (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-matrix-do-i-need-viewmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Matrix: Do I Need ViewModel?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-pattern-is-actually-superior-for-unity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your Pattern is Actually Superior for Unity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-your-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference: Your Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Reference: Your Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-simple-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current (Simple Panels)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-viewmodel-complex-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With ViewModel (Complex Panels)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="your-3-layer-architecture-controller-host-view">Your 3-Layer Architecture: Controller → Host → View</h1>
+<h2 id="what-you-actually-have">What You Actually Have</h2>
+<p>You have a <strong>3-tier architecture</strong> that's already well-separated:</p>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│         StartMenuController (MonoBehaviour)             │
+│  ┌───────────────────────────────────────────────────┐ │
+│  │ SCENE ORCHESTRATION                               │ │
+│  │ • Manages multiple panels (StartMenu, Settings)   │ │
+│  │ • Handles navigation (LoadScene)                  │ │
+│  │ • Application logic (Application.Quit)            │ │
+│  │ • Panel visibility (toggle settings)              │ │
+│  └───────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+                    │
+                    │ controls
+                    ▼
+┌─────────────────────────────────────────────────────────┐
+│         StartMenuPanelHost (MonoBehaviour)              │
+│  ┌───────────────────────────────────────────────────┐ │
+│  │ PANEL LIFECYCLE                                   │ │
+│  │ • Generate() / Dispose()                          │ │
+│  │ • Show() / Hide() animations                      │ │
+│  │ • Event passthrough (OnPlayClicked, etc.)         │ │
+│  │ • UIDocument reference                            │ │
+│  └───────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+                    │
+                    │ creates &amp; subscribes
+                    ▼
+┌─────────────────────────────────────────────────────────┐
+│         StartMenuPanelView (Pure C#)                    │
+│  ┌───────────────────────────────────────────────────┐ │
+│  │ UI GENERATION                                     │ │
+│  │ • Creates UI via Factory                          │ │
+│  │ • Wires button clicks to events                   │ │
+│  │ • Exposes events (OnPlayClicked, etc.)            │ │
+│  │ • No Unity dependencies                           │ │
+│  └───────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<hr />
+<h2 id="your-architecture-in-mvvm-terms">Your Architecture in MVVM Terms</h2>
+<table>
+<thead>
+<tr>
+<th>Your Layer</th>
+<th>MVVM Equivalent</th>
+<th>Responsibilities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Controller</strong></td>
+<td><strong>Application Controller / Navigator</strong></td>
+<td>Scene orchestration, multi-panel coordination, navigation</td>
+</tr>
+<tr>
+<td><strong>Host</strong></td>
+<td><strong>View Controller</strong></td>
+<td>Panel lifecycle, Show/Hide, event routing</td>
+</tr>
+<tr>
+<td><strong>View</strong></td>
+<td><strong>View</strong></td>
+<td>UI generation, event exposure</td>
+</tr>
+<tr>
+<td><strong>(Missing)</strong></td>
+<td><strong>ViewModel</strong></td>
+<td>Presentation logic (only needed for complex panels)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="the-key-insight">The Key Insight</h2>
+<p><strong>Your architecture is actually BETTER than basic MVVM!</strong></p>
+<p>You've split the Controller into two layers:
+1. <strong>Controller</strong> (scene-level) - handles multiple panels
+2. <strong>Host</strong> (panel-level) - handles single panel lifecycle</p>
+<p>This is actually a <strong>Hierarchical Controller pattern</strong> and it's cleaner than MVVM for Unity UI because:
+- ✅ Scene Controller manages panel coordination
+- ✅ Panel Host manages individual panel lifecycle
+- ✅ View is pure UI generation
+- ✅ ViewModel added only when needed (not shown in your simple menu)</p>
+<hr />
+<h2 id="analysis-of-your-startmenucontroller">Analysis of Your StartMenuController</h2>
+<h3 id="what-it-does-right">What It Does Right ✅</h3>
+<pre><code class="language-csharp">public class StartMenuController : MonoBehaviour
+{
+    // GOOD: References to managed panels
+    [SerializeField] private StartMenuPanelHost startMenuPanelHost;
+    [SerializeField] private SettingsPanelHost settingsPanelHost;
+
+    // GOOD: Scene-level state
+    private bool _settingsActive;
+
+    // GOOD: Panel coordination
+    private void ToggleSettings()
+    {
+        _settingsActive = !_settingsActive;
+
+        if(!_settingsActive)
+            settingsPanelHost.Hide();
+        else
+            settingsPanelHost.Generate();
+    }
+
+    // GOOD: Application/navigation logic
+    private void HandlePlay() =&gt; BootstrapManager.Instance.LoadScene(GameConstants.Hub);
+    private void HandleQuit() =&gt; Application.Quit();
+}
+</code></pre>
+<p><strong>This is exactly what a Scene Controller should do!</strong></p>
+<h3 id="minor-improvements">Minor Improvements</h3>
+<p><strong>1. SubscribeEvents() is redundant</strong></p>
+<pre><code class="language-csharp">// Current:
+private void BindButtons()
+{
+    startMenuPanelHost.SubscribeEvents(); // ← This is called in Generate() already
+    startMenuPanelHost.OnPlayClicked += HandlePlay;
+    // ...
+}
+
+// Better:
+private void BindButtons()
+{
+    // Remove SubscribeEvents() - Host already does this in Generate()
+    startMenuPanelHost.OnPlayClicked += HandlePlay;
+    startMenuPanelHost.OnSettingsClicked += HandleSettings;
+    startMenuPanelHost.OnControlsClicked += HandleControls;
+    startMenuPanelHost.OnQuitClicked += HandleQuit;
+}
+</code></pre>
+<p><strong>2. Settings panel lifecycle</strong></p>
+<pre><code class="language-csharp">// Current: Settings regenerates every toggle
+private void ToggleSettings()
+{
+    _settingsActive = !_settingsActive;
+
+    if(!_settingsActive)
+        settingsPanelHost.Hide();
+    else
+        settingsPanelHost.Generate(); // ← Recreates UI every time
+}
+
+// Better: Generate once, then Show/Hide
+private void OnEnable()
+{
+    startMenuPanelHost.Generate();
+    settingsPanelHost.Generate(); // Generate both upfront
+    settingsPanelHost.Hide();     // But hide settings initially
+
+    BindButtons();
+}
+
+private void ToggleSettings()
+{
+    _settingsActive = !_settingsActive;
+
+    if (_settingsActive)
+        settingsPanelHost.Show();
+    else
+        settingsPanelHost.Hide();
+}
+</code></pre>
+<hr />
+<h2 id="improved-version-your-style">Improved Version (Your Style)</h2>
+<pre><code class="language-csharp">using Constants;
+using Systems.Core;
+using UI.Hosts;
+using UnityEngine;
+
+namespace UI.Controllers
+{
+    /// &lt;summary&gt;
+    /// Scene-level controller managing the Start Menu screen.
+    /// Coordinates multiple panels and handles navigation.
+    /// &lt;/summary&gt;
+    public class StartMenuController : MonoBehaviour
+    {
+        #region Fields
+
+        [Header(&quot;Panels&quot;)]
+        [SerializeField] private StartMenuPanelHost _startMenuPanel;
+        [SerializeField] private SettingsPanelHost _settingsPanel;
+        [SerializeField] private ControlsPanelHost _controlsPanel; // If you add this later
+
+        #endregion
+
+        #region Panel Management
+
+        private void ShowPanel(BasePanelHost panel)
+        {
+            // Hide all panels
+            _startMenuPanel.Hide();
+            _settingsPanel.Hide();
+            // _controlsPanel.Hide();
+
+            // Show requested panel
+            panel.Show();
+        }
+
+        private void ShowStartMenu() =&gt; ShowPanel(_startMenuPanel);
+        private void ShowSettings() =&gt; ShowPanel(_settingsPanel);
+        // private void ShowControls() =&gt; ShowPanel(_controlsPanel);
+
+        #endregion
+
+        #region Event Subscription
+
+        private void SubscribeToEvents()
+        {
+            // Start Menu events
+            _startMenuPanel.OnPlayClicked += HandlePlay;
+            _startMenuPanel.OnSettingsClicked += HandleSettings;
+            _startMenuPanel.OnControlsClicked += HandleControls;
+            _startMenuPanel.OnQuitClicked += HandleQuit;
+
+            // Settings panel events (when you add them)
+            // _settingsPanel.OnBackClicked += ShowStartMenu;
+        }
+
+        private void UnsubscribeFromEvents()
+        {
+            _startMenuPanel.OnPlayClicked -= HandlePlay;
+            _startMenuPanel.OnSettingsClicked -= HandleSettings;
+            _startMenuPanel.OnControlsClicked -= HandleControls;
+            _startMenuPanel.OnQuitClicked -= HandleQuit;
+
+            // _settingsPanel.OnBackClicked -= ShowStartMenu;
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        private void HandlePlay()
+        {
+            BootstrapManager.Instance.LoadScene(GameConstants.Hub);
+        }
+
+        private void HandleSettings()
+        {
+            ShowSettings();
+        }
+
+        private void HandleControls()
+        {
+            // Temporary - replace with ShowControls() when panel exists
+            BootstrapManager.Instance.LoadScene(GameConstants.GoblinCampDay);
+        }
+
+        private void HandleQuit()
+        {
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #else
+            Application.Quit();
+            #endif
+        }
+
+        #endregion
+
+        #region Unity Lifecycle
+
+        private void OnEnable()
+        {
+            // Generate all panels
+            _startMenuPanel.Generate();
+            _settingsPanel.Generate();
+            // _controlsPanel.Generate();
+
+            // Show only start menu
+            ShowStartMenu();
+
+            // Subscribe to events
+            SubscribeToEvents();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromEvents();
+        }
+
+        #endregion
+    }
+}
+</code></pre>
+<hr />
+<h2 id="when-to-add-viewmodel-in-your-3-layer-system">When to Add ViewModel (In Your 3-Layer System)</h2>
+<h3 id="current-structure-no-viewmodel-needed">Current Structure (No ViewModel Needed)</h3>
+<pre><code>StartMenuController (Scene orchestration)
+    ↓
+StartMenuPanelHost (Panel lifecycle)
+    ↓
+StartMenuPanelView (UI generation)
+</code></pre>
+<p><strong>This is perfect for simple panels!</strong></p>
+<h3 id="when-you-need-viewmodel">When You Need ViewModel</h3>
+<p><strong>Example: Settings Panel with State</strong></p>
+<pre><code>SettingsController (Scene orchestration - optional)
+    ↓
+SettingsPanelHost (Panel lifecycle)
+    ↓
+SettingsViewModel (Presentation logic) ← NEW
+    ↓
+SettingsPanelView (UI generation + binding)
+</code></pre>
+<p><strong>Example with code:</strong></p>
+<pre><code class="language-csharp">// SettingsPanelHost.cs
+public class SettingsPanelHost : BasePanelHost
+{
+    [SerializeField] private GameSettings _gameSettings;
+
+    private SettingsViewModel _viewModel;
+    private SettingsPanelView _view;
+
+    public override void Generate()
+    {
+        Dispose();
+
+        // Create ViewModel from settings
+        var model = new SettingsModel
+        {
+            Volume = _gameSettings.Volume,
+            Quality = _gameSettings.Quality
+        };
+
+        _viewModel = new SettingsViewModel(model);
+
+        // Subscribe to ViewModel events (game logic)
+        _viewModel.OnApplyRequested += ApplySettings;
+        _viewModel.OnVolumePreview += PreviewVolume;
+
+        // Create View with ViewModel
+        _view = new SettingsPanelView(
+            uiDocument.rootVisualElement,
+            styleSheet,
+            _viewModel // Pass ViewModel to View
+        );
+
+        Show();
+    }
+
+    // Game logic (Unity-specific)
+    private void PreviewVolume(float volume)
+    {
+        AudioListener.volume = volume;
+    }
+
+    private void ApplySettings()
+    {
+        var settings = _viewModel.GetCurrentSettings();
+        _gameSettings.Volume = settings.Volume;
+        _gameSettings.Quality = settings.Quality;
+        _gameSettings.Save();
+
+        // Apply to Unity
+        QualitySettings.SetQualityLevel(settings.Quality);
+    }
+
+    protected override void Dispose()
+    {
+        if (_viewModel != null)
+        {
+            _viewModel.OnApplyRequested -= ApplySettings;
+            _viewModel.OnVolumePreview -= PreviewVolume;
+        }
+
+        _view?.Dispose();
+        _view = null;
+        _viewModel = null;
+    }
+}
+</code></pre>
+<hr />
+<h2 id="complete-architecture-pattern">Complete Architecture Pattern</h2>
+<h3 id="for-simple-panels-your-startmenu">For Simple Panels (Your StartMenu)</h3>
+<pre><code>Layer 1: Scene Controller (manages multiple panels, navigation)
+    └─ StartMenuController.cs
+
+Layer 2: Panel Host (lifecycle, Show/Hide)
+    └─ StartMenuPanelHost.cs
+
+Layer 3: View (UI generation)
+    └─ StartMenuPanelView.cs
+</code></pre>
+<h3 id="for-complex-panels-settings-inventory-character-sheet">For Complex Panels (Settings, Inventory, Character Sheet)</h3>
+<pre><code>Layer 1: Scene Controller (optional - only if coordinating multiple panels)
+    └─ SettingsController.cs (optional)
+
+Layer 2: Panel Host (lifecycle, game logic)
+    └─ SettingsPanelHost.cs
+
+Layer 2.5: ViewModel (presentation logic, testable) ← NEW
+    └─ SettingsViewModel.cs
+
+Layer 3: View (UI generation + binding)
+    └─ SettingsPanelView.cs
+</code></pre>
+<hr />
+<h2 id="directory-structure-recommended">Directory Structure (Recommended)</h2>
+<pre><code>Assets/Scripts/UI/
+├── Controllers/
+│   ├── StartMenuController.cs       # Scene-level orchestration
+│   ├── GameplayHUDController.cs     # Coordinates HUD panels
+│   └── InventoryController.cs       # Coordinates inventory UI
+│
+├── Hosts/                            # Panel lifecycle managers
+│   ├── Base/
+│   │   └── BasePanelHost.cs
+│   ├── StartMenuPanelHost.cs
+│   ├── SettingsPanelHost.cs
+│   └── InventoryPanelHost.cs
+│
+├── ViewModels/                       # Presentation logic (add as needed)
+│   ├── SettingsViewModel.cs
+│   ├── InventoryViewModel.cs
+│   └── CharacterStatsViewModel.cs
+│
+├── Views/                            # UI generation
+│   ├── Base/
+│   │   └── BasePanelView.cs
+│   ├── StartMenuPanelView.cs
+│   ├── SettingsPanelView.cs
+│   └── InventoryPanelView.cs
+│
+├── Models/                           # Data structures
+│   ├── SettingsModel.cs
+│   ├── InventoryModel.cs
+│   └── CharacterStatsModel.cs
+│
+└── Common/
+    ├── ObservableProperty.cs
+    └── ObservableCollection.cs
+</code></pre>
+<hr />
+<h2 id="decision-matrix-do-i-need-viewmodel">Decision Matrix: Do I Need ViewModel?</h2>
+<table>
+<thead>
+<tr>
+<th>Panel Type</th>
+<th>Complexity</th>
+<th>Needs ViewModel?</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Simple Menu</strong></td>
+<td>Just buttons → actions</td>
+<td>❌ NO</td>
+<td>Your StartMenu</td>
+</tr>
+<tr>
+<td><strong>Pause Menu</strong></td>
+<td>Buttons + resume/quit</td>
+<td>❌ NO</td>
+<td>Pause overlay</td>
+</tr>
+<tr>
+<td><strong>Confirmation Dialog</strong></td>
+<td>Yes/No buttons</td>
+<td>❌ NO</td>
+<td>"Are you sure?"</td>
+</tr>
+<tr>
+<td><strong>Settings Panel</strong></td>
+<td>Sliders, formatting, validation</td>
+<td>✅ YES</td>
+<td>Volume: 75%, Quality names</td>
+</tr>
+<tr>
+<td><strong>Inventory</strong></td>
+<td>Filtering, sorting, selection</td>
+<td>✅ YES</td>
+<td>Filter by type, sort by value</td>
+</tr>
+<tr>
+<td><strong>Character Sheet</strong></td>
+<td>Computed stats, percentage bars</td>
+<td>✅ YES</td>
+<td>Attack: 45 (+15), Health: 80%</td>
+</tr>
+<tr>
+<td><strong>Form Input</strong></td>
+<td>Validation, error messages</td>
+<td>✅ YES</td>
+<td>"Password must be 8+ chars"</td>
+</tr>
+<tr>
+<td><strong>Live Stats HUD</strong></td>
+<td>Updating values, health %</td>
+<td>⚠️ MAYBE</td>
+<td>If formatting is complex</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of Thumb:</strong></p>
+<pre><code>Does the panel have:
+- Data formatting? (percentages, dates, currency)
+- Validation logic? (forms, inputs)
+- Computed properties? (total price, health %)
+- Complex state? (filters, selections)
+
+YES → Add ViewModel
+NO  → Keep as Controller → Host → View
+</code></pre>
+<hr />
+<h2 id="your-pattern-is-actually-superior-for-unity">Your Pattern is Actually Superior for Unity</h2>
+<p><strong>Standard MVVM:</strong></p>
+<pre><code>ViewModel → View
+</code></pre>
+<p>Problems:
+- ViewModel doesn't know about panel lifecycle
+- View manages its own Show/Hide
+- No centralized panel coordination</p>
+<p><strong>Your Pattern:</strong></p>
+<pre><code>Controller (scene) → Host (panel lifecycle) → View (UI)
+                         ↓
+                    ViewModel (when needed)
+</code></pre>
+<p>Benefits:
+- ✅ Controller manages multiple panels
+- ✅ Host manages panel lifecycle + animations
+- ✅ View is pure UI generation
+- ✅ ViewModel added only when presentation logic exists
+- ✅ Clean separation of concerns</p>
+<hr />
+<h2 id="quick-reference-your-architecture">Quick Reference: Your Architecture</h2>
+<h3 id="current-simple-panels">Current (Simple Panels)</h3>
+<pre><code class="language-csharp">// Layer 1: Scene Controller
+public class StartMenuController : MonoBehaviour
+{
+    [SerializeField] private StartMenuPanelHost _startMenuPanel;
+
+    private void OnEnable()
+    {
+        _startMenuPanel.Generate();
+        _startMenuPanel.OnPlayClicked += HandlePlay;
+    }
+
+    private void HandlePlay()
+    {
+        BootstrapManager.Instance.LoadScene(&quot;Hub&quot;);
+    }
+}
+
+// Layer 2: Panel Host
+public class StartMenuPanelHost : BasePanelHost
+{
+    public event Action OnPlayClicked;
+    private StartMenuPanelView _view;
+
+    public override void Generate()
+    {
+        _view = new StartMenuPanelView(uiDocument.rootVisualElement, styleSheet);
+        _view.OnPlayClicked += () =&gt; OnPlayClicked?.Invoke();
+        Show();
+    }
+}
+
+// Layer 3: View
+public class StartMenuPanelView : BasePanelView
+{
+    public event Action OnPlayClicked;
+
+    protected override void GenerateUI(VisualElement root)
+    {
+        var playButton = UIToolkitFactory.CreateButton(&quot;Play&quot;);
+        playButton.clicked += () =&gt; OnPlayClicked?.Invoke();
+        // ...
+    }
+}
+</code></pre>
+<h3 id="with-viewmodel-complex-panels">With ViewModel (Complex Panels)</h3>
+<pre><code class="language-csharp">// Layer 2: Panel Host
+public class SettingsPanelHost : BasePanelHost
+{
+    private SettingsViewModel _viewModel;
+    private SettingsPanelView _view;
+
+    public override void Generate()
+    {
+        var model = new SettingsModel { Volume = 0.5f };
+        _viewModel = new SettingsViewModel(model);
+        _viewModel.OnVolumePreview += volume =&gt; AudioListener.volume = volume;
+
+        _view = new SettingsPanelView(
+            uiDocument.rootVisualElement,
+            styleSheet,
+            _viewModel // Pass ViewModel
+        );
+
+        Show();
+    }
+}
+
+// Layer 2.5: ViewModel
+public class SettingsViewModel
+{
+    public ObservableProperty&lt;float&gt; Volume { get; }
+    public ObservableProperty&lt;string&gt; VolumeText { get; }
+    public event Action&lt;float&gt; OnVolumePreview;
+
+    public void UpdateVolume(float value)
+    {
+        Volume.Value = value;
+        VolumeText.Value = $&quot;Volume: {value:P0}&quot;;
+        OnVolumePreview?.Invoke(value);
+    }
+}
+
+// Layer 3: View
+public class SettingsPanelView : BasePanelView
+{
+    private SettingsViewModel _viewModel;
+
+    public SettingsPanelView(VisualElement root, StyleSheet styleSheet, SettingsViewModel viewModel)
+    {
+        _viewModel = viewModel;
+        GenerateUI(root);
+        BindToViewModel();
+    }
+
+    private void BindToViewModel()
+    {
+        var slider = Container.Q&lt;Slider&gt;(&quot;VolumeSlider&quot;);
+        slider.RegisterValueChangedCallback(evt =&gt; _viewModel.UpdateVolume(evt.newValue));
+
+        var label = Container.Q&lt;Label&gt;(&quot;VolumeLabel&quot;);
+        _viewModel.VolumeText.ValueChanged += text =&gt; label.text = text;
+    }
+}
+</code></pre>
+<hr />
+<h2 id="summary">Summary</h2>
+<p><strong>Your Current Architecture:</strong></p>
+<pre><code>✅ Scene Controller (multi-panel coordination)
+✅ Panel Host (lifecycle, Show/Hide, animations)
+✅ View (UI generation)
+⚠️ ViewModel (add only when needed)
+</code></pre>
+<p><strong>This is BETTER than standard MVVM for Unity because:</strong>
+1. Separates scene-level vs panel-level concerns
+2. Panel lifecycle is explicit (Host layer)
+3. Animations/transitions managed in one place
+4. ViewModel only added when there's actual presentation logic</p>
+<p><strong>What to change:</strong>
+1. Minor cleanup in StartMenuController (remove redundant SubscribeEvents call)
+2. Consider generating panels once, then Show/Hide
+3. Add ViewModel layer when panels get complex (Settings, Inventory, Stats)</p>
+<p><strong>You're already doing it right!</strong> Just add ViewModel when you have:
+- Formatting logic
+- Validation
+- Computed properties
+- Complex state management</p>
+<p>For simple menus like your StartMenu, your current pattern is perfect! 🎯</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
