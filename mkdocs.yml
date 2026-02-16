@@ -1,0 +1,51 @@
+site_name: UITK Implementation
+site_url: https://uitk.dev
+repo_url: https://github.com/your-org/uitk  
+
+theme:
+  name: material
+  favicon: assets/images/tablet.svg
+  logo: assets/images/tablet.svg
+  font:
+    text: Roboto
+    code: Roboto Mono
+  icons:
+    repo: fontawesome/brands/github
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-outline
+        name: Switch to light mode
+  features:
+    - navigation.top
+    - navigation.tracking
+    - navigation.sections
+    - search.suggest        
+    - search.highlight     
+    - content.code.copy 
+
+nav:
+  - Home: index.md
+  - Reference:
+      - Docs: references/uitk_refs.md
+      - Videos: references/youtube.md
+  - Research:
+      - Shader Graph: research/shader_graph.md
+      - VR Integration: research/vr_integration.md
+      - Web To USS: research/web_to_uss.md
+  - AI Docs:
+      - Bagel Game Analysis: ai/bg_analysis.md
+      - Industry UITK Practices: ai/industry_uitk.md
+      - Layer Architecture: ai/layer_architecture.md
+
+
+plugins:
+  - search    
