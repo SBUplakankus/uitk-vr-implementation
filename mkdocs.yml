@@ -35,8 +35,7 @@ theme:
 nav:
   - Home: index.md
   - Reference:
-      - Docs: references/uitk_refs.md
-      - Videos: references/youtube.md
+      - Unity: references/uitk_refs.md
   - Research:
       - Shader Graph: research/shader_graph.md
       - VR Integration: research/vr_integration.md
