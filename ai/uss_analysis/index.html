@@ -1,0 +1,2426 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sbuplakankus.github.io/uitk-vr-implementation/ai/uss_analysis/">
+      
+      
+        <link rel="prev" href="../uss_implementation/">
+      
+      
+        <link rel="next" href="../uss_overlay_bonus/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/tablet.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>USS Analysis - UITK Implementation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#uitk-visual-styling-modern-dark-glass-aesthetic" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="UITK Implementation" class="md-header__button md-logo" aria-label="UITK Implementation" data-md-component="logo">
+      
+  <img src="../../assets/images/tablet.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            UITK Implementation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              USS Analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4m0-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SBUplakankus/uitk-vr-implementation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="UITK Implementation" class="md-nav__button md-logo" aria-label="UITK Implementation" data-md-component="logo">
+      
+  <img src="../../assets/images/tablet.svg" alt="logo">
+
+    </a>
+    UITK Implementation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SBUplakankus/uitk-vr-implementation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/uitk_refs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/shader_graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shader Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/vr_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VR Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/web_to_uss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web To USS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bg_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bagel Game Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../industry_uitk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Industry UITK Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../layer_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mvvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M-V-VM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cs_implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C# Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uss_implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USS Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USS Analysis
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USS Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-vercel-linear-aesthetic-actually-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Vercel / Linear Aesthetic Actually Is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-honest-capability-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Honest Capability Map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-dark-theme-the-colour-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default Dark Theme — The Colour Language
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#surface-and-panel-styling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Surface and Panel Styling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Surface and Panel Styling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-panel-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Panel Stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glass-panel-variant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glass Panel Variant
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typography" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Typography
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Buttons
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cards-and-module-list-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cards and Module List Items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transitions-and-animations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transitions and Animations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transitions and Animations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-safe-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Safe Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panel-entry-fade-and-slide-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Panel Entry — Fade and Slide Up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staggered-list-entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Staggered List Entry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#number-counter-progress-stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Number Counter (Progress / Stats)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gradients-the-workaround-playbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradients — The Workaround Playbook
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gradients — The Workaround Playbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-baked-textures-for-static-decoration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Baked textures for static decoration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-svg-assets-for-crisp-scalable-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. SVG assets for crisp scalable gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-shader-graph-material-for-dynamic-and-animated-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Shader Graph material for dynamic and animated gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shader-graph-per-element-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shader Graph Per-Element Effects
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shader Graph Per-Element Effects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glass-panel-sheen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glass Panel Sheen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#border-glow-replaces-css-box-shadow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Border Glow (Replaces CSS box-shadow)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#card-hover-sheen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Card Hover Sheen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vignette" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vignette
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanlines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanlines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-customisable-layer-glow-and-colour-themes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Customisable Layer — Glow and Colour Themes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-cannot-be-done-within-the-uitk-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Cannot Be Done Within the UITK Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uss_overlay_bonus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USS Overlay (Bonus)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-vercel-linear-aesthetic-actually-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Vercel / Linear Aesthetic Actually Is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-honest-capability-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Honest Capability Map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-dark-theme-the-colour-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default Dark Theme — The Colour Language
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#surface-and-panel-styling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Surface and Panel Styling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Surface and Panel Styling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-panel-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Panel Stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glass-panel-variant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glass Panel Variant
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typography" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Typography
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Buttons
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cards-and-module-list-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cards and Module List Items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transitions-and-animations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transitions and Animations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transitions and Animations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-safe-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Safe Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panel-entry-fade-and-slide-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Panel Entry — Fade and Slide Up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#staggered-list-entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Staggered List Entry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#number-counter-progress-stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Number Counter (Progress / Stats)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gradients-the-workaround-playbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradients — The Workaround Playbook
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gradients — The Workaround Playbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-baked-textures-for-static-decoration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Baked textures for static decoration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-svg-assets-for-crisp-scalable-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. SVG assets for crisp scalable gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-shader-graph-material-for-dynamic-and-animated-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Shader Graph material for dynamic and animated gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shader-graph-per-element-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shader Graph Per-Element Effects
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shader Graph Per-Element Effects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glass-panel-sheen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glass Panel Sheen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#border-glow-replaces-css-box-shadow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Border Glow (Replaces CSS box-shadow)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#card-hover-sheen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Card Hover Sheen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vignette" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vignette
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanlines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanlines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-customisable-layer-glow-and-colour-themes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Customisable Layer — Glow and Colour Themes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-cannot-be-done-within-the-uitk-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Cannot Be Done Within the UITK Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="uitk-visual-styling-modern-dark-glass-aesthetic">UITK Visual Styling — Modern Dark Glass Aesthetic</h1>
+<blockquote>
+<p><strong>Verified against</strong>: Unity 6.3 LTS docs (fetched February 2026)<br />
+<strong>Aesthetic target</strong>: Vercel / Linear / Raycast — professional dark glass, clean hierarchy<br />
+<strong>Scope</strong>: USS styling, gradients, transitions, Shader Graph per-element materials<br />
+<strong>Platform</strong>: Quest 2 render texture → world space quad pipeline<br />
+<strong>Note</strong>: The default theme is intentionally restrained. The token system makes
+it fully customisable — glows, gradients, and colour pops are a theme swap away.</p>
+</blockquote>
+<hr />
+<h2 id="what-the-vercel-linear-aesthetic-actually-is">What the Vercel / Linear Aesthetic Actually Is</h2>
+<p>Before techniques, it's worth being precise about what makes these interfaces look the way they do. It is not primarily about effects — it is about restraint and surface hierarchy.</p>
+<p><strong>The defining characteristics:</strong></p>
+<ul>
+<li>Near-black base surfaces, not pure black. <code>#0a0a0f</code> to <code>#0d0d12</code> — a very slight cool blue-black rather than flat black. Pure black in UI reads as a void; this reads as a surface.</li>
+<li>Colour appears almost nowhere on the base layer. The surfaces, cards, and panels are essentially monochrome. Colour exists only in interactive elements, status indicators, and deliberate accent moments.</li>
+<li>Borders are the primary way surfaces are separated. Not shadows, not strong background colour contrast — a single pixel border at <code>rgba(255,255,255, 0.06–0.10)</code> is what defines a card edge.</li>
+<li>Typography carries the hierarchy. Large, slightly tracked titles. Muted body text. The weight contrast between heading and body is doing most of the work.</li>
+<li>Gradients are used extremely sparingly and precisely. One gradient highlight on a hero element, or a very subtle radial glow behind a primary CTA. Not on every card.</li>
+<li>Interactive feedback is immediate and physical. Hover states are instant or near-instant (80–100ms). Press states give a perceptible scale response. There is no ambiguity about whether you clicked something.</li>
+</ul>
+<p><strong>The customisable layer sits on top of this.</strong> The token system means a designer can push any element toward a more vibrant, glow-heavy, gradient-rich look by editing theme values. The default theme ships restrained; custom themes can be anything.</p>
+<hr />
+<h2 id="the-honest-capability-map">The Honest Capability Map</h2>
+<p>What UITK supports vs what web developers take for granted in 2026. Every gap confirmed against Unity 6.3 docs.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>CSS</th>
+<th>USS (Unity 6.3)</th>
+<th>Workaround</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>linear-gradient()</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>Baked texture, SVG, or Shader Graph</td>
+</tr>
+<tr>
+<td><code>radial-gradient()</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>Same</td>
+</tr>
+<tr>
+<td><code>box-shadow</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>Border trick or Shader Graph glow</td>
+</tr>
+<tr>
+<td><code>backdrop-filter: blur()</code></td>
+<td>✅</td>
+<td>⚠️ Partial</td>
+<td><code>filter:</code> on a sibling element</td>
+</tr>
+<tr>
+<td><code>@keyframes</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>C# <code>schedule</code> or DOTween</td>
+</tr>
+<tr>
+<td><code>transition</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Transform (translate/rotate/scale)</td>
+<td>✅</td>
+<td>✅ layout-free</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>filter: blur/grayscale/invert</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Custom shader per element</td>
+<td>❌</td>
+<td>✅ <code>-unity-material</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>CSS custom properties <code>var()</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>opacity</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>border-radius</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Spring physics animations</td>
+<td>✅ via libs</td>
+<td>❌</td>
+<td>DOTween spring ease</td>
+</tr>
+<tr>
+<td><code>mix-blend-mode</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>Shader Graph blend node</td>
+</tr>
+</tbody>
+</table>
+<p>The critical gap is <code>linear-gradient()</code> — absent from USS since UI Toolkit launched. Everything that defines modern web surfaces relies on gradients. In UITK every gradient needs a workaround.</p>
+<hr />
+<h2 id="default-dark-theme-the-colour-language">Default Dark Theme — The Colour Language</h2>
+<p>These are the base token values for the default professional theme. Every value has a reason.</p>
+<pre><code class="language-css">/* base-variables.uss */
+:root {
+    /* ── Surfaces ──────────────────────────────────────────────────────── */
+    /* Not pure black. The slight blue shift reads as a lit surface, not a void */
+    --color-background:       rgb(10, 10, 15);
+    --color-surface:          rgb(16, 16, 24);
+    --color-surface-raised:   rgb(22, 22, 32);
+    --color-surface-overlay:  rgb(28, 28, 40);
+
+    /* ── Borders ──────────────────────────────────────────────────────── */
+    /* Low opacity white. This is doing the work of defining edges */
+    --color-border:           rgba(255, 255, 255, 0.07);
+    --color-border-subtle:    rgba(255, 255, 255, 0.04);
+    --color-border-emphasis:  rgba(255, 255, 255, 0.14);
+
+    /* ── Text ─────────────────────────────────────────────────────────── */
+    --color-text-primary:     rgb(237, 237, 240);   /* near white, not harsh */
+    --color-text-secondary:   rgb(160, 160, 170);   /* muted — for labels, captions */
+    --color-text-tertiary:    rgb(100, 100, 110);   /* very muted — timestamps, hints */
+
+    /* ── Accent (the only real colour on screen by default) ───────────── */
+    --color-accent:           rgb(99, 102, 241);    /* indigo — restrained, professional */
+    --color-accent-hover:     rgb(118, 121, 255);
+    --color-accent-muted:     rgba(99, 102, 241, 0.12);  /* tinted backgrounds */
+    --color-on-accent:        rgb(255, 255, 255);
+
+    /* ── Semantic ─────────────────────────────────────────────────────── */
+    --color-success:          rgb(52, 211, 153);
+    --color-warning:          rgb(251, 191, 36);
+    --color-error:            rgb(248, 113, 113);
+
+    /* ── Typography ───────────────────────────────────────────────────── */
+    --size-text-xs:           11px;
+    --size-text-sm:           13px;
+    --size-text-base:         15px;
+    --size-text-lg:           18px;
+    --size-text-xl:           24px;
+    --size-text-2xl:          32px;
+    --size-text-3xl:          48px;
+
+    /* ── Spacing ──────────────────────────────────────────────────────── */
+    --space-1:                4px;
+    --space-2:                8px;
+    --space-3:                12px;
+    --space-4:                16px;
+    --space-6:                24px;
+    --space-8:                32px;
+    --space-10:               40px;
+    --space-12:               48px;
+
+    /* ── Radius ───────────────────────────────────────────────────────── */
+    --radius-sm:              4px;
+    --radius-md:              8px;
+    --radius-lg:              12px;
+    --radius-xl:              16px;
+    --radius-full:            999px;
+
+    /* ── Animation ────────────────────────────────────────────────────── */
+    --duration-instant:       80ms;
+    --duration-fast:          150ms;
+    --duration-normal:        250ms;
+    --duration-slow:          400ms;
+    --ease-out:               cubic-bezier(0.0, 0.0, 0.2, 1);
+    --ease-in-out:            cubic-bezier(0.4, 0.0, 0.2, 1);
+    --ease-spring:            cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+</code></pre>
+<p>The indigo accent (<code>#6366f1</code>) is the Linear default. For a more Vercel-adjacent feel, swap it to white/near-white — Vercel's UI is almost monochrome with white as the interactive colour. Both are in the realm of "professional dark", one warmer, one colder.</p>
+<hr />
+<h2 id="surface-and-panel-styling">Surface and Panel Styling</h2>
+<h3 id="the-panel-stack">The Panel Stack</h3>
+<p>Every panel uses the same base pattern. Surfaces stack by raising the background colour value slightly — not by using shadows.</p>
+<pre><code class="language-css">/* panels.uss */
+
+.panel-root {
+    flex-grow: 1;
+    background-color: var(--color-background);
+    padding: var(--space-6);
+}
+
+/* A contained panel — cards, dialogs, settings panes */
+.panel-surface {
+    background-color: var(--color-surface);
+    border-width: 1px;
+    border-color: var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+}
+
+/* Elevated above panel-surface — dropdowns, tooltips, modals */
+.panel-raised {
+    background-color: var(--color-surface-raised);
+    border-width: 1px;
+    border-color: var(--color-border-emphasis);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+}
+
+/* Header within a panel */
+.panel-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-4);
+    border-bottom-width: 1px;
+    border-color: var(--color-border-subtle);
+    margin-bottom: var(--space-6);
+}
+
+.panel-footer {
+    padding-top: var(--space-4);
+    border-top-width: 1px;
+    border-color: var(--color-border-subtle);
+    margin-top: var(--space-6);
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.divider {
+    height: 1px;
+    background-color: var(--color-border-subtle);
+    margin: var(--space-4) 0;
+}
+</code></pre>
+<h3 id="glass-panel-variant">Glass Panel Variant</h3>
+<p>The glass variant is for panels that float visually over other content — a settings overlay, a tooltip, a confirmation dialog. In the Vercel/Linear aesthetic this effect is very subtle — mostly just the border change and a near-transparent fill.</p>
+<pre><code class="language-css">/* The &quot;glass&quot; in this aesthetic is 90% about the border, 10% about the fill */
+.glass-panel {
+    background-color: rgba(16, 16, 24, 0.72);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.10);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+}
+
+/* Optional: use USS filter for a blur-behind effect on a sibling element.
+   Performance cost: renders subtree to intermediate texture. Use sparingly. */
+.glass-blur-layer {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    filter: blur(20px);
+}
+</code></pre>
+<p>For the Shader Graph sheen that completes the glass effect — a subtle bright gradient along the top edge — see the Shader Graph section below.</p>
+<hr />
+<h2 id="typography">Typography</h2>
+<p>Clean typography carries most of the hierarchy in this aesthetic. The key principle: contrast comes from weight and opacity, not from using many font sizes.</p>
+<pre><code class="language-css">/* typography.uss */
+
+.text-title {
+    font-size: var(--size-text-2xl);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    letter-spacing: -0.5px;  /* slight tracking-tight — characteristic of Linear */
+}
+
+.text-heading {
+    font-size: var(--size-text-xl);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    letter-spacing: -0.3px;
+}
+
+.text-subheading {
+    font-size: var(--size-text-lg);
+    color: var(--color-text-secondary);
+    -unity-font-style: normal;
+}
+
+.text-body {
+    font-size: var(--size-text-base);
+    color: var(--color-text-primary);
+    white-space: normal;
+}
+
+.text-label {
+    font-size: var(--size-text-sm);
+    color: var(--color-text-secondary);
+    -unity-font-style: bold;
+    letter-spacing: 0.3px;
+}
+
+.text-caption {
+    font-size: var(--size-text-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* Accent text — used for active states, links, CTA labels */
+.text-accent {
+    color: var(--color-accent);
+    font-size: var(--size-text-sm);
+    -unity-font-style: bold;
+}
+
+/* Monospace — for module step codes, identifiers */
+.text-mono {
+    font-size: var(--size-text-sm);
+    color: var(--color-text-secondary);
+}
+</code></pre>
+<hr />
+<h2 id="buttons">Buttons</h2>
+<pre><code class="language-css">/* buttons.uss */
+
+/* Primary — accent fill. Used once per panel maximum */
+.btn-primary {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    border-radius: var(--radius-md);
+    border-width: 0;
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--size-text-sm);
+    -unity-font-style: bold;
+
+    transition-property: background-color, scale;
+    transition-duration: var(--duration-instant), var(--duration-instant);
+    transition-timing-function: var(--ease-out);
+}
+.btn-primary:hover  { background-color: var(--color-accent-hover); scale: 1.02 1.02; }
+.btn-primary:active { scale: 0.97 0.97; }
+
+/* Secondary — bordered, no fill. The workhorse button */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    border-width: 1px;
+    border-color: var(--color-border-emphasis);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--size-text-sm);
+
+    transition-property: border-color, background-color, scale;
+    transition-duration: var(--duration-instant);
+    transition-timing-function: var(--ease-out);
+}
+.btn-secondary:hover  {
+    border-color: rgba(255, 255, 255, 0.24);
+    background-color: rgba(255, 255, 255, 0.04);
+    scale: 1.01 1.01;
+}
+.btn-secondary:active { scale: 0.97 0.97; }
+
+/* Ghost — invisible until hover. Used for icon buttons and secondary actions */
+.btn-ghost {
+    background-color: transparent;
+    color: var(--color-text-tertiary);
+    border-width: 0;
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+
+    transition-property: color, background-color;
+    transition-duration: var(--duration-instant);
+}
+.btn-ghost:hover {
+    color: var(--color-text-primary);
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Tab button */
+.btn-tab {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border-width: 0 0 1px 0;
+    border-color: transparent;
+    border-radius: 0;
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--size-text-sm);
+
+    transition-property: color, border-color;
+    transition-duration: var(--duration-fast);
+}
+.btn-tab--active {
+    color: var(--color-text-primary);
+    border-color: var(--color-accent);
+}
+.btn-tab:hover:not(.btn-tab--active) {
+    color: var(--color-text-primary);
+}
+</code></pre>
+<hr />
+<h2 id="cards-and-module-list-items">Cards and Module List Items</h2>
+<pre><code class="language-css">/* components.uss */
+
+.card {
+    background-color: var(--color-surface);
+    border-width: 1px;
+    border-color: var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    margin-bottom: var(--space-2);
+
+    transition-property: border-color, translate, background-color;
+    transition-duration: var(--duration-instant);
+    transition-timing-function: var(--ease-out);
+}
+
+/* Hover: border brightens + slight lift. No glow by default */
+.card:hover {
+    border-color: var(--color-border-emphasis);
+    translate: 0 -2px;
+    background-color: var(--color-surface-raised);
+}
+
+/* Active/selected state: accent-tinted border */
+.card--active {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent-muted);
+}
+
+.card--locked {
+    opacity: 0.4;
+}
+
+/* Progress bar — used inside cards and on the dashboard */
+.progress-track {
+    height: 3px;  /* Intentionally thin — Vercel/Linear use very thin bars */
+    background-color: var(--color-surface-overlay);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-full);
+    transition-property: width;
+    transition-duration: var(--duration-slow);
+    transition-timing-function: var(--ease-out);
+}
+
+/* Badge — status pill */
+.badge {
+    border-radius: var(--radius-full);
+    padding: 2px var(--space-2);
+    font-size: var(--size-text-xs);
+    -unity-font-style: bold;
+}
+.badge--success { background-color: rgba(52, 211, 153, 0.12); color: rgb(52, 211, 153); }
+.badge--warning { background-color: rgba(251, 191, 36, 0.12);  color: rgb(251, 191, 36); }
+.badge--error   { background-color: rgba(248, 113, 113, 0.12); color: rgb(248, 113, 113); }
+.badge--default { background-color: var(--color-surface-raised); color: var(--color-text-secondary); }
+</code></pre>
+<hr />
+<h2 id="inputs">Inputs</h2>
+<pre><code class="language-css">/* inputs.uss */
+
+.input-group { margin-bottom: var(--space-4); }
+
+.input-label {
+    font-size: var(--size-text-xs);
+    color: var(--color-text-secondary);
+    -unity-font-style: bold;
+    letter-spacing: 0.4px;
+    margin-bottom: var(--space-1);
+}
+
+.input-field {
+    background-color: var(--color-surface-raised);
+    border-width: 1px;
+    border-color: var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--size-text-base);
+
+    transition-property: border-color;
+    transition-duration: var(--duration-fast);
+}
+.input-field:focus       { border-color: var(--color-accent); }
+.input-field--error      { border-color: var(--color-error); }
+
+/* Slider track */
+.input-field .unity-base-slider__tracker {
+    background-color: var(--color-surface-overlay);
+    border-radius: var(--radius-full);
+    height: 3px;
+    border-width: 0;
+}
+
+/* Slider thumb */
+.input-field .unity-base-slider__dragger {
+    background-color: var(--color-text-primary);
+    border-radius: var(--radius-full);
+    width: 14px;
+    height: 14px;
+    margin-top: -5px;
+    border-width: 0;
+    transition-property: scale, background-color;
+    transition-duration: var(--duration-instant);
+}
+.input-field .unity-base-slider__dragger:hover {
+    background-color: var(--color-accent);
+    scale: 1.2 1.2;
+}
+</code></pre>
+<hr />
+<h2 id="transitions-and-animations">Transitions and Animations</h2>
+<h3 id="the-safe-properties">The Safe Properties</h3>
+<p>Only animate these on Quest 2 without hesitation — they bypass layout recalculation:</p>
+<pre><code>translate    rotate    scale    opacity    background-color
+border-color    color    filter (careful — see below)
+</code></pre>
+<p>Never animate <code>width</code>, <code>height</code>, <code>padding</code>, <code>margin</code>, <code>left</code>, <code>top</code> for visual effects. Use <code>scale</code> or <code>translate</code> instead.</p>
+<h3 id="panel-entry-fade-and-slide-up">Panel Entry — Fade and Slide Up</h3>
+<pre><code class="language-css">/* animations.uss */
+
+.panel-root {
+    opacity: 0;
+    translate: 0 8px;
+    transition-property: opacity, translate;
+    transition-duration: var(--duration-normal), var(--duration-normal);
+    transition-timing-function: var(--ease-out), var(--ease-out);
+}
+
+.panel-root.visible {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.hidden { display: none; }
+.invisible { opacity: 0; }
+
+/* Reduced motion — applied to root when user preference is set */
+.reduced-motion * {
+    transition-duration: 0s !important;
+}
+</code></pre>
+<pre><code class="language-csharp">// Host.Show() — one-frame delay is required for transition to fire
+public override void Show()
+{
+    Root.RemoveFromClassList(UIStyles.Hidden);
+    Root.schedule.Execute(() =&gt;
+        Root.AddToClassList(UIStyles.Visible)
+    ).StartingIn(16);
+}
+
+public override void Hide()
+{
+    Root.RemoveFromClassList(UIStyles.Visible);
+    Root.schedule.Execute(() =&gt;
+        Root.AddToClassList(UIStyles.Hidden)
+    ).StartingIn((long)(250)); // match transition duration
+}
+</code></pre>
+<h3 id="staggered-list-entry">Staggered List Entry</h3>
+<p>No native USS equivalent. C# schedule loop:</p>
+<pre><code class="language-csharp">private void AnimateListEntries(VisualElement list)
+{
+    int i = 0;
+    foreach (var child in list.Children())
+    {
+        child.AddToClassList(&quot;entry-hidden&quot;); // opacity:0, translate: 0 6px
+        int index = i++;
+        child.schedule.Execute(() =&gt; {
+            child.RemoveFromClassList(&quot;entry-hidden&quot;);
+            child.AddToClassList(&quot;entry-visible&quot;); // opacity:1, translate: 0 0
+        }).StartingIn(index * 50L); // 50ms stagger
+    }
+}
+</code></pre>
+<h3 id="number-counter-progress-stats">Number Counter (Progress / Stats)</h3>
+<p>Animating a numeric value display — common in dashboards:</p>
+<pre><code class="language-csharp">private void AnimateCounter(Label label, float from, float to, float duration = 0.6f)
+{
+    float elapsed = 0f;
+    label.schedule.Execute(timer =&gt; {
+        elapsed += timer.deltaTime / 1000f;
+        float t = Mathf.Clamp01(elapsed / duration);
+        // Ease out cubic
+        float eased = 1f - Mathf.Pow(1f - t, 3f);
+        label.text = Mathf.RoundToInt(Mathf.Lerp(from, to, eased)).ToString();
+    }).Until(() =&gt; elapsed &gt;= duration);
+}
+</code></pre>
+<hr />
+<h2 id="gradients-the-workaround-playbook">Gradients — The Workaround Playbook</h2>
+<p><code>linear-gradient()</code> is not in USS. The options in priority order for this aesthetic:</p>
+<h3 id="1-baked-textures-for-static-decoration">1. Baked textures for static decoration</h3>
+<p>For the very subtle gradient that appears in hero panels or behind primary CTAs. A near-transparent PNG tinted by USS.</p>
+<pre><code class="language-css">.hero-gradient-bg {
+    background-image: url(&quot;project://Assets/UI/Textures/gradient-corner.png&quot;);
+    -unity-background-scale-mode: stretch-to-fill;
+    /* Tint with accent colour at very low opacity */
+    -unity-background-image-tint-color: rgba(99, 102, 241, 0.08);
+}
+</code></pre>
+<p>When generating gradient textures, raise the alpha channel to a power of 2 or 3 before export. A linear ramp looks flat and dated. Power 2 gives a fast-then-slow falloff — the texture looks like light catching a surface edge, not a colour fill.</p>
+<h3 id="2-svg-assets-for-crisp-scalable-gradients">2. SVG assets for crisp scalable gradients</h3>
+<p>SVGs natively support <code>linearGradient</code> and <code>radialGradient</code>. A designer creates them in Figma, exports SVG, Unity renders them at any resolution without texture memory overhead.</p>
+<pre><code class="language-css">.card-accent-bg {
+    background-image: url(&quot;project://Assets/UI/Vectors/accent-radial.svg&quot;);
+    -unity-background-scale-mode: stretch-to-fill;
+}
+</code></pre>
+<p><strong>Best for:</strong> Card accent backgrounds, decorative section highlights. Colours are baked into the SVG — not theme-reactive. Either provide multiple SVG variants per theme or use Option 3 for theme-reactive gradients.</p>
+<h3 id="3-shader-graph-material-for-dynamic-and-animated-gradients">3. Shader Graph material for dynamic and animated gradients</h3>
+<p>The correct approach for anything theme-reactive or animated. Assigned via USS <code>-unity-material</code>. Runs per-element on the GPU.</p>
+<pre><code class="language-css">.card-gradient {
+    -unity-material: url(&quot;project://Assets/UI/Materials/CardGradient.mat&quot;);
+}
+</code></pre>
+<p>The Power curve in the shader is the difference between a 2004 gradient and a 2026 one. Linear UV (power 1.0) = flat, boring. Power 2.0 = quadratic ease, smooth. Power 3.0 = fast highlight, slow fade — reads as a light source hitting a surface from one angle.</p>
+<pre><code>/* Conceptual shader graph — CardGradient */
+Element Layout UV
+    → Y component (0=top, 1=bottom)
+    → 1 - Y  (flip: top=1, bottom=0)
+    → Power(node: 2.5)
+    → Multiply(intensity: 0.06)  ← very subtle by default
+    → Add to Default Solid output
+    → Render Type Branch (Solid port) → Fragment Base Color
+</code></pre>
+<p>For a more vibrant theme with a visible gradient, raise the intensity parameter. The material exposes it as a Blackboard property so it can be set via <code>material.SetFloat("_Intensity", 0.18f)</code> from the <code>ThemeManager</code>.</p>
+<p><strong>Performance note:</strong> One simple gradient shader is 5–10 GPU instructions — effectively free. Every distinct material breaks UITK batching. Keep distinct materials to a small set. Prefer controlling variation via shader properties, not separate materials.</p>
+<hr />
+<h2 id="shader-graph-per-element-effects">Shader Graph Per-Element Effects</h2>
+<p>All of the following use the <code>-unity-material</code> USS property and stay within the UITK pipeline. No separate camera passes or uGUI overlays required.</p>
+<h3 id="glass-panel-sheen">Glass Panel Sheen</h3>
+<p>The bright highlight along the top edge of a glass panel. This is what sells the glass surface — more important than the blur.</p>
+<pre><code>Element Layout UV
+    → Y component
+    → 1 - Y  (top=1)
+    → Power(2.5)                    ← fast falloff
+    → Multiply(sheenIntensity: 0.08)
+    → Add to base glass colour
+    → Render Type Branch (Solid) → Fragment
+</code></pre>
+<p>At <code>sheenIntensity: 0.08</code> this is barely perceptible — just enough that the surface reads differently at the top vs bottom. For the Linear-style feel, keep it very subtle. For a more sci-fi aesthetic, push to <code>0.20–0.30</code>.</p>
+<h3 id="border-glow-replaces-css-box-shadow">Border Glow (Replaces CSS <code>box-shadow</code>)</h3>
+<p>CSS <code>box-shadow</code> doesn't exist in USS. This shader adds a soft inner glow near the element's border, which reads similarly to an outer glow on the panel.</p>
+<pre><code>Element Layout UV → remap to -1..1 (Multiply 2, Subtract 1)
+    → Abs
+    → Max(X, Y)                    ← outermost edge of the element
+    → SmoothStep(0.80, 1.0)        ← only the outer ~20%
+    → Multiply(glowColour)
+    → Add to Default Solid output
+    → Render Type Branch (Solid) → Fragment
+</code></pre>
+<p>At low intensity with an accent colour this reads as a subtle selection glow. Higher intensity gives you the neon border look. Controlled by a Blackboard <code>_GlowColour</code> and <code>_GlowIntensity</code> property — set to near-zero by default, overridden by the glow theme.</p>
+<h3 id="card-hover-sheen">Card Hover Sheen</h3>
+<p>The bright light sweep across a card on hover — a technique used heavily in Linear's interface.</p>
+<pre><code>_HoverProgress (float 0→1, animated from C#)
+
+Element Layout UV → X component
+    → abs(X - _HoverProgress)     ← distance from sweep position
+    → 1 - SmoothStep(0.0, 0.25)  ← soft bright band ~25% wide
+    → Multiply(0.08)              ← subtle
+    → Add to Default Solid output
+</code></pre>
+<pre><code class="language-csharp">// Animate from View.Wire() — card registers pointer events
+card.RegisterCallback&lt;PointerEnterEvent&gt;(_ =&gt; {
+    var mat = card.resolvedStyle.unityMaterial;
+    if (mat == null) return;
+
+    float elapsed = 0f;
+    const float duration = 0.5f;
+    card.schedule.Execute(timer =&gt; {
+        elapsed += timer.deltaTime / 1000f;
+        mat.SetFloat(&quot;_HoverProgress&quot;, Mathf.Clamp01(elapsed / duration));
+    }).Until(() =&gt; elapsed &gt;= duration);
+});
+</code></pre>
+<h3 id="vignette">Vignette</h3>
+<p>Applied to the outermost panel container. Darkens the edges of the screen, reinforcing the "VR display" quality and drawing focus to the centre.</p>
+<pre><code>Element Layout UV → remap to -1..1
+    → Length (distance from centre)
+    → Power(1.8)
+    → Multiply(vignetteStrength: 0.20)
+    → Clamp(0, 1)
+    → 1 - result
+    → Multiply with Default Solid output
+    → Render Type Branch (Solid) → Fragment
+</code></pre>
+<p>Default <code>vignetteStrength: 0.20</code> is tasteful — edges are 20% darker. The full-screen vignette Shader Graph for the render texture overlay is covered in the bonus doc.</p>
+<h3 id="scanlines">Scanlines</h3>
+<p>A very subtle CRT texture effect. In a VR context this reads as "this is a screen" rather than "this is a flat plane".</p>
+<pre><code>Element Layout UV → Y component
+    → Multiply(lineFrequency: 100.0)
+    → Fraction
+    → Step(0.5)
+    → 1 - result
+    → Multiply(lineIntensity: 0.025)   ← very subtle on Quest 2
+    → 1 - result
+    → Multiply with Default Solid output
+</code></pre>
+<p>Keep <code>lineIntensity</code> below <code>0.04</code> for Quest 2. Strong scanlines will strobe at 72fps. The goal is texture, not distraction.</p>
+<hr />
+<h2 id="the-customisable-layer-glow-and-colour-themes">The Customisable Layer — Glow and Colour Themes</h2>
+<p>The default theme is intentionally minimal. The Shader Graph materials all expose Blackboard properties. The <code>UITheme</code> ScriptableObject maps to those properties. A designer wanting a "neon glow" theme sets:</p>
+<pre><code>GlowIntensity:    0.30      (was 0.02)
+SheenIntensity:   0.25      (was 0.08)
+GradientIntensity: 0.18     (was 0.05)
+ColorAccent:      #00ff88   (was indigo)
+</code></pre>
+<p>And sets those on the material at theme-switch time from <code>ThemeManager</code>:</p>
+<pre><code class="language-csharp">private void ApplyShaderProperties(UITheme theme)
+{
+    if (theme.GlowMaterial != null)
+    {
+        theme.GlowMaterial.SetColor(&quot;_GlowColour&quot;,    theme.ColorAccent);
+        theme.GlowMaterial.SetFloat(&quot;_GlowIntensity&quot;, theme.GlowIntensity);
+    }
+
+    if (theme.GradientMaterial != null)
+    {
+        theme.GradientMaterial.SetColor(&quot;_GradientColour&quot;,    theme.ColorAccent);
+        theme.GradientMaterial.SetFloat(&quot;_GradientIntensity&quot;, theme.GradientIntensity);
+    }
+}
+</code></pre>
+<p>The professional default ships quiet. The vibrant variant is a preset the designer creates in the inspector.</p>
+<hr />
+<h2 id="what-cannot-be-done-within-the-uitk-pipeline">What Cannot Be Done Within the UITK Pipeline</h2>
+<p>These effects require going outside the <code>-unity-material</code> per-element approach. They are documented in the bonus doc (Global Render Texture Overlay) and are entirely optional — the UITK pipeline delivers a complete and good-looking UI without them.</p>
+<ul>
+<li><strong>Full-screen scanlines/vignette as a post-process</strong> over the complete render texture</li>
+<li><strong>True depth-of-field or bloom</strong> affecting the VR panel as a whole</li>
+<li><strong>Chromatic aberration</strong> on the panel edges</li>
+<li><strong>Blurring the 3D world visible through a glass panel</strong> (requires a scene render texture read)</li>
+</ul>
+<hr />
+<h2 id="file-structure">File Structure</h2>
+<pre><code>Assets/UI/
+├── Styles/
+│   ├── base-variables.uss
+│   ├── components/
+│   │   ├── typography.uss
+│   │   ├── panels.uss
+│   │   ├── buttons.uss
+│   │   ├── inputs.uss
+│   │   ├── components.uss     (cards, badges, progress)
+│   │   └── animations.uss
+│   └── themes/
+│       ├── theme-default.uss
+│       ├── theme-vibrant.uss  (accent colours, higher glow)
+│       └── theme-light.uss
+│
+├── Materials/
+│   ├── UI_GlassPanel.mat      (sheen + subtle gradient)
+│   ├── UI_CardGradient.mat    (card bg gradient, very subtle default)
+│   ├── UI_BorderGlow.mat      (selection / hover glow)
+│   ├── UI_CardSheen.mat       (hover sweep)
+│   └── UI_ScreenBase.mat      (vignette + scanlines on root panel)
+│
+├── Shaders/
+│   ├── GlassPanel.shadergraph
+│   ├── CardGradient.shadergraph
+│   ├── BorderGlow.shadergraph
+│   ├── CardSheen.shadergraph
+│   └── ScreenBase.shadergraph
+│
+├── Textures/
+│   ├── gradient-corner-tl.png
+│   └── gradient-radial-centre.png
+│
+└── Vectors/
+    ├── accent-radial.svg
+    └── accent-linear-horizontal.svg
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
