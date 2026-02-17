@@ -12,18 +12,18 @@ theme:
   icons:
     repo: fontawesome/brands/github
   palette:
-    - scheme: default
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
     - scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: red
+      accent: red
       toggle:
         icon: material/toggle-switch-outline
         name: Switch to light mode
+    - scheme: default
+      primary: red
+      accent: red
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
   features:
     - navigation.top
     - navigation.tracking
@@ -41,6 +41,7 @@ nav:
       - VR Integration: research/vr_integration.md
       - Web To USS: research/web_to_uss.md
   - AI Docs:
+      - Performance: ai/performance.md
       - Bagel Game Analysis: ai/bg_analysis.md
       - Industry UITK Practices: ai/industry_uitk.md
       - Layer Architecture: ai/layer_architecture.md
