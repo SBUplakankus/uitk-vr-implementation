@@ -1,1265 +1,168 @@
-# Complete Quest 2 VR UI Performance Analysis
+# Quest 2 VR UI Performance Reference
 
-**Target Platform:** Meta Quest 2  
-**Performance Target:** Stable 72 FPS (13.89ms frame budget)  
-**UI Framework:** UI Toolkit (UITK) + uGUI for Meta SDK compatibility  
-**Design Pattern:** Modern (gradients, glass morphism, switchable colors)
-
----
-
-## Executive Summary
-
-### USS-First Approach Recommendation
-
-Use UI Stylesheet (USS) for **85-90%** of your VR UI implementation. On Quest 2's Adreno 650 GPU, USS-based gradients, animations, and color effects consume **0.05-0.15ms per frame** for a typical VR menu, while shader-based equivalents cost **0.8-2.5ms** due to memory bandwidth saturation, stereo rendering overhead, and fill rate limitations. A well-optimized USS menu leaves 12.5-13ms of your 13.89ms budget for world rendering and gameplay.
-
-### When Shaders Are Justified
-
-Reserve Shader Graph exclusively for:
-1. Particle-like UI effects impossible in CSS
-2. Custom font rendering with SDF techniques
-3. Procedural noise/distortion effects
-4. Real-time UI blur requiring depth-aware sampling
-5. UV-animated scrolling textures
-
-These represent ~5-10% of typical VR UI needs. Standard gradients, color transitions, hover effects, and glass morphism backgrounds are **4-15x faster** when implemented in USS.
+> **Target**: Meta Quest 2 (Snapdragon XR2, Adreno 650)  
+> **Framework**: UI Toolkit + uGUI for Meta SDK interactables  
+> **Sources**: Unity 6.3 official documentation, Meta developer guidelines, Unite 2024 performance session
 
 ---
 
-## Table of Contents
+## A Note on Numbers
 
-1. [USS First: Why and When](#1-uss-first-why-and-when)
-2. [Shader Graph Reality Check](#2-shader-graph-reality-check)
-3. [The Hybrid Sweet Spot](#3-the-hybrid-sweet-spot)
-4. [Complete Example Implementation](#4-complete-example-implementation)
-5. [Adreno 650 Deep Dive](#5-adreno-650-deep-dive)
-6. [Implementation Roadmap](#6-implementation-roadmap)
-7. [Common Mistakes and Corrections](#7-common-mistakes-and-corrections)
-8. [Final Recommendations](#8-final-recommendations)
+**No performance number in this document should be treated as a fact until you measure it on your device.** What this document provides instead is verified architectural understanding and profiling methodology so you can get real numbers yourself.
 
 ---
 
-## 1. USS First: Why and When
+## Frame Budget (What's Actually Confirmed)
 
-### Performance Data for Standard CSS Properties
+The frame rate target is 72 FPS, giving ~13.8ms per frame. Of that, approximately 2ms is reserved for the timewarp and guardian system, leaving around 11.8ms for application rendering.
 
-**USS Rendering Pipeline on Quest 2:**
-- USS properties are batched and rasterized by Unity's VectorGraphics library
-- Generated geometry is submitted as static mesh batches
-- GPU processes these as simple vertex-colored quads
-- **Cost: ~0.02-0.08ms per frame** for typical menu (10-20 elements)
-
-### Specific USS Performance (Adreno 650, 72 FPS)
-
-| Effect | USS Cost | Shader Cost | Speedup |
-|--------|----------|-------------|---------|
-| Linear gradient (2-stop) | 0.03ms | 0.45ms | **15x faster** |
-| Multi-stop gradient (4+) | 0.05ms | 0.65ms | **13x faster** |
-| Color transition | 0.02ms | 0.35ms | **17x faster** |
-| Hover effect (:hover) | 0.01ms | 0.28ms | **28x faster** |
-| Border radius | 0.02ms | 0.42ms | **21x faster** |
-| Box shadow | 0.04ms | 0.85ms | **21x faster** |
-
-### Why USS is Faster
-
-1. **Pre-tesselated geometry**: Gradients become vertex-colored triangles during build/editor time
-2. **No per-pixel calculations**: GPU interpolates vertex colors (free on Adreno)
-3. **Batch-friendly**: All USS elements share material, enabling instancing
-4. **Memory efficiency**: Vertex buffer << fragment shader texture fetches
-
-### Animation Cost Analysis
-
-**USS Transitions:**
-```css
-.button {
-    background-color: rgb(50, 100, 200);
-    transition: background-color 0.2s ease-out;
-}
-
-.button:hover {
-    background-color: rgb(80, 150, 255);
-}
-```
-
-**Performance Profile:**
-- **Idle state**: 0.00ms (static geometry)
-- **During transition**: 0.01-0.02ms (Unity interpolates vertex colors)
-- **Memory overhead**: None (no additional allocations)
-
-**C# Lerp Animation Alternative:**
-```csharp
-// Cost: 0.03-0.05ms per animated element
-Color.Lerp(startColor, endColor, t);
-visualElement.style.backgroundColor = new StyleColor(currentColor);
-```
-
-**Shader-Based Animation:**
-```hlsl
-// Fragment shader cost: 0.25-0.40ms per full-screen element
-float4 frag() {
-    return lerp(_Color1, _Color2, _Time.y);
-}
-```
-
-**Result**: USS transitions are **12-20x more efficient** than shader animations.
-
-### Gradient Rendering Efficiency
-
-**USS Gradient Implementation:**
-```css
-.panel-background {
-    background-image: linear-gradient(
-        180deg,
-        rgba(20, 30, 50, 0.95) 0%,
-        rgba(40, 60, 100, 0.85) 100%
-    );
-}
-```
-
-**Under the Hood:**
-- Unity's VectorGraphics generates a triangle strip with interpolated vertex colors
-- Typical gradient = 8-12 vertices (4-6 quads)
-- **GPU cost**: Vertex transform (trivial) + color interpolation (free)
-- **Frame time**: 0.03ms for complex radial gradients, 0.01ms for linear
-
-**Shader Graph Gradient Equivalent:**
-```
-Sample Gradient node → Fragment shader evaluation
-Cost per pixel = texture sample + interpolation
-1440×1600 per eye × 2 eyes = 4.6M pixels
-Even with culling: ~1.2M pixels evaluated
-At 2 cycles/pixel on Adreno 650 = 0.65ms minimum
-```
-
-**The Math:**
-- USS: 12 vertices × 72 FPS = 864 vertices/sec processed
-- Shader: 1.2M pixels × 72 FPS = 86.4M pixels/sec processed
-- **1000x more work for shader approach**
+Your UI rendering is competing directly with world rendering, physics, and audio within that 11.8ms. There is no confirmed breakdown of how much of that budget UI "should" consume — that depends entirely on your scene complexity. Measure it.
 
 ---
 
-## 2. Shader Graph Reality Check
+## How UITK Rendering Actually Works (Unity 6.3 Official)
 
-### Why Common Effects Are Slower in Shaders
+Understanding this is more useful than any made-up timing table.
 
-**The Fundamental Problem**: Fragment shaders on Quest 2 are **memory bandwidth-limited**, not compute-limited.
+### The Uber Shader
 
-**Adreno 650 Architecture Constraints:**
-1. **Memory bandwidth**: 68 GB/s shared across entire system
-2. **Stereo rendering**: Every pixel rendered twice (SPI helps, but not 2x speedup)
-3. **Tile-based deferred rendering (TBDR)**: Fragment shaders cause tile buffer spills
-4. **MSAA 4x**: Each pixel requires 4 samples (Quest 2 default)
+UI Toolkit consolidates all UI rendering functionality into a single "uber shader." Rather than rely on multiple shader variants, this shader uses dynamic branching to select the appropriate rendering path at runtime. This reduces CPU overhead by minimizing shader switches but does add some GPU cost due to the branching logic.
 
-### True Cost of Fragment Shader Evaluation
+This is important: UITK's rendering is not a naive "one draw call per element" system. It's an opinionated pipeline with specific constraints you need to work within.
 
-**Single Full-Screen UI Quad with Custom Shader:**
+### The 8-Texture Limit
 
-```
-Resolution per eye: 1440×1600 = 2.3M pixels
-Both eyes: 4.6M pixels
-With MSAA 4x: 18.4M samples
-With 30% UI coverage: 5.5M samples
+The uber shader supports up to eight textures within the same batch, allowing elements with different textures to render in the same draw call. Exceeding the eight-texture limit forces the batching system to split into separate batches, increasing overhead.
 
-Fragment shader cost = samples × (texture fetches + ALU ops) × memory latency
+This is a hard constraint. If your VR panel uses more than 8 unique un-atlased textures in a single hierarchy, you will pay draw call overhead regardless of how well you've written your USS. Texture atlasing is the mitigation.
 
-Simple gradient shader:
-- 1 texture sample (gradient ramp)
-- 2-3 ALU ops (UV calculation, color mix)
-- Memory fetch latency: 100-200 cycles on cache miss
+### Batching Fundamentals
 
-Cost per fragment: ~150 cycles average
-Total: 5.5M × 150 = 825M cycles
-Adreno 650 @ 587 MHz: 1.4ms minimum
-Reality with overhead: 0.8-2.5ms depending on complexity
-```
+To batch elements efficiently they must share the same GPU state — the same shaders, textures, mesh data, and other GPU-specific parameters. For example, a sequence of text elements using the same font and style can be batched together. However, inserting an image between them requires different GPU settings, forcing a new batch.
 
-### Specific Adreno 650 Limitations
+The practical implication for design: element order in the hierarchy matters. Interleaving text and images breaks batches even if everything uses the same stylesheet. Grouping same-type elements where possible reduces draw call overhead.
 
-#### 1. Tile-Based Deferred Rendering (TBDR)
+### Vertex Buffers
 
-- GPU divides screen into 16×16 or 32×32 pixel tiles
-- Processes all geometry for tile, then runs fragment shaders
-- **Problem**: Complex UI shaders cause tile buffer overflow
-- **Result**: Forced flush to main memory (300-500 cycle penalty)
+When a UIDocument creates a Panel at runtime, it pre-allocates a single vertex buffer. If the UI exceeds the capacity of this buffer, additional buffers are created, which fragments batching and increases draw calls. The Vertex Budget in Panel Settings configures the initial size of the vertex buffer — the default value of 0 lets Unity determine the size automatically, but for complex UIs, manually increasing this value can improve performance.
 
-#### 2. Memory Bandwidth Bottleneck
+For world-space VR panels this is worth tuning once you have a complex UI built. Profile with the Frame Debugger to see if you're spilling across multiple vertex buffers.
 
-- 68 GB/s shared with CPU, texture streaming, framebuffer
-- At 72 FPS stereo: ~472 MB/frame budget
-- Single 1440×1600 RGBA32 framebuffer = 9.2 MB
-- With MSAA 4x: 36.8 MB per frame (7.8% of budget)
-- **Each texture fetch in shader**: Additional bandwidth consumption
-- **USS gradients**: Zero texture bandwidth (vertex colors)
+### Update Mechanisms and Their Costs
 
-#### 3. Fragment Shader ALU is Fast, But Memory Isn't
+The Unity 6.3 docs confirm four update mechanisms that affect performance, in rough order of cost:
 
-- Adreno 650 can execute 256 FP32 ops per clock (theoretical)
-- **BUT**: Stalls waiting for memory 60-80% of the time
-- USS vertex interpolation: Happens in rasterizer (free)
+**Style resolution** — triggered when USS classes are added/removed or inline styles are changed. Large or deeply nested hierarchies make this expensive. Minimise frequent class toggling on elements with many children.
 
-#### 4. Stereo Rendering Impact (Single Pass Instanced)
+**Layout recalculation** — triggered by changes to element size, position, or alignment. This is why animating `width`, `height`, `left`, or `top` properties is expensive — each frame triggers a full layout pass. Use `transform: translate/scale` for animation instead, which bypasses layout recalculation entirely.
 
-- SPI renders both eyes in single pass with layer index
-- Fragment shader runs **twice** (once per eye)
-- Vertex shader runs once (good for USS geometry)
-- **Shader cost penalty**: 1.6-1.8x (not full 2x, but significant)
+**Vertex buffer updates** — triggered when element geometry changes (rounded corners, borders). Avoid modifying `border-radius` or border properties at runtime unless necessary.
 
-### The Only Cases Where Shaders Are Justified
-
-| Effect | Why Shader Needed | Performance Cost | Alternative |
-|--------|-------------------|------------------|-------------|
-| **Signed Distance Field (SDF) text** | Runtime font scaling without blur | 0.15-0.30ms | USS text (fixed size) |
-| **Procedural noise patterns** | Infinite detail, no texture memory | 0.40-0.80ms | Pre-rendered texture atlas |
-| **UV-scrolling backgrounds** | Animated texture offset | 0.20-0.35ms | USS + Transform animation |
-| **Depth-aware blur** | Blur only distant UI elements | 1.2-2.0ms | Pre-blurred textures |
-| **Particle-like UI effects** | Emissive trails, sparks | 0.50-1.5ms | Sprite animation |
-
-**Critical Insight**: Even in these cases, shaders are **necessary**, not **faster**. They enable effects impossible in USS, but still cost more than equivalent static USS approaches.
+**Rendering state changes** — triggered by masking or unique textures that break batching. Each mask in UITK requires a stencil operation that breaks the current batch. Use them sparingly.
 
 ---
 
-## 3. The Hybrid Sweet Spot
+## The USS-First Argument (What's Actually True)
 
-### Recommended 80/20 Split (USS/Shaders)
+USS gradients render as **vertex-coloured geometry** tessellated at build time, not at runtime. The GPU interpolates vertex colours during rasterisation, which is essentially free. A shader-based gradient evaluates per-pixel in the fragment stage, which costs real fill-rate.
 
-#### Tier 1: USS Only (85% of UI)
-- Backgrounds, panels, cards
-- Buttons, toggles, sliders
-- Text labels, icons
-- Borders, shadows, corner radius
-- Color transitions, hover states
-- Linear/radial gradients
-- Layout animations (position, scale, rotation via Transform)
+On a mobile TBDR GPU like the Adreno 650, fill-rate is your scarcest resource when stereo rendering at 1832×1920 per eye. Fragment shader cost scales with screen coverage. USS gradient cost does not. The principle is sound even if the exact multiplier requires your own profiling to establish.
 
-#### Tier 2: USS + C# Animation (10% of UI)
-- Complex state machines (multi-stage transitions)
-- Physics-based animations (spring damping)
-- Value-driven effects (health bars, progress meters)
-- Procedural layout (dynamic grid sizing)
+**What USS can do that keeps you out of the fragment shader:**
 
-#### Tier 3: Shader Graph (5% of UI)
-- SDF text rendering for dynamic font sizes
-- Custom particle-like button press effects
-- Holographic/sci-fi glitch effects
-- Real-time distortion (heat wave, portal effects)
-- Depth-based UI fog/fade
+- Linear and radial gradients
+- Solid fills with alpha
+- Border radius (rounded corners)
+- Border styling
+- Box shadow (note: may not be supported on all UITK versions — check docs)
+- Opacity
+- Scale, translate, rotate via transforms
+- Colour transitions via USS `transition` property
 
-### Decision Flowchart
+**What USS cannot do and therefore genuinely needs a shader:**
 
-```
-New UI Feature Needed
-│
-├─ Can CSS do this? (gradient, color, border, shadow, opacity)
-│  ├─ YES → Use USS (Tier 1)
-│  └─ NO → Continue
-│
-├─ Does it involve animation/state changes?
-│  ├─ YES → Can USS `transition` handle it?
-│  │  ├─ YES → Use USS transitions (Tier 1)
-│  │  └─ NO → Use C# + DOTween/Animation (Tier 2)
-│  └─ NO → Continue
-│
-├─ Does it require per-pixel calculations?
-│  ├─ NO → Find USS equivalent or redesign
-│  └─ YES → Continue
-│
-├─ Will this effect cover >25% of screen?
-│  ├─ YES → AVOID or use pre-rendered texture
-│  └─ NO → Continue
-│
-├─ Is frame budget <0.5ms available for this effect?
-│  ├─ NO → Redesign or cut feature
-│  └─ YES → Use Shader Graph (Tier 3)
-│
-└─ Profile on Quest 2 device BEFORE finalizing
-```
+- Background blur (glass morphism with real blur — not simulated with opacity)
+- Procedural animated noise or distortion
+- UV-scrolling textures
+- Depth-aware effects
 
-### Integration Pattern for UITK + uGUI + Meta SDK
-
-**Recommended Architecture:**
-
-```
-┌─────────────────────────────────────────┐
-│     UI Toolkit (Document Root)          │
-│  - USS for all styling                  │
-│  - Layout/positioning                   │
-│  - Non-interactive visuals              │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│  uGUI Canvas (WorldSpace/ScreenSpace)   │
-│  - Meta SDK interactive elements        │
-│  - OVRRaycaster integration             │
-│  - Button/Toggle/Slider components      │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│         C# Event Bridge                 │
-│  - Translates UITK events → uGUI        │
-│  - Manages USS class toggles            │
-│  - Handles Meta SDK callbacks           │
-└─────────────────────────────────────────┘
-```
+The "fake" glass morphism approach — semi-transparent fill + thin border + subtle background gradient — is a legitimate design choice, not a compromise forced by performance. It's what most high-quality apps actually do.
 
 ---
 
-## 4. Complete Example Implementation
+## UITK-Specific VR Considerations
 
-### Visual Description
+These are specific to the world-space render texture pipeline used for UITK in VR, which differs from standard screen-space UI.
 
-**Modern VR Main Menu:**
-- Background: Dark blue gradient (top-to-bottom)
-- Center panel: Glass morphism effect (semi-transparent, subtle border)
-- 4 buttons: Gradient backgrounds, hover glow, press animation
-- Title text: White with subtle shadow
-- Total screen coverage: ~40% (600×800px equivalent in world space)
+**Render texture resolution is your call.** Unlike screen-space UI where resolution is fixed to the display, you choose the Panel Settings render texture resolution for world-space panels. Higher resolution = sharper text, more GPU memory, more bandwidth. Lower resolution = blurrier but cheaper. This is a design tradeoff you need to tune on device, not a formula problem.
 
-### Full USS Stylesheet
+**World-space UITK renders to a texture first, then to a quad in the scene.** This means every world-space UI panel incurs at least one additional render target blit. If you have multiple UITK panels visible simultaneously (e.g. multiple tablet screens), each has its own render texture cost.
 
-```css
-/* ============================================
-   VR Main Menu - Complete USS Implementation
-   Performance Target: <0.15ms @ 72 FPS
-   ============================================ */
+**Single Pass Instanced rendering and UITK.** Meta's SPI renders both eyes in one pass. Standard scene geometry benefits from this. Whether your UITK render texture setup interacts cleanly with SPI depends on how you configure the panel and the world-space quad's material. Test this specifically — some setups have been reported to render the texture correctly to one eye only without explicit configuration.
 
-/* Root container */
-.menu-root {
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    background-image: linear-gradient(
-        180deg,
-        rgba(15, 25, 45, 1) 0%,
-        rgba(30, 50, 80, 1) 100%
-    );
-}
-
-/* Glass panel container */
-.glass-panel {
-    width: 500px;
-    height: 600px;
-    background-color: rgba(20, 30, 50, 0.7);
-    border-color: rgba(255, 255, 255, 0.08);
-    border-width: 1px;
-    border-radius: 16px;
-    padding: 40px;
-    align-items: center;
-}
-
-/* Title */
-.menu-title {
-    font-size: 48px;
-    color: rgb(255, 255, 255);
-    -unity-font-style: bold;
-    margin-bottom: 40px;
-    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Button base styles */
-.vr-button {
-    width: 350px;
-    height: 70px;
-    margin-top: 16px;
-    border-radius: 12px;
-    background-image: linear-gradient(
-        90deg,
-        rgba(50, 100, 200, 0.9) 0%,
-        rgba(70, 130, 230, 0.9) 100%
-    );
-    border-color: rgba(255, 255, 255, 0.15);
-    border-width: 1px;
-    
-    /* Smooth transitions */
-    transition-property: transform, background-color, border-color;
-    transition-duration: 0.15s, 0.2s, 0.2s;
-    transition-timing-function: ease-out;
-    
-    /* Text */
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    -unity-font-style: bold;
-    -unity-text-align: middle-center;
-}
-
-/* Hover state */
-.vr-button:hover {
-    background-image: linear-gradient(
-        90deg,
-        rgba(80, 150, 255, 1) 0%,
-        rgba(100, 170, 255, 1) 100%
-    );
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-}
-
-/* Active/Press state */
-.vr-button:active {
-    background-image: linear-gradient(
-        90deg,
-        rgba(30, 70, 160, 1) 0%,
-        rgba(50, 100, 190, 1) 100%
-    );
-    transform: scale(0.95);
-}
-
-/* Disabled state */
-.vr-button:disabled {
-    background-image: linear-gradient(
-        90deg,
-        rgba(60, 60, 60, 0.5) 0%,
-        rgba(80, 80, 80, 0.5) 100%
-    );
-    color: rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.05);
-}
-
-/* Alternative button style (destructive action) */
-.vr-button-danger {
-    background-image: linear-gradient(
-        90deg,
-        rgba(200, 50, 50, 0.9) 0%,
-        rgba(230, 70, 70, 0.9) 100%
-    );
-}
-
-.vr-button-danger:hover {
-    background-image: linear-gradient(
-        90deg,
-        rgba(255, 80, 80, 1) 0%,
-        rgba(255, 100, 100, 1) 100%
-    );
-}
-
-/* Animation classes (toggled via C#) */
-.fade-in {
-    transition: opacity 0.3s ease-in;
-    opacity: 1;
-}
-
-.fade-out {
-    opacity: 0;
-}
-
-.slide-in {
-    transition: translate 0.4s ease-out;
-    translate: 0 0;
-}
-
-.slide-out {
-    translate: 0 -100px;
-}
-```
-
-### Complete C# Integration Code
-
-```csharp
-using UnityEngine;
-using UnityEngine.UIElements;
-using System.Collections;
-
-/// <summary>
-/// VR Main Menu Controller - USS-driven UI
-/// Performance: <0.15ms per frame
-/// </summary>
-public class VRMainMenu : MonoBehaviour
-{
-    [Header("UI Document")]
-    [SerializeField] private UIDocument uiDocument;
-    
-    [Header("Audio (optional)")]
-    [SerializeField] private AudioClip buttonHoverSound;
-    [SerializeField] private AudioClip buttonClickSound;
-    
-    private VisualElement root;
-    private VisualElement glassPanel;
-    private Button playButton;
-    private Button settingsButton;
-    private Button creditsButton;
-    private Button quitButton;
-    
-    private AudioSource audioSource;
-    
-    void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
-    
-    void OnEnable()
-    {
-        // Get root from UI Document
-        root = uiDocument.rootVisualElement;
-        
-        // Cache elements (using UQuery for performance)
-        glassPanel = root.Q<VisualElement>("glass-panel");
-        playButton = root.Q<Button>("play-button");
-        settingsButton = root.Q<Button>("settings-button");
-        creditsButton = root.Q<Button>("credits-button");
-        quitButton = root.Q<Button>("quit-button");
-        
-        // Register callbacks
-        RegisterButtonCallbacks(playButton, OnPlayClicked);
-        RegisterButtonCallbacks(settingsButton, OnSettingsClicked);
-        RegisterButtonCallbacks(creditsButton, OnCreditsClicked);
-        RegisterButtonCallbacks(quitButton, OnQuitClicked);
-        
-        // Animate in
-        StartCoroutine(AnimateMenuIn());
-    }
-    
-    void OnDisable()
-    {
-        // Unregister to prevent memory leaks
-        UnregisterButtonCallbacks(playButton, OnPlayClicked);
-        UnregisterButtonCallbacks(settingsButton, OnSettingsClicked);
-        UnregisterButtonCallbacks(creditsButton, OnCreditsClicked);
-        UnregisterButtonCallbacks(quitButton, OnQuitClicked);
-    }
-    
-    private void RegisterButtonCallbacks(Button button, 
-        System.Action<ClickEvent> clickHandler)
-    {
-        button.RegisterCallback<ClickEvent>(clickHandler);
-        button.RegisterCallback<MouseEnterEvent>(OnButtonHover);
-        button.RegisterCallback<MouseLeaveEvent>(OnButtonLeave);
-    }
-    
-    private void UnregisterButtonCallbacks(Button button, 
-        System.Action<ClickEvent> clickHandler)
-    {
-        button.UnregisterCallback<ClickEvent>(clickHandler);
-        button.UnregisterCallback<MouseEnterEvent>(OnButtonHover);
-        button.UnregisterCallback<MouseLeaveEvent>(OnButtonLeave);
-    }
-    
-    // ===== Event Handlers =====
-    
-    private void OnButtonHover(MouseEnterEvent evt)
-    {
-        // USS handles visual changes automatically via :hover
-        // Optional: Add audio feedback
-        if (buttonHoverSound != null)
-        {
-            audioSource.PlayOneShot(buttonHoverSound, 0.3f);
-        }
-        
-        // Optional: Meta Quest haptic feedback
-        #if UNITY_ANDROID
-        OVRInput.SetControllerVibration(0.1f, 0.05f, 
-            OVRInput.Controller.RTouch);
-        #endif
-    }
-    
-    private void OnButtonLeave(MouseLeaveEvent evt)
-    {
-        // USS automatically reverts :hover state
-    }
-    
-    private void OnPlayClicked(ClickEvent evt)
-    {
-        PlayClickSound();
-        StartCoroutine(AnimateMenuOut(() => {
-            // Load game scene
-            UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
-        }));
-    }
-    
-    private void OnSettingsClicked(ClickEvent evt)
-    {
-        PlayClickSound();
-        // Open settings submenu (could be another USS panel)
-        Debug.Log("Settings clicked");
-    }
-    
-    private void OnCreditsClicked(ClickEvent evt)
-    {
-        PlayClickSound();
-        Debug.Log("Credits clicked");
-    }
-    
-    private void OnQuitClicked(ClickEvent evt)
-    {
-        PlayClickSound();
-        Application.Quit();
-    }
-    
-    private void PlayClickSound()
-    {
-        if (buttonClickSound != null)
-        {
-            audioSource.PlayOneShot(buttonClickSound, 0.5f);
-        }
-        
-        #if UNITY_ANDROID
-        OVRInput.SetControllerVibration(0.4f, 0.1f, 
-            OVRInput.Controller.RTouch);
-        #endif
-    }
-    
-    // ===== Animations =====
-    
-    private IEnumerator AnimateMenuIn()
-    {
-        // Start hidden
-        glassPanel.AddToClassList("fade-out");
-        glassPanel.AddToClassList("slide-out");
-        
-        // Wait one frame for USS to apply
-        yield return null;
-        
-        // Trigger animation by toggling classes
-        glassPanel.RemoveFromClassList("fade-out");
-        glassPanel.RemoveFromClassList("slide-out");
-        glassPanel.AddToClassList("fade-in");
-        glassPanel.AddToClassList("slide-in");
-    }
-    
-    private IEnumerator AnimateMenuOut(System.Action onComplete)
-    {
-        // Trigger exit animation
-        glassPanel.AddToClassList("fade-out");
-        glassPanel.AddToClassList("slide-out");
-        
-        // Wait for USS transition to complete (0.4s)
-        yield return new WaitForSeconds(0.4f);
-        
-        onComplete?.Invoke();
-    }
-}
-```
-
-### UXML Document Structure
-
-```xml
-<ui:UXML xmlns:ui="UnityEngine.UIElements">
-    <ui:VisualElement name="menu-root" class="menu-root">
-        <ui:VisualElement name="glass-panel" class="glass-panel">
-            <ui:Label text="VR ADVENTURE" class="menu-title" />
-            
-            <ui:Button name="play-button" 
-                       text="PLAY" 
-                       class="vr-button" />
-            
-            <ui:Button name="settings-button" 
-                       text="SETTINGS" 
-                       class="vr-button" />
-            
-            <ui:Button name="credits-button" 
-                       text="CREDITS" 
-                       class="vr-button" />
-            
-            <ui:Button name="quit-button" 
-                       text="QUIT" 
-                       class="vr-button vr-button-danger" />
-        </ui:VisualElement>
-    </ui:VisualElement>
-</ui:UXML>
-```
-
-### Performance Budget Breakdown
-
-**USS-Based Menu (Quest 2 @ 72 FPS):**
-
-| Component | Cost (ms) | Notes |
-|-----------|-----------|-------|
-| Root gradient background | 0.02 | Linear 2-stop, full screen |
-| Glass panel background | 0.01 | Solid color with alpha |
-| Glass panel border | 0.01 | 1px border, rounded corners |
-| 4 button backgrounds (gradients) | 0.04 | 2-stop linear each |
-| 4 button borders | 0.02 | Rounded corners |
-| Text rendering (5 labels) | 0.03 | Unity TextCore |
-| Hover transition (1 active) | 0.01 | Color interpolation |
-| **TOTAL USS COST** | **0.14ms** | **1.0% of frame budget** |
-
-**Remaining budget for world rendering:** 13.75ms (99% of frame)
-
-**Shader-Based Equivalent (Hypothetical):**
-
-| Component | Cost (ms) | Notes |
-|-----------|-----------|-------|
-| Custom gradient shader (background) | 0.65 | Full-screen fragment shader |
-| Glass blur shader (panel) | 1.80 | Multi-pass blur (disabled for perf) |
-| Button gradient shaders (4×) | 0.60 | 4 separate material instances |
-| Glow effect shader (hover) | 0.45 | Additional fragment processing |
-| **TOTAL SHADER COST** | **3.50ms** | **25% of frame budget** |
-
-**Speedup: 25x faster with USS**
+**The Poke Interactable layer is uGUI, not UITK.** The visual layer (UITK) and interaction layer (uGUI + Meta SDK) are separate systems. The event bridge between them — translating poke contacts into UITK pointer events — is custom work. This bridge itself has performance implications if it runs every frame. Design it to be event-driven rather than polling.
 
 ---
 
-## 5. Adreno 650 Deep Dive
+## Confirmed Batching Breakers (Avoid These)
 
-### GPU Architecture Impact on UI Shaders
+Sourced from Unity 6.3 official documentation:
 
-**Adreno 650 Specifications:**
-- **Architecture**: Qualcomm Adreno 6-series (TBDR)
-- **Clock Speed**: 587 MHz
-- **ALU Units**: 512 unified shaders
-- **Memory Interface**: 128-bit LPDDR5
-- **Memory Bandwidth**: 68 GB/s (theoretical max)
-- **Tile Size**: 16×16 or 32×32 pixels (configurable)
-
-### Memory Bandwidth as the Bottleneck
-
-**Quest 2 Frame Rendering Budget:**
-
-```
-Resolution: 1440×1600 per eye = 2,304,000 pixels per eye
-Stereo total: 4,608,000 pixels
-MSAA 4x: 18,432,000 samples
-
-Per-frame memory traffic:
-- Color buffer write: 4 bytes/pixel × 4.6M × 2 (double-buffered) = 36.8 MB
-- Depth buffer: 4 bytes/pixel × 4.6M = 18.4 MB
-- Texture fetches: Variable (depends on shaders)
-- Vertex buffers: Minimal for UI (<1 MB)
-
-Total bandwidth per frame: ~55-60 MB
-At 72 FPS: 3,960-4,320 MB/s (5.8-6.4% of theoretical max)
-```
-
-**The Problem with UI Fragment Shaders:**
-
-Every texture fetch in a fragment shader adds:
-- **Cache hit**: ~10 cycles latency
-- **Cache miss**: ~150-200 cycles latency
-- **Bandwidth**: 16 bytes per RGBA fetch (with bilinear filtering)
-
-Example: Simple gradient shader with texture lookup:
-```hlsl
-sampler2D _GradientRamp;
-
-fixed4 frag(v2f i) : SV_Target
-{
-    // Single texture fetch
-    fixed4 col = tex2D(_GradientRamp, i.uv);
-    return col;
-}
-```
-
-**Cost analysis:**
-- 1.2M visible UI pixels (30% screen coverage)
-- 1 texture fetch per pixel = 1.2M fetches
-- 16 bytes per fetch = 19.2 MB bandwidth
-- At 72 FPS = 1,382 MB/s
-- **This is 2% of total bandwidth for ONE UI element**
-
-**USS Gradient Alternative:**
-- Vertex colors interpolated by rasterizer
-- Zero texture bandwidth
-- Zero cache pressure
-- **0.00 MB/s bandwidth**
-
-### Stereo Rendering Considerations (Single Pass Instanced)
-
-**SPI Rendering Flow:**
-1. Vertex shader runs **once** per vertex, outputs to both eyes via `SV_RenderTargetArrayIndex`
-2. Primitive assembly happens **twice** (once per eye)
-3. Rasterization happens **twice**
-4. Fragment shader runs **twice** (once per eye)
-
-**Implication for UI Shaders:**
-- Vertex-heavy USS: Benefits fully from SPI (1× vertex cost)
-- Fragment-heavy shaders: No benefit (2× fragment cost)
-
-**USS Advantage in SPI:**
-```
-USS gradient (vertex colors):
-- 12 vertices × 1 (SPI) = 12 vertex transforms
-- Raster interpolation (free on GPU)
-- Total cost: ~12 vertices
-
-Shader gradient (fragment shader):
-- 4 vertices × 1 (SPI) = 4 vertex transforms
-- 1.2M fragments × 2 (both eyes) = 2.4M fragment evaluations
-- Total cost: 4 vertices + 2.4M fragments
-```
-
-**Result**: USS is **200,000x more efficient** in terms of processing units.
-
-### Tile-Based Deferred Rendering Implications
-
-**How TBDR Works:**
-1. GPU divides frame into 16×16 (or 32×32) pixel tiles
-2. Processes all geometry that touches a tile
-3. Stores intermediate results in on-chip tile buffer (fast)
-4. Runs fragment shaders for visible pixels only
-5. Writes final tile to main memory
-
-**Why Complex UI Shaders Break TBDR Efficiency:**
-
-**Tile buffer overflow:**
-- On-chip buffer size: ~256 KB per tile (estimated)
-- Complex shaders with multiple render targets/effects: >256 KB
-- **Overflow behavior**: GPU spills to main memory (SLOW)
-- Penalty: 300-500 cycle stall per spill
-
-**USS Renders Within Tile Budget:**
-- Simple vertex-colored geometry
-- No intermediate buffers needed
-- Stays entirely in on-chip memory
-- **Zero tile buffer spills**
+- **More than 8 unique textures** in a single panel hierarchy — breaks the uber shader batch
+- **Masking** — each mask requires a stencil operation that forces a batch break
+- **Custom materials on individual elements** — exits the uber shader entirely, each unique material is a separate draw call
+- **Vertex buffer overflow** — too many elements without adjusting Vertex Budget in Panel Settings
+- **Interleaving different element types** in the hierarchy (text between images, etc.) — forces batch breaks even with shared styles
 
 ---
 
-## 6. Implementation Roadmap
+## Profiling Methodology (Meta's Official Guidance)
 
-### Step 1: USS-Only Foundation (Week 1-2)
+Lock your CPU/GPU level before profiling to get consistent results. To use Unity Profiler with a standalone Meta Quest headset, you can profile your app as it runs on the headset via ADB or WiFi. Make sure to lock your CPU/GPU level before profiling to get consistent profiling results and measure improvements.
 
-**Goal**: Implement 100% of UI using USS, profile baseline performance
+Focus on bottlenecks first and change one thing at a time, such as resolution, hardware, quality, or configuration. It can be useful to disable Multithreaded Rendering in Player Settings during debugging — this slows down the renderer but gives a clearer view of frame time. Turn it back on when done.
 
-**Tasks**:
-1. Create modular USS files:
-   - `base-colors.uss` (color palette)
-   - `base-typography.uss` (font styles)
-   - `components-buttons.uss`
-   - `components-panels.uss`
-   - `animations.uss` (transitions)
+**Tools to use:**
 
-2. Implement all menus with USS:
-   - Main menu
-   - Settings menu
-   - HUD elements
-   - Pause menu
+- Unity Profiler via ADB — for CPU/GPU frame time
+- Unity Frame Debugger — for draw call inspection and batch analysis
+- RenderDoc (sideloaded on Quest) — for detailed GPU frame capture
+- Unity's Overdraw mode in Scene View — to spot expensive fill-rate areas
 
-3. Profile on Quest 2:
-   - Use Unity Profiler (Android profiling)
-   - Target: <1.0ms total UI cost
-   - Document baseline performance
-
-**Expected Result**: 85-90% of UI complete, running at <0.2ms per frame
-
-### Step 2: C# Animation Layer (Week 3)
-
-**Goal**: Add dynamic animations impossible in CSS
-
-**Tasks**:
-1. Implement DOTween for complex animations:
-   ```csharp
-   using DG.Tweening;
-   
-   visualElement.style.opacity = 0;
-   DOTween.To(() => visualElement.style.opacity.value,
-              x => visualElement.style.opacity = x,
-              1.0f, 0.3f)
-          .SetEase(Ease.OutCubic);
-   ```
-
-2. Add physics-based spring animations for:
-   - Button press feedback
-   - Panel slide-in effects
-   - Health bar depleting
-
-3. Profile impact:
-   - C# animations: +0.05-0.15ms
-   - Total budget: <0.35ms
-
-**Expected Result**: 95% of UI complete, running at <0.35ms per frame
-
-### Step 3: Selective Shader Integration (Week 4)
-
-**Goal**: Add shader effects ONLY where necessary
-
-**Tasks**:
-1. Identify features that absolutely require shaders:
-   - SDF text for dynamic UI scaling?
-   - Holographic effects for sci-fi theme?
-   - Particle effects for special events?
-
-2. Implement minimal shader set:
-   - Create single Shader Graph for SDF text
-   - Create single Shader Graph for particle effects
-   - **Avoid**: Gradient shaders, blur shaders, glow shaders (USS handles these)
-
-3. Profile each shader individually:
-   - Add one shader, profile
-   - If cost >0.3ms, find USS alternative
-   - Document performance impact
-
-**Expected Result**: 100% of UI complete, running at <0.8ms per frame (still 94% budget remaining)
-
-### Testing and Profiling Methodology
-
-**Quest 2-Specific Testing:**
-
-#### 1. Never Profile on Desktop
-- Desktop GPU ≠ Adreno 650
-- Performance characteristics completely different
-- Always test on actual Quest 2 device
-
-#### 2. Unity Profiler Setup
-```
-1. Enable Development Build
-2. Check "Autoconnect Profiler"
-3. Deploy to Quest 2 via Android Debug Bridge (ADB)
-4. Profile → Add Profiler → UI
-5. Monitor "UI.Render" and "UI.Update"
-```
-
-#### 3. Key Metrics to Track
-- **CPU time**: UI.Update + UI.Render (<0.5ms target)
-- **GPU time**: Use RenderDoc for Quest 2 frame capture
-- **Frame time**: Maintain 72 FPS (13.89ms) minimum
-- **Thermal**: Monitor after 10+ minute sessions
-- **Battery**: UI should not increase battery drain noticeably
-
-#### 4. A/B Testing Methodology
-```
-Scene A: USS gradient button
-Scene B: Shader gradient button
-
-Procedure:
-1. Load Scene A, run for 60 seconds
-2. Capture Profiler data
-3. Load Scene B, run for 60 seconds
-4. Capture Profiler data
-5. Compare UI.Render time
-6. Choose faster approach
-```
-
-#### 5. Stress Testing
-- Spawn 20+ UI panels simultaneously
-- Animate all buttons at once
-- Verify frame time stays <13.89ms
-- If drops occur, optimize bottleneck
-
-#### 6. Regression Testing
-- Create automated performance benchmarks
-- Run after each UI change
-- Flag any >10% performance degradation
-- Investigate before merging
+**Never profile UI on desktop hardware.** Quest 2's GPU crosses the 1 TFLOP mark, putting it in the same performance territory as the original Xbox One. A desktop GPU with 10-30 TFLOPS will make your shaders look essentially free. The performance cliff between desktop and Quest 2 is real and large.
 
 ---
 
-## 7. Common Mistakes and Corrections
+## What to Actually Benchmark
 
-### Mistake 1: Using Shaders for Effects USS Can Handle
+Since we're not providing fabricated timing tables, here are the benchmarks worth running yourself once you have a working UI:
 
-**❌ Wrong Approach:**
-```csharp
-// Custom shader for simple gradient
-Shader "Custom/ButtonGradient"
-{
-    Properties
-    {
-        _ColorTop ("Top Color", Color) = (1,1,1,1)
-        _ColorBottom ("Bottom Color", Color) = (1,1,1,1)
-    }
-    
-    SubShader
-    {
-        Pass
-        {
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            
-            fixed4 frag(v2f i) : SV_Target
-            {
-                return lerp(_ColorBottom, _ColorTop, i.uv.y);
-            }
-            ENDCG
-        }
-    }
-}
-```
-**Cost**: 0.45ms for 4 buttons
+1. **Baseline draw call count** — open Frame Debugger, count draw calls with a representative screen visible. Note it down. Every optimisation should be compared against this number.
 
-**✅ Correct Approach:**
-```css
-.button {
-    background-image: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(200, 200, 200, 1) 100%
-    );
-}
-```
-**Cost**: 0.03ms for 4 buttons  
-**Savings**: 0.42ms (14x faster)
+2. **USS-only panel vs same panel with custom shader** — implement a visual effect both ways, profile each separately on device. This gives you your actual multiplier for your specific hardware and effect.
+
+3. **Render texture resolution sweep** — render the same panel at 512×512, 1024×1024, and 2048×2048. Profile GPU frame time each time. Find the crossover where quality gain stops justifying cost.
+
+4. **Texture count at batch limit** — build a panel with 7, 8, and 9 unique textures. Profile the draw call count. Confirm the 8-texture limit is real in your Unity version and see what happens when you cross it.
+
+5. **Layout animation vs transform animation** — animate a panel sliding in via `left` property vs `translate` property. Profile the update mechanism cost each way. This is the most impactful optimisation for common VR menu transitions.
 
 ---
 
-### Mistake 2: Creating Materials Per Frame
+## Summary: The Principles That Are Actually Verified
 
-**❌ Wrong Approach:**
-```csharp
-void Update()
-{
-    // NEVER DO THIS - allocates material every frame!
-    Material newMat = new Material(buttonShader);
-    newMat.SetColor("_Color", currentColor);
-    buttonRenderer.material = newMat;
-}
-```
-**Cost**: 0.5-1.0ms + garbage collection spikes
-
-**✅ Correct Approach (if shader required):**
-```csharp
-private Material buttonMaterial; // Cache material
-private MaterialPropertyBlock propertyBlock;
-
-void Start()
-{
-    buttonMaterial = buttonRenderer.material; // Get instance once
-    propertyBlock = new MaterialPropertyBlock();
-}
-
-void Update()
-{
-    // Use property block - no allocation
-    propertyBlock.SetColor("_Color", currentColor);
-    buttonRenderer.SetPropertyBlock(propertyBlock);
-}
-```
-**Cost**: 0.02-0.05ms
-
-**✅ Best Approach (USS):**
-```csharp
-void Update()
-{
-    // USS style change - handled by UI Toolkit efficiently
-    button.style.backgroundColor = new StyleColor(currentColor);
-}
-```
-**Cost**: 0.01ms
+| Principle                                                            | Source                             | Confidence |
+| -------------------------------------------------------------------- | ---------------------------------- | ---------- |
+| USS gradients use vertex geometry, not fragment shaders              | Unity architecture docs            | High       |
+| Uber shader handles up to 8 textures per batch                       | Unity 6.3 Manual                   | High       |
+| Exceeding 8 textures breaks batching                                 | Unity 6.3 Manual                   | High       |
+| Masking breaks batches                                               | Unity 6.3 Manual                   | High       |
+| Layout property animation is more expensive than transform animation | Unity 6.3 Manual                   | High       |
+| Frame budget is ~11.8ms after timewarp reservation                   | Meta dev docs                      | High       |
+| Desktop profiling does not represent Quest 2 performance             | General knowledge                  | High       |
+| Specific ms timings for USS vs shader effects                        | **Not sourced — measure yourself** | **N/A**    |
+| "USS is 15x faster than shaders"                                     | **Fabricated — do not use**        | **N/A**    |
 
 ---
 
-### Mistake 3: Animating Layout Properties
-
-**❌ Wrong Approach:**
-```csharp
-// Animating width/height triggers relayout every frame!
-void Update()
-{
-    panel.style.width = Mathf.Lerp(0, 500, t);
-    panel.style.height = Mathf.Lerp(0, 300, t);
-}
-```
-**Cost**: 0.3-0.8ms (full layout recalculation)
-
-**✅ Correct Approach:**
-```csharp
-// Animate transform instead - no relayout
-void Update()
-{
-    panel.transform.scale = Vector3.Lerp(
-        Vector3.zero, 
-        Vector3.one, 
-        t
-    );
-}
-```
-**Cost**: 0.01-0.02ms
-
-**✅ Best Approach (USS):**
-```css
-.panel {
-    transition: transform 0.3s ease-out;
-}
-
-.panel-expanded {
-    transform: scale(1);
-}
-
-.panel-collapsed {
-    transform: scale(0);
-}
-```
-**Cost**: <0.01ms (GPU-accelerated)
-
----
-
-### Mistake 4: Premature Shader Optimization
-
-**❌ Wrong Mindset:**
-> "I'll use shaders because they're faster on the GPU"
-
-**Reality:**
-- Shaders ARE faster than CPU for compute-heavy tasks
-- BUT UI rendering is **memory-bound**, not compute-bound
-- USS is pre-computed geometry (fastest possible)
-- Shaders add per-pixel overhead (slower for UI)
-
-**✅ Correct Approach:**
-1. Implement everything in USS first
-2. Profile on Quest 2
-3. Only add shaders if USS cannot achieve the effect
-4. Profile again after adding each shader
-5. Remove shader if it degrades performance
-
----
-
-### Mistake 5: Assuming Desktop Performance = Quest Performance
-
-**❌ Wrong Assumption:**
-> "Shader runs at 0.1ms on my RTX 3080, so it'll be fine on Quest 2"
-
-**Reality:**
-- RTX 3080: 320-bit memory, 760 GB/s bandwidth, 10,240 CUDA cores
-- Adreno 650: 128-bit memory, 68 GB/s bandwidth, 512 shaders
-- **100x performance difference**
-
-**Fragment shader that runs 0.1ms on desktop** = **5-15ms on Quest 2**
-
-**✅ Correct Approach:**
-- ALWAYS profile on actual Quest 2 hardware
-- Use Unity Android Profiler
-- Capture RenderDoc frames on Quest 2
-- Never trust desktop performance numbers
-
----
-
-### Mistake 6: Over-Engineering Glass Morphism
-
-**❌ Wrong Approach:**
-```hlsl
-// Multi-pass blur shader for glass effect
-Pass 1: Horizontal blur (9-tap)
-Pass 2: Vertical blur (9-tap)
-Pass 3: Composite with background
-```
-**Cost**: 2.5-4.0ms (FRAME BUDGET DESTROYED)
-
-**✅ Correct Approach:**
-```css
-/* Fake glass morphism with opacity + border */
-.glass-panel {
-    background-color: rgba(20, 30, 50, 0.7);
-    border-color: rgba(255, 255, 255, 0.1);
-    border-width: 1px;
-}
-```
-**Cost**: 0.02ms  
-**Visual quality**: 85% as good for 1/125th the cost
-
----
-
-## 8. Final Recommendations
-
-### The 90/10 Rule for Quest 2 VR UI
-
-**90% USS, 10% Everything Else**
-
-| Technology | Usage % | Purpose | Performance Impact |
-|------------|---------|---------|-------------------|
-| USS | 85-90% | All standard UI (colors, gradients, layouts, transitions) | 0.1-0.3ms |
-| C# + DOTween | 5-8% | Complex animations, state machines | +0.05-0.15ms |
-| Shader Graph | 2-5% | Effects impossible in CSS (SDF, particles, procedural) | +0.2-0.8ms |
-| **TOTAL** | **100%** | Complete VR UI system | **0.35-1.25ms** |
-
-### Decision Matrix
-
-**When evaluating any UI feature, ask:**
-
-1. **Can USS do this?**
-   - ✅ YES → Use USS (fastest)
-   - ❌ NO → Continue to #2
-
-2. **Can C# animation do this?**
-   - ✅ YES → Use C# + DOTween (medium speed)
-   - ❌ NO → Continue to #3
-
-3. **Is this effect worth >0.3ms?**
-   - ✅ YES → Use Shader Graph (slowest)
-   - ❌ NO → Redesign or cut feature
-
-### Performance Validation Checklist
-
-Before shipping, verify:
-
-- [ ] Total UI frame time <1.0ms (averaged over 1000 frames)
-- [ ] No frame drops during UI interactions (stable 72 FPS)
-- [ ] Thermal stable after 15-minute session
-- [ ] Battery drain <5% higher with UI visible vs. hidden
-- [ ] All effects tested on Quest 2 device (not desktop)
-- [ ] Profiler data captured and documented
-- [ ] No shader used where USS equivalent exists
-- [ ] Material count <10 total for all UI
-- [ ] Draw calls <20 per frame for UI
-
-### The Bottom Line
-
-**USS is not a compromise—it's the optimal solution for Quest 2 VR UI.** 
-
-Modern web-style effects (gradients, glass morphism, transitions) were designed for GPU-accelerated rendering, and Unity's UI Toolkit implements them efficiently using vertex-based techniques that perfectly match mobile GPU architectures.
-
-Shader Graph is a powerful tool for effects that require per-pixel calculations, but **most UI does not**. By defaulting to USS and reserving shaders for truly necessary effects, you'll build a VR interface that:
-
-1. **Runs 15-25x faster** than shader-heavy approaches
-2. **Leaves 95%+ frame budget** for world rendering
-3. **Scales to complex menus** without performance degradation
-4. **Maintains thermal stability** during extended sessions
-5. **Follows modern design patterns** (gradients, animations, glass morphism)
-
-**Start with USS, measure everything, and only add shaders when USS cannot achieve your vision.**
-
----
-
-## Quick Reference Tables
-
-### USS vs Shader Performance Comparison
-
-| UI Element | USS Cost | Shader Cost | Winner | Speedup |
-|------------|----------|-------------|--------|---------|
-| Linear gradient | 0.03ms | 0.45ms | USS | 15x |
-| Color transition | 0.02ms | 0.35ms | USS | 17.5x |
-| Hover effect | 0.01ms | 0.28ms | USS | 28x |
-| Border radius | 0.02ms | 0.42ms | USS | 21x |
-| Button (complete) | 0.04ms | 0.60ms | USS | 15x |
-| Glass panel | 0.02ms | 1.80ms | USS | 90x |
-
-### Adreno 650 GPU Quick Facts
-
-| Specification | Value |
-|---------------|-------|
-| Clock Speed | 587 MHz |
-| ALU Units | 512 unified shaders |
-| Memory Bandwidth | 68 GB/s |
-| Memory Interface | 128-bit LPDDR5 |
-| Architecture | Tile-based deferred rendering (TBDR) |
-| Tile Size | 16×16 or 32×32 pixels |
-
-### Frame Budget Breakdown (72 FPS = 13.89ms)
-
-| Component | Budget | Percentage |
-|-----------|--------|------------|
-| USS UI (recommended) | 0.35-1.0ms | 2.5-7.2% |
-| World rendering | 10-12ms | 72-86% |
-| Physics/gameplay | 1-2ms | 7-14% |
-| Audio/misc | 0.5-1ms | 3.6-7.2% |
-| **Safety margin** | 0.5-1ms | 3.6-7.2% |
-
----
-
-## Resources and References
-
-### Official Unity Documentation
-- [UI Toolkit Manual](https://docs.unity3d.com/Manual/UIElements.html)
-- [USS Reference](https://docs.unity3d.com/Manual/UIE-USS.html)
-- [Shader Graph](https://docs.unity3d.com/Packages/com.unity.shadergraph@latest)
-- [Unity Performance Optimization](https://docs.unity3d.com/Manual/OptimizingGraphicsPerformance.html)
-
-### Meta Quest Development
-- [Quest 2 Performance Guidelines](https://developer.oculus.com/resources/mobile-performance-guidelines/)
-- [Meta SDK Documentation](https://developer.oculus.com/documentation/)
-- [OVR Input API](https://developer.oculus.com/documentation/unity/unity-ovrinput/)
-
-### GPU Architecture
-- [Qualcomm Adreno GPU Overview](https://www.qualcomm.com/products/technology/gaming/adreno-gpu)
-- [Tile-Based Rendering Explained](https://developer.arm.com/documentation/102662/latest/)
-
-### Performance Tools
-- [Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html)
-- [RenderDoc for Quest 2](https://renderdoc.org/)
-- [Android Debug Bridge (ADB)](https://developer.android.com/studio/command-line/adb)
-
----
-
-**Document Version**: 1.0  
-**Last Updated**: February 2026  
-**Target Unity Version**: 2022.3 LTS or newer  
-**Target Meta SDK Version**: Latest stable release
+*This document supersedes the previous performance analysis. All performance claims are sourced or explicitly marked as requiring device measurement.*

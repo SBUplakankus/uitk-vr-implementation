@@ -1,662 +1,155 @@
-# Your 3-Layer Architecture: Controller → Host → View
+# Controller → Host → View Architecture
 
-## What You Actually Have
-
-You have a **3-tier architecture** that's already well-separated:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│         StartMenuController (MonoBehaviour)             │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │ SCENE ORCHESTRATION                               │ │
-│  │ • Manages multiple panels (StartMenu, Settings)   │ │
-│  │ • Handles navigation (LoadScene)                  │ │
-│  │ • Application logic (Application.Quit)            │ │
-│  │ • Panel visibility (toggle settings)              │ │
-│  └───────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-                    │
-                    │ controls
-                    ▼
-┌─────────────────────────────────────────────────────────┐
-│         StartMenuPanelHost (MonoBehaviour)              │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │ PANEL LIFECYCLE                                   │ │
-│  │ • Generate() / Dispose()                          │ │
-│  │ • Show() / Hide() animations                      │ │
-│  │ • Event passthrough (OnPlayClicked, etc.)         │ │
-│  │ • UIDocument reference                            │ │
-│  └───────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-                    │
-                    │ creates & subscribes
-                    ▼
-┌─────────────────────────────────────────────────────────┐
-│         StartMenuPanelView (Pure C#)                    │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │ UI GENERATION                                     │ │
-│  │ • Creates UI via Factory                          │ │
-│  │ • Wires button clicks to events                   │ │
-│  │ • Exposes events (OnPlayClicked, etc.)            │ │
-│  │ • No Unity dependencies                           │ │
-│  └───────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-```
+> **Based on**: Actual implementation from the Avatar Academy UITK project  
+> **Pattern**: Factory → View → Host → Controller  
+> **Context**: Code-generated UITK panels with MonoBehaviour lifecycle management
 
 ---
 
-## Your Architecture in MVVM Terms
+## What the Architecture Is
 
-| Your Layer | MVVM Equivalent | Responsibilities |
-|------------|-----------------|------------------|
-| **Controller** | **Application Controller / Navigator** | Scene orchestration, multi-panel coordination, navigation |
-| **Host** | **View Controller** | Panel lifecycle, Show/Hide, event routing |
-| **View** | **View** | UI generation, event exposure |
-| **(Missing)** | **ViewModel** | Presentation logic (only needed for complex panels) |
+Three layers with distinct responsibilities:
+
+```
+StartMenuController          (MonoBehaviour — scene orchestration)
+    │
+    └─► StartMenuPanelHost   (MonoBehaviour — panel lifecycle)
+            │
+            └─► StartMenuPanelView  (Pure C# — UI generation via Factory)
+```
+
+**Controller** — scene-level. Knows about multiple panels and how they relate. Handles navigation, application logic, and coordinates which panels are visible.
+
+**Host** — panel-level. Owns a single panel's lifecycle: Generate(), Show(), Hide(), Dispose(). Acts as the boundary between Unity (MonoBehaviour, UIDocument) and the pure C# view. Exposes events upward to the Controller.
+
+**View** — pure C#, no Unity dependencies. Uses the Factory to create elements, wires up internal events, and exposes them for the Host to subscribe to. Has no knowledge of scene state or other panels.
+
+This split — scene-level vs panel-level — is the most useful structural decision in the architecture. It means a Controller can coordinate three panels without any of those panels knowing about each other.
 
 ---
 
-## The Key Insight
+## Where It Sits in MVVM Terms
 
-**Your architecture is actually BETTER than basic MVVM!**
+| Your Layer | Nearest MVVM Equivalent                                |
+| ---------- | ------------------------------------------------------ |
+| Controller | Application Controller / Navigator                     |
+| Host       | View Controller                                        |
+| View       | View                                                   |
+| *(absent)* | ViewModel — only needed when presentation logic exists |
 
-You've split the Controller into two layers:
-1. **Controller** (scene-level) - handles multiple panels
-2. **Host** (panel-level) - handles single panel lifecycle
-
-This is actually a **Hierarchical Controller pattern** and it's cleaner than MVVM for Unity UI because:
-- ✅ Scene Controller manages panel coordination
-- ✅ Panel Host manages individual panel lifecycle
-- ✅ View is pure UI generation
-- ✅ ViewModel added only when needed (not shown in your simple menu)
+The ViewModel layer is intentionally absent for simple panels and that's correct. A start menu with four buttons and no state has no presentation logic to encapsulate. Adding a ViewModel there would be structure for its own sake.
 
 ---
 
-## Analysis of Your StartMenuController
+## Suggested Improvements to StartMenuController
 
-### What It Does Right ✅
+These are based on partial code visibility — verify against what's actually there before applying.
 
-```csharp
-public class StartMenuController : MonoBehaviour
-{
-    // GOOD: References to managed panels
-    [SerializeField] private StartMenuPanelHost startMenuPanelHost;
-    [SerializeField] private SettingsPanelHost settingsPanelHost;
-    
-    // GOOD: Scene-level state
-    private bool _settingsActive;
-    
-    // GOOD: Panel coordination
-    private void ToggleSettings()
-    {
-        _settingsActive = !_settingsActive;
-        
-        if(!_settingsActive)
-            settingsPanelHost.Hide();
-        else
-            settingsPanelHost.Generate();
-    }
-    
-    // GOOD: Application/navigation logic
-    private void HandlePlay() => BootstrapManager.Instance.LoadScene(GameConstants.Hub);
-    private void HandleQuit() => Application.Quit();
-}
-```
+### 1. Redundant SubscribeEvents() call
 
-**This is exactly what a Scene Controller should do!**
+If `Generate()` in the Host already calls `SubscribeEvents()` internally, calling it again from `BindButtons()` in the Controller doubles up the subscription. If that's the case, remove the explicit call from `BindButtons()` and let Host manage its own internal wiring. The Controller should only be subscribing to events the Host exposes publicly.
 
-### Minor Improvements
+### 2. Settings panel regenerating on every toggle
 
-**1. SubscribeEvents() is redundant**
+Calling `Generate()` each time settings are toggled recreates the entire UI tree. For a settings panel that doesn't change structure between openings, the better approach is to generate once at startup and then use `Show()` / `Hide()` for visibility toggling. The tradeoff is memory (the panel exists even when hidden) vs. CPU cost (rebuilding the tree on each open). For a settings panel, always-in-memory is the right call.
 
 ```csharp
-// Current:
-private void BindButtons()
-{
-    startMenuPanelHost.SubscribeEvents(); // ← This is called in Generate() already
-    startMenuPanelHost.OnPlayClicked += HandlePlay;
-    // ...
-}
-
-// Better:
-private void BindButtons()
-{
-    // Remove SubscribeEvents() - Host already does this in Generate()
-    startMenuPanelHost.OnPlayClicked += HandlePlay;
-    startMenuPanelHost.OnSettingsClicked += HandleSettings;
-    startMenuPanelHost.OnControlsClicked += HandleControls;
-    startMenuPanelHost.OnQuitClicked += HandleQuit;
-}
-```
-
-**2. Settings panel lifecycle**
-
-```csharp
-// Current: Settings regenerates every toggle
-private void ToggleSettings()
-{
-    _settingsActive = !_settingsActive;
-    
-    if(!_settingsActive)
-        settingsPanelHost.Hide();
-    else
-        settingsPanelHost.Generate(); // ← Recreates UI every time
-}
-
-// Better: Generate once, then Show/Hide
 private void OnEnable()
 {
-    startMenuPanelHost.Generate();
-    settingsPanelHost.Generate(); // Generate both upfront
-    settingsPanelHost.Hide();     // But hide settings initially
-    
-    BindButtons();
+    _startMenuPanel.Generate();
+    _settingsPanel.Generate();
+    _settingsPanel.Hide();       // generated but hidden
+    SubscribeToEvents();
 }
 
 private void ToggleSettings()
 {
     _settingsActive = !_settingsActive;
-    
-    if (_settingsActive)
-        settingsPanelHost.Show();
-    else
-        settingsPanelHost.Hide();
+    if (_settingsActive) _settingsPanel.Show();
+    else _settingsPanel.Hide();
 }
 ```
 
----
+### 3. ShowPanel() helper for mutual exclusion
 
-## Improved Version (Your Style)
+If you have more than two panels that need to be mutually exclusive, a helper that hides all and shows one is cleaner than managing show/hide pairs manually:
 
 ```csharp
-using Constants;
-using Systems.Core;
-using UI.Hosts;
-using UnityEngine;
-
-namespace UI.Controllers
+private void ShowPanel(BasePanelHost target)
 {
-    /// <summary>
-    /// Scene-level controller managing the Start Menu screen.
-    /// Coordinates multiple panels and handles navigation.
-    /// </summary>
-    public class StartMenuController : MonoBehaviour
-    {
-        #region Fields
-
-        [Header("Panels")]
-        [SerializeField] private StartMenuPanelHost _startMenuPanel;
-        [SerializeField] private SettingsPanelHost _settingsPanel;
-        [SerializeField] private ControlsPanelHost _controlsPanel; // If you add this later
-
-        #endregion
-
-        #region Panel Management
-
-        private void ShowPanel(BasePanelHost panel)
-        {
-            // Hide all panels
-            _startMenuPanel.Hide();
-            _settingsPanel.Hide();
-            // _controlsPanel.Hide();
-            
-            // Show requested panel
-            panel.Show();
-        }
-
-        private void ShowStartMenu() => ShowPanel(_startMenuPanel);
-        private void ShowSettings() => ShowPanel(_settingsPanel);
-        // private void ShowControls() => ShowPanel(_controlsPanel);
-
-        #endregion
-
-        #region Event Subscription
-
-        private void SubscribeToEvents()
-        {
-            // Start Menu events
-            _startMenuPanel.OnPlayClicked += HandlePlay;
-            _startMenuPanel.OnSettingsClicked += HandleSettings;
-            _startMenuPanel.OnControlsClicked += HandleControls;
-            _startMenuPanel.OnQuitClicked += HandleQuit;
-            
-            // Settings panel events (when you add them)
-            // _settingsPanel.OnBackClicked += ShowStartMenu;
-        }
-
-        private void UnsubscribeFromEvents()
-        {
-            _startMenuPanel.OnPlayClicked -= HandlePlay;
-            _startMenuPanel.OnSettingsClicked -= HandleSettings;
-            _startMenuPanel.OnControlsClicked -= HandleControls;
-            _startMenuPanel.OnQuitClicked -= HandleQuit;
-            
-            // _settingsPanel.OnBackClicked -= ShowStartMenu;
-        }
-
-        #endregion
-
-        #region Event Handlers
-
-        private void HandlePlay()
-        {
-            BootstrapManager.Instance.LoadScene(GameConstants.Hub);
-        }
-
-        private void HandleSettings()
-        {
-            ShowSettings();
-        }
-
-        private void HandleControls()
-        {
-            // Temporary - replace with ShowControls() when panel exists
-            BootstrapManager.Instance.LoadScene(GameConstants.GoblinCampDay);
-        }
-
-        private void HandleQuit()
-        {
-            #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-            #else
-            Application.Quit();
-            #endif
-        }
-
-        #endregion
-
-        #region Unity Lifecycle
-
-        private void OnEnable()
-        {
-            // Generate all panels
-            _startMenuPanel.Generate();
-            _settingsPanel.Generate();
-            // _controlsPanel.Generate();
-            
-            // Show only start menu
-            ShowStartMenu();
-            
-            // Subscribe to events
-            SubscribeToEvents();
-        }
-
-        private void OnDisable()
-        {
-            UnsubscribeFromEvents();
-        }
-
-        #endregion
-    }
+    _startMenuPanel.Hide();
+    _settingsPanel.Hide();
+    target.Show();
 }
 ```
 
----
-
-## When to Add ViewModel (In Your 3-Layer System)
-
-### Current Structure (No ViewModel Needed)
-
-```
-StartMenuController (Scene orchestration)
-    ↓
-StartMenuPanelHost (Panel lifecycle)
-    ↓
-StartMenuPanelView (UI generation)
-```
-
-**This is perfect for simple panels!**
-
-### When You Need ViewModel
-
-**Example: Settings Panel with State**
-
-```
-SettingsController (Scene orchestration - optional)
-    ↓
-SettingsPanelHost (Panel lifecycle)
-    ↓
-SettingsViewModel (Presentation logic) ← NEW
-    ↓
-SettingsPanelView (UI generation + binding)
-```
-
-**Example with code:**
-
-```csharp
-// SettingsPanelHost.cs
-public class SettingsPanelHost : BasePanelHost
-{
-    [SerializeField] private GameSettings _gameSettings;
-    
-    private SettingsViewModel _viewModel;
-    private SettingsPanelView _view;
-    
-    public override void Generate()
-    {
-        Dispose();
-        
-        // Create ViewModel from settings
-        var model = new SettingsModel
-        {
-            Volume = _gameSettings.Volume,
-            Quality = _gameSettings.Quality
-        };
-        
-        _viewModel = new SettingsViewModel(model);
-        
-        // Subscribe to ViewModel events (game logic)
-        _viewModel.OnApplyRequested += ApplySettings;
-        _viewModel.OnVolumePreview += PreviewVolume;
-        
-        // Create View with ViewModel
-        _view = new SettingsPanelView(
-            uiDocument.rootVisualElement,
-            styleSheet,
-            _viewModel // Pass ViewModel to View
-        );
-        
-        Show();
-    }
-    
-    // Game logic (Unity-specific)
-    private void PreviewVolume(float volume)
-    {
-        AudioListener.volume = volume;
-    }
-    
-    private void ApplySettings()
-    {
-        var settings = _viewModel.GetCurrentSettings();
-        _gameSettings.Volume = settings.Volume;
-        _gameSettings.Quality = settings.Quality;
-        _gameSettings.Save();
-        
-        // Apply to Unity
-        QualitySettings.SetQualityLevel(settings.Quality);
-    }
-    
-    protected override void Dispose()
-    {
-        if (_viewModel != null)
-        {
-            _viewModel.OnApplyRequested -= ApplySettings;
-            _viewModel.OnVolumePreview -= PreviewVolume;
-        }
-        
-        _view?.Dispose();
-        _view = null;
-        _viewModel = null;
-    }
-}
-```
+This scales without accumulating pairwise show/hide logic when you add a third or fourth panel.
 
 ---
 
-## Complete Architecture Pattern
+## When to Add a ViewModel
 
-### For Simple Panels (Your StartMenu)
+The decision is straightforward: add a ViewModel when the View needs to display something other than raw data. If the panel contains formatting, validation, computed values, or state that affects how data is presented, that logic belongs in a ViewModel rather than the View.
 
-```
-Layer 1: Scene Controller (manages multiple panels, navigation)
-    └─ StartMenuController.cs
-    
-Layer 2: Panel Host (lifecycle, Show/Hide)
-    └─ StartMenuPanelHost.cs
-    
-Layer 3: View (UI generation)
-    └─ StartMenuPanelView.cs
-```
+| Panel type                   | Needs ViewModel? | Why                                       |
+| ---------------------------- | ---------------- | ----------------------------------------- |
+| Button-only menus            | No               | No data to transform                      |
+| Pause / confirmation dialogs | No               | No state                                  |
+| Settings with sliders        | Yes              | Volume needs formatting, validation       |
+| Inventory                    | Yes              | Filtering, sorting, selection state       |
+| Character sheet              | Yes              | Computed stats, percentage bars           |
+| Live HUD                     | Maybe            | Depends on whether values need formatting |
 
-### For Complex Panels (Settings, Inventory, Character Sheet)
+When you do add a ViewModel, it slots between Host and View. The Host creates it, passes it to the View, and subscribes to its events for anything that requires Unity APIs:
 
 ```
-Layer 1: Scene Controller (optional - only if coordinating multiple panels)
-    └─ SettingsController.cs (optional)
-    
-Layer 2: Panel Host (lifecycle, game logic)
-    └─ SettingsPanelHost.cs
-    
-Layer 2.5: ViewModel (presentation logic, testable) ← NEW
-    └─ SettingsViewModel.cs
-    
-Layer 3: View (UI generation + binding)
-    └─ SettingsPanelView.cs
+Host creates ViewModel
+Host passes ViewModel into View constructor
+View binds UI elements to ViewModel properties
+ViewModel raises events → Host handles Unity-specific side effects
+    (e.g. AudioListener.volume, QualitySettings, Save())
 ```
+
+The ViewModel itself stays pure C# and testable. The Host is the only place where ViewModel events result in Unity API calls.
 
 ---
 
-## Directory Structure (Recommended)
+## Directory Structure
 
 ```
 Assets/Scripts/UI/
-├── Controllers/
-│   ├── StartMenuController.cs       # Scene-level orchestration
-│   ├── GameplayHUDController.cs     # Coordinates HUD panels
-│   └── InventoryController.cs       # Coordinates inventory UI
-│
-├── Hosts/                            # Panel lifecycle managers
-│   ├── Base/
-│   │   └── BasePanelHost.cs
-│   ├── StartMenuPanelHost.cs
-│   ├── SettingsPanelHost.cs
-│   └── InventoryPanelHost.cs
-│
-├── ViewModels/                       # Presentation logic (add as needed)
-│   ├── SettingsViewModel.cs
-│   ├── InventoryViewModel.cs
-│   └── CharacterStatsViewModel.cs
-│
-├── Views/                            # UI generation
-│   ├── Base/
-│   │   └── BasePanelView.cs
-│   ├── StartMenuPanelView.cs
-│   ├── SettingsPanelView.cs
-│   └── InventoryPanelView.cs
-│
-├── Models/                           # Data structures
-│   ├── SettingsModel.cs
-│   ├── InventoryModel.cs
-│   └── CharacterStatsModel.cs
-│
-└── Common/
-    ├── ObservableProperty.cs
-    └── ObservableCollection.cs
+├── Controllers/          # Scene-level orchestration
+├── Hosts/
+│   └── Base/             # BasePanelHost
+├── Views/
+│   └── Base/             # BasePanelView
+├── ViewModels/           # Add as panels require them
+├── Models/               # Data structures passed to ViewModels
+└── Common/               # Shared utilities (ObservableProperty, etc.)
 ```
+
+`ViewModels/` starts empty and grows as panels accumulate presentation logic. Keeping it separate from Views makes the distinction visible — if you're writing formatting or validation logic in a View file, it's a signal it should move.
 
 ---
 
-## Decision Matrix: Do I Need ViewModel?
+## What This Architecture Is Good At
 
-| Panel Type | Complexity | Needs ViewModel? | Example |
-|------------|------------|------------------|---------|
-| **Simple Menu** | Just buttons → actions | ❌ NO | Your StartMenu |
-| **Pause Menu** | Buttons + resume/quit | ❌ NO | Pause overlay |
-| **Confirmation Dialog** | Yes/No buttons | ❌ NO | "Are you sure?" |
-| **Settings Panel** | Sliders, formatting, validation | ✅ YES | Volume: 75%, Quality names |
-| **Inventory** | Filtering, sorting, selection | ✅ YES | Filter by type, sort by value |
-| **Character Sheet** | Computed stats, percentage bars | ✅ YES | Attack: 45 (+15), Health: 80% |
-| **Form Input** | Validation, error messages | ✅ YES | "Password must be 8+ chars" |
-| **Live Stats HUD** | Updating values, health % | ⚠️ MAYBE | If formatting is complex |
+**Lifecycle is explicit.** Generate, Show, Hide, and Dispose are named operations on the Host rather than implicit behaviour scattered across OnEnable/OnDisable. This makes panel state predictable.
 
-**Rule of Thumb:**
-```
-Does the panel have:
-- Data formatting? (percentages, dates, currency)
-- Validation logic? (forms, inputs)
-- Computed properties? (total price, health %)
-- Complex state? (filters, selections)
+**The Controller doesn't touch UITK.** All UIDocument references live in Hosts. The Controller only calls methods on Hosts and handles events from them. If the UI implementation changes (e.g. switching a panel from code-generated to UXML-driven), the Controller doesn't change.
 
-YES → Add ViewModel
-NO  → Keep as Controller → Host → View
-```
+**Views are testable without Unity.** Pure C# Views with no MonoBehaviour dependency can be instantiated in unit tests if needed. The Factory they call also has no Unity dependencies in principle.
 
 ---
 
-## Your Pattern is Actually Superior for Unity
+## What to Watch as It Scales
 
-**Standard MVVM:**
-```
-ViewModel → View
-```
-Problems:
-- ViewModel doesn't know about panel lifecycle
-- View manages its own Show/Hide
-- No centralized panel coordination
+**Host proliferation.** As the project grows, you'll have many Hosts. Consider whether BasePanelHost needs more shared behaviour (e.g. standard fade animations) or whether each Host reimplements the same Show/Hide pattern independently.
 
-**Your Pattern:**
-```
-Controller (scene) → Host (panel lifecycle) → View (UI)
-                         ↓
-                    ViewModel (when needed)
-```
-Benefits:
-- ✅ Controller manages multiple panels
-- ✅ Host manages panel lifecycle + animations
-- ✅ View is pure UI generation
-- ✅ ViewModel added only when presentation logic exists
-- ✅ Clean separation of concerns
+**Event chain length.** Currently: View fires event → Host rebroadcasts → Controller handles. For simple panels that's fine. If you find Controllers subscribing to events that tunnel through multiple Hosts, consider whether a shared event bus or direct reference is cleaner at that point.
+
+**Factory as the single source of element creation.** The Factory approach means visual consistency is enforced at creation time rather than per-panel. As the style system grows (ScriptableObject themes, USS variable swapping), the Factory is the natural place to apply those — keep it the only place elements are instantiated.
 
 ---
 
-## Quick Reference: Your Architecture
-
-### Current (Simple Panels)
-```csharp
-// Layer 1: Scene Controller
-public class StartMenuController : MonoBehaviour
-{
-    [SerializeField] private StartMenuPanelHost _startMenuPanel;
-    
-    private void OnEnable()
-    {
-        _startMenuPanel.Generate();
-        _startMenuPanel.OnPlayClicked += HandlePlay;
-    }
-    
-    private void HandlePlay()
-    {
-        BootstrapManager.Instance.LoadScene("Hub");
-    }
-}
-
-// Layer 2: Panel Host
-public class StartMenuPanelHost : BasePanelHost
-{
-    public event Action OnPlayClicked;
-    private StartMenuPanelView _view;
-    
-    public override void Generate()
-    {
-        _view = new StartMenuPanelView(uiDocument.rootVisualElement, styleSheet);
-        _view.OnPlayClicked += () => OnPlayClicked?.Invoke();
-        Show();
-    }
-}
-
-// Layer 3: View
-public class StartMenuPanelView : BasePanelView
-{
-    public event Action OnPlayClicked;
-    
-    protected override void GenerateUI(VisualElement root)
-    {
-        var playButton = UIToolkitFactory.CreateButton("Play");
-        playButton.clicked += () => OnPlayClicked?.Invoke();
-        // ...
-    }
-}
-```
-
-### With ViewModel (Complex Panels)
-```csharp
-// Layer 2: Panel Host
-public class SettingsPanelHost : BasePanelHost
-{
-    private SettingsViewModel _viewModel;
-    private SettingsPanelView _view;
-    
-    public override void Generate()
-    {
-        var model = new SettingsModel { Volume = 0.5f };
-        _viewModel = new SettingsViewModel(model);
-        _viewModel.OnVolumePreview += volume => AudioListener.volume = volume;
-        
-        _view = new SettingsPanelView(
-            uiDocument.rootVisualElement,
-            styleSheet,
-            _viewModel // Pass ViewModel
-        );
-        
-        Show();
-    }
-}
-
-// Layer 2.5: ViewModel
-public class SettingsViewModel
-{
-    public ObservableProperty<float> Volume { get; }
-    public ObservableProperty<string> VolumeText { get; }
-    public event Action<float> OnVolumePreview;
-    
-    public void UpdateVolume(float value)
-    {
-        Volume.Value = value;
-        VolumeText.Value = $"Volume: {value:P0}";
-        OnVolumePreview?.Invoke(value);
-    }
-}
-
-// Layer 3: View
-public class SettingsPanelView : BasePanelView
-{
-    private SettingsViewModel _viewModel;
-    
-    public SettingsPanelView(VisualElement root, StyleSheet styleSheet, SettingsViewModel viewModel)
-    {
-        _viewModel = viewModel;
-        GenerateUI(root);
-        BindToViewModel();
-    }
-    
-    private void BindToViewModel()
-    {
-        var slider = Container.Q<Slider>("VolumeSlider");
-        slider.RegisterValueChangedCallback(evt => _viewModel.UpdateVolume(evt.newValue));
-        
-        var label = Container.Q<Label>("VolumeLabel");
-        _viewModel.VolumeText.ValueChanged += text => label.text = text;
-    }
-}
-```
-
----
-
-## Summary
-
-**Your Current Architecture:**
-```
-✅ Scene Controller (multi-panel coordination)
-✅ Panel Host (lifecycle, Show/Hide, animations)
-✅ View (UI generation)
-⚠️ ViewModel (add only when needed)
-```
-
-**This is BETTER than standard MVVM for Unity because:**
-1. Separates scene-level vs panel-level concerns
-2. Panel lifecycle is explicit (Host layer)
-3. Animations/transitions managed in one place
-4. ViewModel only added when there's actual presentation logic
-
-**What to change:**
-1. Minor cleanup in StartMenuController (remove redundant SubscribeEvents call)
-2. Consider generating panels once, then Show/Hide
-3. Add ViewModel layer when panels get complex (Settings, Inventory, Stats)
-
-**You're already doing it right!** Just add ViewModel when you have:
-- Formatting logic
-- Validation
-- Computed properties
-- Complex state management
-
-For simple menus like your StartMenu, your current pattern is perfect! 🎯
+*Architecture description reflects the actual implementation. Improvement suggestions are provisional — verify against the full codebase before applying.*

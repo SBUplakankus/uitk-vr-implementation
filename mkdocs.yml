@@ -45,6 +45,9 @@ nav:
       - Bagel Game Analysis: ai/bg_analysis.md
       - Industry UITK Practices: ai/industry_uitk.md
       - Layer Architecture: ai/layer_architecture.md
+      - M-V-VM: ai/mvvm.md
+      - C# Implementation: ai/cs_implementation.md
+      - USS Implementation: ai/uss_implementation.md
 
 
 plugins:

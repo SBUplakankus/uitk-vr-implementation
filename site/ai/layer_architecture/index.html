@@ -14,6 +14,8 @@
         <link rel="prev" href="../industry_uitk/">
       
       
+        <link rel="next" href="../mvvm/">
+      
       
         
       
@@ -74,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#your-3-layer-architecture-controller-host-view" class="md-skip">
+        <a href="#controller-host-view-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -711,10 +713,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-you-actually-have" class="md-nav__link">
+  <a href="#what-the-architecture-is" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What You Actually Have
+        What the Architecture Is
       
     </span>
   </a>
@@ -722,10 +724,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#your-architecture-in-mvvm-terms" class="md-nav__link">
+  <a href="#where-it-sits-in-mvvm-terms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Your Architecture in MVVM Terms
+        Where It Sits in MVVM Terms
       
     </span>
   </a>
@@ -733,33 +735,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-key-insight" class="md-nav__link">
+  <a href="#suggested-improvements-to-startmenucontroller" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Key Insight
+        Suggested Improvements to StartMenuController
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#analysis-of-your-startmenucontroller" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Analysis of Your StartMenuController
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Analysis of Your StartMenuController">
+    <nav class="md-nav" aria-label="Suggested Improvements to StartMenuController">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#what-it-does-right" class="md-nav__link">
+  <a href="#1-redundant-subscribeevents-call" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What It Does Right ✅
+        1. Redundant SubscribeEvents() call
       
     </span>
   </a>
@@ -767,10 +758,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#minor-improvements" class="md-nav__link">
+  <a href="#2-settings-panel-regenerating-on-every-toggle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Minor Improvements
+        2. Settings panel regenerating on every toggle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-showpanel-helper-for-mutual-exclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. ShowPanel() helper for mutual exclusion
       
     </span>
   </a>
@@ -783,10 +785,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#improved-version-your-style" class="md-nav__link">
+  <a href="#when-to-add-a-viewmodel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Improved Version (Your Style)
+        When to Add a ViewModel
       
     </span>
   </a>
@@ -794,88 +796,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-add-viewmodel-in-your-3-layer-system" class="md-nav__link">
+  <a href="#directory-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When to Add ViewModel (In Your 3-Layer System)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="When to Add ViewModel (In Your 3-Layer System)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#current-structure-no-viewmodel-needed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Current Structure (No ViewModel Needed)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#when-you-need-viewmodel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When You Need ViewModel
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#complete-architecture-pattern" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Complete Architecture Pattern
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Complete Architecture Pattern">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-simple-panels-your-startmenu" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Simple Panels (Your StartMenu)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-complex-panels-settings-inventory-character-sheet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Complex Panels (Settings, Inventory, Character Sheet)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#directory-structure-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Directory Structure (Recommended)
+        Directory Structure
       
     </span>
   </a>
@@ -883,10 +807,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision-matrix-do-i-need-viewmodel" class="md-nav__link">
+  <a href="#what-this-architecture-is-good-at" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision Matrix: Do I Need ViewModel?
+        What This Architecture Is Good At
       
     </span>
   </a>
@@ -894,60 +818,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#your-pattern-is-actually-superior-for-unity" class="md-nav__link">
+  <a href="#what-to-watch-as-it-scales" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Your Pattern is Actually Superior for Unity
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-reference-your-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick Reference: Your Architecture
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Quick Reference: Your Architecture">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#current-simple-panels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Current (Simple Panels)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-viewmodel-complex-panels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        With ViewModel (Complex Panels)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Summary
+        What to Watch as It Scales
       
     </span>
   </a>
@@ -958,6 +832,90 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mvvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M-V-VM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cs_implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C# Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uss_implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USS Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -997,10 +955,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-you-actually-have" class="md-nav__link">
+  <a href="#what-the-architecture-is" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What You Actually Have
+        What the Architecture Is
       
     </span>
   </a>
@@ -1008,10 +966,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#your-architecture-in-mvvm-terms" class="md-nav__link">
+  <a href="#where-it-sits-in-mvvm-terms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Your Architecture in MVVM Terms
+        Where It Sits in MVVM Terms
       
     </span>
   </a>
@@ -1019,33 +977,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-key-insight" class="md-nav__link">
+  <a href="#suggested-improvements-to-startmenucontroller" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Key Insight
+        Suggested Improvements to StartMenuController
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#analysis-of-your-startmenucontroller" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Analysis of Your StartMenuController
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Analysis of Your StartMenuController">
+    <nav class="md-nav" aria-label="Suggested Improvements to StartMenuController">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#what-it-does-right" class="md-nav__link">
+  <a href="#1-redundant-subscribeevents-call" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What It Does Right ✅
+        1. Redundant SubscribeEvents() call
       
     </span>
   </a>
@@ -1053,10 +1000,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#minor-improvements" class="md-nav__link">
+  <a href="#2-settings-panel-regenerating-on-every-toggle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Minor Improvements
+        2. Settings panel regenerating on every toggle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-showpanel-helper-for-mutual-exclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. ShowPanel() helper for mutual exclusion
       
     </span>
   </a>
@@ -1069,10 +1027,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#improved-version-your-style" class="md-nav__link">
+  <a href="#when-to-add-a-viewmodel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Improved Version (Your Style)
+        When to Add a ViewModel
       
     </span>
   </a>
@@ -1080,88 +1038,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-add-viewmodel-in-your-3-layer-system" class="md-nav__link">
+  <a href="#directory-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When to Add ViewModel (In Your 3-Layer System)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="When to Add ViewModel (In Your 3-Layer System)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#current-structure-no-viewmodel-needed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Current Structure (No ViewModel Needed)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#when-you-need-viewmodel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When You Need ViewModel
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#complete-architecture-pattern" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Complete Architecture Pattern
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Complete Architecture Pattern">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-simple-panels-your-startmenu" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Simple Panels (Your StartMenu)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-complex-panels-settings-inventory-character-sheet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Complex Panels (Settings, Inventory, Character Sheet)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#directory-structure-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Directory Structure (Recommended)
+        Directory Structure
       
     </span>
   </a>
@@ -1169,10 +1049,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#decision-matrix-do-i-need-viewmodel" class="md-nav__link">
+  <a href="#what-this-architecture-is-good-at" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Decision Matrix: Do I Need ViewModel?
+        What This Architecture Is Good At
       
     </span>
   </a>
@@ -1180,60 +1060,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#your-pattern-is-actually-superior-for-unity" class="md-nav__link">
+  <a href="#what-to-watch-as-it-scales" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Your Pattern is Actually Superior for Unity
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-reference-your-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick Reference: Your Architecture
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Quick Reference: Your Architecture">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#current-simple-panels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Current (Simple Panels)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-viewmodel-complex-panels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        With ViewModel (Complex Panels)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Summary
+        What to Watch as It Scales
       
     </span>
   </a>
@@ -1260,664 +1090,163 @@
   
 
 
-<h1 id="your-3-layer-architecture-controller-host-view">Your 3-Layer Architecture: Controller → Host → View</h1>
-<h2 id="what-you-actually-have">What You Actually Have</h2>
-<p>You have a <strong>3-tier architecture</strong> that's already well-separated:</p>
-<pre><code>┌─────────────────────────────────────────────────────────┐
-│         StartMenuController (MonoBehaviour)             │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │ SCENE ORCHESTRATION                               │ │
-│  │ • Manages multiple panels (StartMenu, Settings)   │ │
-│  │ • Handles navigation (LoadScene)                  │ │
-│  │ • Application logic (Application.Quit)            │ │
-│  │ • Panel visibility (toggle settings)              │ │
-│  └───────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-                    │
-                    │ controls
-                    ▼
-┌─────────────────────────────────────────────────────────┐
-│         StartMenuPanelHost (MonoBehaviour)              │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │ PANEL LIFECYCLE                                   │ │
-│  │ • Generate() / Dispose()                          │ │
-│  │ • Show() / Hide() animations                      │ │
-│  │ • Event passthrough (OnPlayClicked, etc.)         │ │
-│  │ • UIDocument reference                            │ │
-│  └───────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-                    │
-                    │ creates &amp; subscribes
-                    ▼
-┌─────────────────────────────────────────────────────────┐
-│         StartMenuPanelView (Pure C#)                    │
-│  ┌───────────────────────────────────────────────────┐ │
-│  │ UI GENERATION                                     │ │
-│  │ • Creates UI via Factory                          │ │
-│  │ • Wires button clicks to events                   │ │
-│  │ • Exposes events (OnPlayClicked, etc.)            │ │
-│  │ • No Unity dependencies                           │ │
-│  └───────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-</code></pre>
+<h1 id="controller-host-view-architecture">Controller → Host → View Architecture</h1>
+<blockquote>
+<p><strong>Based on</strong>: Actual implementation from the Avatar Academy UITK project<br />
+<strong>Pattern</strong>: Factory → View → Host → Controller<br />
+<strong>Context</strong>: Code-generated UITK panels with MonoBehaviour lifecycle management</p>
+</blockquote>
 <hr />
-<h2 id="your-architecture-in-mvvm-terms">Your Architecture in MVVM Terms</h2>
+<h2 id="what-the-architecture-is">What the Architecture Is</h2>
+<p>Three layers with distinct responsibilities:</p>
+<pre><code>StartMenuController          (MonoBehaviour — scene orchestration)
+    │
+    └─► StartMenuPanelHost   (MonoBehaviour — panel lifecycle)
+            │
+            └─► StartMenuPanelView  (Pure C# — UI generation via Factory)
+</code></pre>
+<p><strong>Controller</strong> — scene-level. Knows about multiple panels and how they relate. Handles navigation, application logic, and coordinates which panels are visible.</p>
+<p><strong>Host</strong> — panel-level. Owns a single panel's lifecycle: Generate(), Show(), Hide(), Dispose(). Acts as the boundary between Unity (MonoBehaviour, UIDocument) and the pure C# view. Exposes events upward to the Controller.</p>
+<p><strong>View</strong> — pure C#, no Unity dependencies. Uses the Factory to create elements, wires up internal events, and exposes them for the Host to subscribe to. Has no knowledge of scene state or other panels.</p>
+<p>This split — scene-level vs panel-level — is the most useful structural decision in the architecture. It means a Controller can coordinate three panels without any of those panels knowing about each other.</p>
+<hr />
+<h2 id="where-it-sits-in-mvvm-terms">Where It Sits in MVVM Terms</h2>
 <table>
 <thead>
 <tr>
 <th>Your Layer</th>
-<th>MVVM Equivalent</th>
-<th>Responsibilities</th>
+<th>Nearest MVVM Equivalent</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Controller</strong></td>
-<td><strong>Application Controller / Navigator</strong></td>
-<td>Scene orchestration, multi-panel coordination, navigation</td>
+<td>Controller</td>
+<td>Application Controller / Navigator</td>
 </tr>
 <tr>
-<td><strong>Host</strong></td>
-<td><strong>View Controller</strong></td>
-<td>Panel lifecycle, Show/Hide, event routing</td>
+<td>Host</td>
+<td>View Controller</td>
 </tr>
 <tr>
-<td><strong>View</strong></td>
-<td><strong>View</strong></td>
-<td>UI generation, event exposure</td>
+<td>View</td>
+<td>View</td>
 </tr>
 <tr>
-<td><strong>(Missing)</strong></td>
-<td><strong>ViewModel</strong></td>
-<td>Presentation logic (only needed for complex panels)</td>
+<td><em>(absent)</em></td>
+<td>ViewModel — only needed when presentation logic exists</td>
 </tr>
 </tbody>
 </table>
+<p>The ViewModel layer is intentionally absent for simple panels and that's correct. A start menu with four buttons and no state has no presentation logic to encapsulate. Adding a ViewModel there would be structure for its own sake.</p>
 <hr />
-<h2 id="the-key-insight">The Key Insight</h2>
-<p><strong>Your architecture is actually BETTER than basic MVVM!</strong></p>
-<p>You've split the Controller into two layers:
-1. <strong>Controller</strong> (scene-level) - handles multiple panels
-2. <strong>Host</strong> (panel-level) - handles single panel lifecycle</p>
-<p>This is actually a <strong>Hierarchical Controller pattern</strong> and it's cleaner than MVVM for Unity UI because:
-- ✅ Scene Controller manages panel coordination
-- ✅ Panel Host manages individual panel lifecycle
-- ✅ View is pure UI generation
-- ✅ ViewModel added only when needed (not shown in your simple menu)</p>
-<hr />
-<h2 id="analysis-of-your-startmenucontroller">Analysis of Your StartMenuController</h2>
-<h3 id="what-it-does-right">What It Does Right ✅</h3>
-<pre><code class="language-csharp">public class StartMenuController : MonoBehaviour
+<h2 id="suggested-improvements-to-startmenucontroller">Suggested Improvements to StartMenuController</h2>
+<p>These are based on partial code visibility — verify against what's actually there before applying.</p>
+<h3 id="1-redundant-subscribeevents-call">1. Redundant SubscribeEvents() call</h3>
+<p>If <code>Generate()</code> in the Host already calls <code>SubscribeEvents()</code> internally, calling it again from <code>BindButtons()</code> in the Controller doubles up the subscription. If that's the case, remove the explicit call from <code>BindButtons()</code> and let Host manage its own internal wiring. The Controller should only be subscribing to events the Host exposes publicly.</p>
+<h3 id="2-settings-panel-regenerating-on-every-toggle">2. Settings panel regenerating on every toggle</h3>
+<p>Calling <code>Generate()</code> each time settings are toggled recreates the entire UI tree. For a settings panel that doesn't change structure between openings, the better approach is to generate once at startup and then use <code>Show()</code> / <code>Hide()</code> for visibility toggling. The tradeoff is memory (the panel exists even when hidden) vs. CPU cost (rebuilding the tree on each open). For a settings panel, always-in-memory is the right call.</p>
+<pre><code class="language-csharp">private void OnEnable()
 {
-    // GOOD: References to managed panels
-    [SerializeField] private StartMenuPanelHost startMenuPanelHost;
-    [SerializeField] private SettingsPanelHost settingsPanelHost;
-
-    // GOOD: Scene-level state
-    private bool _settingsActive;
-
-    // GOOD: Panel coordination
-    private void ToggleSettings()
-    {
-        _settingsActive = !_settingsActive;
-
-        if(!_settingsActive)
-            settingsPanelHost.Hide();
-        else
-            settingsPanelHost.Generate();
-    }
-
-    // GOOD: Application/navigation logic
-    private void HandlePlay() =&gt; BootstrapManager.Instance.LoadScene(GameConstants.Hub);
-    private void HandleQuit() =&gt; Application.Quit();
-}
-</code></pre>
-<p><strong>This is exactly what a Scene Controller should do!</strong></p>
-<h3 id="minor-improvements">Minor Improvements</h3>
-<p><strong>1. SubscribeEvents() is redundant</strong></p>
-<pre><code class="language-csharp">// Current:
-private void BindButtons()
-{
-    startMenuPanelHost.SubscribeEvents(); // ← This is called in Generate() already
-    startMenuPanelHost.OnPlayClicked += HandlePlay;
-    // ...
-}
-
-// Better:
-private void BindButtons()
-{
-    // Remove SubscribeEvents() - Host already does this in Generate()
-    startMenuPanelHost.OnPlayClicked += HandlePlay;
-    startMenuPanelHost.OnSettingsClicked += HandleSettings;
-    startMenuPanelHost.OnControlsClicked += HandleControls;
-    startMenuPanelHost.OnQuitClicked += HandleQuit;
-}
-</code></pre>
-<p><strong>2. Settings panel lifecycle</strong></p>
-<pre><code class="language-csharp">// Current: Settings regenerates every toggle
-private void ToggleSettings()
-{
-    _settingsActive = !_settingsActive;
-
-    if(!_settingsActive)
-        settingsPanelHost.Hide();
-    else
-        settingsPanelHost.Generate(); // ← Recreates UI every time
-}
-
-// Better: Generate once, then Show/Hide
-private void OnEnable()
-{
-    startMenuPanelHost.Generate();
-    settingsPanelHost.Generate(); // Generate both upfront
-    settingsPanelHost.Hide();     // But hide settings initially
-
-    BindButtons();
+    _startMenuPanel.Generate();
+    _settingsPanel.Generate();
+    _settingsPanel.Hide();       // generated but hidden
+    SubscribeToEvents();
 }
 
 private void ToggleSettings()
 {
     _settingsActive = !_settingsActive;
-
-    if (_settingsActive)
-        settingsPanelHost.Show();
-    else
-        settingsPanelHost.Hide();
+    if (_settingsActive) _settingsPanel.Show();
+    else _settingsPanel.Hide();
 }
 </code></pre>
-<hr />
-<h2 id="improved-version-your-style">Improved Version (Your Style)</h2>
-<pre><code class="language-csharp">using Constants;
-using Systems.Core;
-using UI.Hosts;
-using UnityEngine;
-
-namespace UI.Controllers
+<h3 id="3-showpanel-helper-for-mutual-exclusion">3. ShowPanel() helper for mutual exclusion</h3>
+<p>If you have more than two panels that need to be mutually exclusive, a helper that hides all and shows one is cleaner than managing show/hide pairs manually:</p>
+<pre><code class="language-csharp">private void ShowPanel(BasePanelHost target)
 {
-    /// &lt;summary&gt;
-    /// Scene-level controller managing the Start Menu screen.
-    /// Coordinates multiple panels and handles navigation.
-    /// &lt;/summary&gt;
-    public class StartMenuController : MonoBehaviour
-    {
-        #region Fields
-
-        [Header(&quot;Panels&quot;)]
-        [SerializeField] private StartMenuPanelHost _startMenuPanel;
-        [SerializeField] private SettingsPanelHost _settingsPanel;
-        [SerializeField] private ControlsPanelHost _controlsPanel; // If you add this later
-
-        #endregion
-
-        #region Panel Management
-
-        private void ShowPanel(BasePanelHost panel)
-        {
-            // Hide all panels
-            _startMenuPanel.Hide();
-            _settingsPanel.Hide();
-            // _controlsPanel.Hide();
-
-            // Show requested panel
-            panel.Show();
-        }
-
-        private void ShowStartMenu() =&gt; ShowPanel(_startMenuPanel);
-        private void ShowSettings() =&gt; ShowPanel(_settingsPanel);
-        // private void ShowControls() =&gt; ShowPanel(_controlsPanel);
-
-        #endregion
-
-        #region Event Subscription
-
-        private void SubscribeToEvents()
-        {
-            // Start Menu events
-            _startMenuPanel.OnPlayClicked += HandlePlay;
-            _startMenuPanel.OnSettingsClicked += HandleSettings;
-            _startMenuPanel.OnControlsClicked += HandleControls;
-            _startMenuPanel.OnQuitClicked += HandleQuit;
-
-            // Settings panel events (when you add them)
-            // _settingsPanel.OnBackClicked += ShowStartMenu;
-        }
-
-        private void UnsubscribeFromEvents()
-        {
-            _startMenuPanel.OnPlayClicked -= HandlePlay;
-            _startMenuPanel.OnSettingsClicked -= HandleSettings;
-            _startMenuPanel.OnControlsClicked -= HandleControls;
-            _startMenuPanel.OnQuitClicked -= HandleQuit;
-
-            // _settingsPanel.OnBackClicked -= ShowStartMenu;
-        }
-
-        #endregion
-
-        #region Event Handlers
-
-        private void HandlePlay()
-        {
-            BootstrapManager.Instance.LoadScene(GameConstants.Hub);
-        }
-
-        private void HandleSettings()
-        {
-            ShowSettings();
-        }
-
-        private void HandleControls()
-        {
-            // Temporary - replace with ShowControls() when panel exists
-            BootstrapManager.Instance.LoadScene(GameConstants.GoblinCampDay);
-        }
-
-        private void HandleQuit()
-        {
-            #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-            #else
-            Application.Quit();
-            #endif
-        }
-
-        #endregion
-
-        #region Unity Lifecycle
-
-        private void OnEnable()
-        {
-            // Generate all panels
-            _startMenuPanel.Generate();
-            _settingsPanel.Generate();
-            // _controlsPanel.Generate();
-
-            // Show only start menu
-            ShowStartMenu();
-
-            // Subscribe to events
-            SubscribeToEvents();
-        }
-
-        private void OnDisable()
-        {
-            UnsubscribeFromEvents();
-        }
-
-        #endregion
-    }
+    _startMenuPanel.Hide();
+    _settingsPanel.Hide();
+    target.Show();
 }
 </code></pre>
+<p>This scales without accumulating pairwise show/hide logic when you add a third or fourth panel.</p>
 <hr />
-<h2 id="when-to-add-viewmodel-in-your-3-layer-system">When to Add ViewModel (In Your 3-Layer System)</h2>
-<h3 id="current-structure-no-viewmodel-needed">Current Structure (No ViewModel Needed)</h3>
-<pre><code>StartMenuController (Scene orchestration)
-    ↓
-StartMenuPanelHost (Panel lifecycle)
-    ↓
-StartMenuPanelView (UI generation)
-</code></pre>
-<p><strong>This is perfect for simple panels!</strong></p>
-<h3 id="when-you-need-viewmodel">When You Need ViewModel</h3>
-<p><strong>Example: Settings Panel with State</strong></p>
-<pre><code>SettingsController (Scene orchestration - optional)
-    ↓
-SettingsPanelHost (Panel lifecycle)
-    ↓
-SettingsViewModel (Presentation logic) ← NEW
-    ↓
-SettingsPanelView (UI generation + binding)
-</code></pre>
-<p><strong>Example with code:</strong></p>
-<pre><code class="language-csharp">// SettingsPanelHost.cs
-public class SettingsPanelHost : BasePanelHost
-{
-    [SerializeField] private GameSettings _gameSettings;
-
-    private SettingsViewModel _viewModel;
-    private SettingsPanelView _view;
-
-    public override void Generate()
-    {
-        Dispose();
-
-        // Create ViewModel from settings
-        var model = new SettingsModel
-        {
-            Volume = _gameSettings.Volume,
-            Quality = _gameSettings.Quality
-        };
-
-        _viewModel = new SettingsViewModel(model);
-
-        // Subscribe to ViewModel events (game logic)
-        _viewModel.OnApplyRequested += ApplySettings;
-        _viewModel.OnVolumePreview += PreviewVolume;
-
-        // Create View with ViewModel
-        _view = new SettingsPanelView(
-            uiDocument.rootVisualElement,
-            styleSheet,
-            _viewModel // Pass ViewModel to View
-        );
-
-        Show();
-    }
-
-    // Game logic (Unity-specific)
-    private void PreviewVolume(float volume)
-    {
-        AudioListener.volume = volume;
-    }
-
-    private void ApplySettings()
-    {
-        var settings = _viewModel.GetCurrentSettings();
-        _gameSettings.Volume = settings.Volume;
-        _gameSettings.Quality = settings.Quality;
-        _gameSettings.Save();
-
-        // Apply to Unity
-        QualitySettings.SetQualityLevel(settings.Quality);
-    }
-
-    protected override void Dispose()
-    {
-        if (_viewModel != null)
-        {
-            _viewModel.OnApplyRequested -= ApplySettings;
-            _viewModel.OnVolumePreview -= PreviewVolume;
-        }
-
-        _view?.Dispose();
-        _view = null;
-        _viewModel = null;
-    }
-}
-</code></pre>
-<hr />
-<h2 id="complete-architecture-pattern">Complete Architecture Pattern</h2>
-<h3 id="for-simple-panels-your-startmenu">For Simple Panels (Your StartMenu)</h3>
-<pre><code>Layer 1: Scene Controller (manages multiple panels, navigation)
-    └─ StartMenuController.cs
-
-Layer 2: Panel Host (lifecycle, Show/Hide)
-    └─ StartMenuPanelHost.cs
-
-Layer 3: View (UI generation)
-    └─ StartMenuPanelView.cs
-</code></pre>
-<h3 id="for-complex-panels-settings-inventory-character-sheet">For Complex Panels (Settings, Inventory, Character Sheet)</h3>
-<pre><code>Layer 1: Scene Controller (optional - only if coordinating multiple panels)
-    └─ SettingsController.cs (optional)
-
-Layer 2: Panel Host (lifecycle, game logic)
-    └─ SettingsPanelHost.cs
-
-Layer 2.5: ViewModel (presentation logic, testable) ← NEW
-    └─ SettingsViewModel.cs
-
-Layer 3: View (UI generation + binding)
-    └─ SettingsPanelView.cs
-</code></pre>
-<hr />
-<h2 id="directory-structure-recommended">Directory Structure (Recommended)</h2>
-<pre><code>Assets/Scripts/UI/
-├── Controllers/
-│   ├── StartMenuController.cs       # Scene-level orchestration
-│   ├── GameplayHUDController.cs     # Coordinates HUD panels
-│   └── InventoryController.cs       # Coordinates inventory UI
-│
-├── Hosts/                            # Panel lifecycle managers
-│   ├── Base/
-│   │   └── BasePanelHost.cs
-│   ├── StartMenuPanelHost.cs
-│   ├── SettingsPanelHost.cs
-│   └── InventoryPanelHost.cs
-│
-├── ViewModels/                       # Presentation logic (add as needed)
-│   ├── SettingsViewModel.cs
-│   ├── InventoryViewModel.cs
-│   └── CharacterStatsViewModel.cs
-│
-├── Views/                            # UI generation
-│   ├── Base/
-│   │   └── BasePanelView.cs
-│   ├── StartMenuPanelView.cs
-│   ├── SettingsPanelView.cs
-│   └── InventoryPanelView.cs
-│
-├── Models/                           # Data structures
-│   ├── SettingsModel.cs
-│   ├── InventoryModel.cs
-│   └── CharacterStatsModel.cs
-│
-└── Common/
-    ├── ObservableProperty.cs
-    └── ObservableCollection.cs
-</code></pre>
-<hr />
-<h2 id="decision-matrix-do-i-need-viewmodel">Decision Matrix: Do I Need ViewModel?</h2>
+<h2 id="when-to-add-a-viewmodel">When to Add a ViewModel</h2>
+<p>The decision is straightforward: add a ViewModel when the View needs to display something other than raw data. If the panel contains formatting, validation, computed values, or state that affects how data is presented, that logic belongs in a ViewModel rather than the View.</p>
 <table>
 <thead>
 <tr>
-<th>Panel Type</th>
-<th>Complexity</th>
+<th>Panel type</th>
 <th>Needs ViewModel?</th>
-<th>Example</th>
+<th>Why</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Simple Menu</strong></td>
-<td>Just buttons → actions</td>
-<td>❌ NO</td>
-<td>Your StartMenu</td>
+<td>Button-only menus</td>
+<td>No</td>
+<td>No data to transform</td>
 </tr>
 <tr>
-<td><strong>Pause Menu</strong></td>
-<td>Buttons + resume/quit</td>
-<td>❌ NO</td>
-<td>Pause overlay</td>
+<td>Pause / confirmation dialogs</td>
+<td>No</td>
+<td>No state</td>
 </tr>
 <tr>
-<td><strong>Confirmation Dialog</strong></td>
-<td>Yes/No buttons</td>
-<td>❌ NO</td>
-<td>"Are you sure?"</td>
+<td>Settings with sliders</td>
+<td>Yes</td>
+<td>Volume needs formatting, validation</td>
 </tr>
 <tr>
-<td><strong>Settings Panel</strong></td>
-<td>Sliders, formatting, validation</td>
-<td>✅ YES</td>
-<td>Volume: 75%, Quality names</td>
+<td>Inventory</td>
+<td>Yes</td>
+<td>Filtering, sorting, selection state</td>
 </tr>
 <tr>
-<td><strong>Inventory</strong></td>
-<td>Filtering, sorting, selection</td>
-<td>✅ YES</td>
-<td>Filter by type, sort by value</td>
-</tr>
-<tr>
-<td><strong>Character Sheet</strong></td>
+<td>Character sheet</td>
+<td>Yes</td>
 <td>Computed stats, percentage bars</td>
-<td>✅ YES</td>
-<td>Attack: 45 (+15), Health: 80%</td>
 </tr>
 <tr>
-<td><strong>Form Input</strong></td>
-<td>Validation, error messages</td>
-<td>✅ YES</td>
-<td>"Password must be 8+ chars"</td>
-</tr>
-<tr>
-<td><strong>Live Stats HUD</strong></td>
-<td>Updating values, health %</td>
-<td>⚠️ MAYBE</td>
-<td>If formatting is complex</td>
+<td>Live HUD</td>
+<td>Maybe</td>
+<td>Depends on whether values need formatting</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Rule of Thumb:</strong></p>
-<pre><code>Does the panel have:
-- Data formatting? (percentages, dates, currency)
-- Validation logic? (forms, inputs)
-- Computed properties? (total price, health %)
-- Complex state? (filters, selections)
-
-YES → Add ViewModel
-NO  → Keep as Controller → Host → View
+<p>When you do add a ViewModel, it slots between Host and View. The Host creates it, passes it to the View, and subscribes to its events for anything that requires Unity APIs:</p>
+<pre><code>Host creates ViewModel
+Host passes ViewModel into View constructor
+View binds UI elements to ViewModel properties
+ViewModel raises events → Host handles Unity-specific side effects
+    (e.g. AudioListener.volume, QualitySettings, Save())
 </code></pre>
+<p>The ViewModel itself stays pure C# and testable. The Host is the only place where ViewModel events result in Unity API calls.</p>
 <hr />
-<h2 id="your-pattern-is-actually-superior-for-unity">Your Pattern is Actually Superior for Unity</h2>
-<p><strong>Standard MVVM:</strong></p>
-<pre><code>ViewModel → View
+<h2 id="directory-structure">Directory Structure</h2>
+<pre><code>Assets/Scripts/UI/
+├── Controllers/          # Scene-level orchestration
+├── Hosts/
+│   └── Base/             # BasePanelHost
+├── Views/
+│   └── Base/             # BasePanelView
+├── ViewModels/           # Add as panels require them
+├── Models/               # Data structures passed to ViewModels
+└── Common/               # Shared utilities (ObservableProperty, etc.)
 </code></pre>
-<p>Problems:
-- ViewModel doesn't know about panel lifecycle
-- View manages its own Show/Hide
-- No centralized panel coordination</p>
-<p><strong>Your Pattern:</strong></p>
-<pre><code>Controller (scene) → Host (panel lifecycle) → View (UI)
-                         ↓
-                    ViewModel (when needed)
-</code></pre>
-<p>Benefits:
-- ✅ Controller manages multiple panels
-- ✅ Host manages panel lifecycle + animations
-- ✅ View is pure UI generation
-- ✅ ViewModel added only when presentation logic exists
-- ✅ Clean separation of concerns</p>
+<p><code>ViewModels/</code> starts empty and grows as panels accumulate presentation logic. Keeping it separate from Views makes the distinction visible — if you're writing formatting or validation logic in a View file, it's a signal it should move.</p>
 <hr />
-<h2 id="quick-reference-your-architecture">Quick Reference: Your Architecture</h2>
-<h3 id="current-simple-panels">Current (Simple Panels)</h3>
-<pre><code class="language-csharp">// Layer 1: Scene Controller
-public class StartMenuController : MonoBehaviour
-{
-    [SerializeField] private StartMenuPanelHost _startMenuPanel;
-
-    private void OnEnable()
-    {
-        _startMenuPanel.Generate();
-        _startMenuPanel.OnPlayClicked += HandlePlay;
-    }
-
-    private void HandlePlay()
-    {
-        BootstrapManager.Instance.LoadScene(&quot;Hub&quot;);
-    }
-}
-
-// Layer 2: Panel Host
-public class StartMenuPanelHost : BasePanelHost
-{
-    public event Action OnPlayClicked;
-    private StartMenuPanelView _view;
-
-    public override void Generate()
-    {
-        _view = new StartMenuPanelView(uiDocument.rootVisualElement, styleSheet);
-        _view.OnPlayClicked += () =&gt; OnPlayClicked?.Invoke();
-        Show();
-    }
-}
-
-// Layer 3: View
-public class StartMenuPanelView : BasePanelView
-{
-    public event Action OnPlayClicked;
-
-    protected override void GenerateUI(VisualElement root)
-    {
-        var playButton = UIToolkitFactory.CreateButton(&quot;Play&quot;);
-        playButton.clicked += () =&gt; OnPlayClicked?.Invoke();
-        // ...
-    }
-}
-</code></pre>
-<h3 id="with-viewmodel-complex-panels">With ViewModel (Complex Panels)</h3>
-<pre><code class="language-csharp">// Layer 2: Panel Host
-public class SettingsPanelHost : BasePanelHost
-{
-    private SettingsViewModel _viewModel;
-    private SettingsPanelView _view;
-
-    public override void Generate()
-    {
-        var model = new SettingsModel { Volume = 0.5f };
-        _viewModel = new SettingsViewModel(model);
-        _viewModel.OnVolumePreview += volume =&gt; AudioListener.volume = volume;
-
-        _view = new SettingsPanelView(
-            uiDocument.rootVisualElement,
-            styleSheet,
-            _viewModel // Pass ViewModel
-        );
-
-        Show();
-    }
-}
-
-// Layer 2.5: ViewModel
-public class SettingsViewModel
-{
-    public ObservableProperty&lt;float&gt; Volume { get; }
-    public ObservableProperty&lt;string&gt; VolumeText { get; }
-    public event Action&lt;float&gt; OnVolumePreview;
-
-    public void UpdateVolume(float value)
-    {
-        Volume.Value = value;
-        VolumeText.Value = $&quot;Volume: {value:P0}&quot;;
-        OnVolumePreview?.Invoke(value);
-    }
-}
-
-// Layer 3: View
-public class SettingsPanelView : BasePanelView
-{
-    private SettingsViewModel _viewModel;
-
-    public SettingsPanelView(VisualElement root, StyleSheet styleSheet, SettingsViewModel viewModel)
-    {
-        _viewModel = viewModel;
-        GenerateUI(root);
-        BindToViewModel();
-    }
-
-    private void BindToViewModel()
-    {
-        var slider = Container.Q&lt;Slider&gt;(&quot;VolumeSlider&quot;);
-        slider.RegisterValueChangedCallback(evt =&gt; _viewModel.UpdateVolume(evt.newValue));
-
-        var label = Container.Q&lt;Label&gt;(&quot;VolumeLabel&quot;);
-        _viewModel.VolumeText.ValueChanged += text =&gt; label.text = text;
-    }
-}
-</code></pre>
+<h2 id="what-this-architecture-is-good-at">What This Architecture Is Good At</h2>
+<p><strong>Lifecycle is explicit.</strong> Generate, Show, Hide, and Dispose are named operations on the Host rather than implicit behaviour scattered across OnEnable/OnDisable. This makes panel state predictable.</p>
+<p><strong>The Controller doesn't touch UITK.</strong> All UIDocument references live in Hosts. The Controller only calls methods on Hosts and handles events from them. If the UI implementation changes (e.g. switching a panel from code-generated to UXML-driven), the Controller doesn't change.</p>
+<p><strong>Views are testable without Unity.</strong> Pure C# Views with no MonoBehaviour dependency can be instantiated in unit tests if needed. The Factory they call also has no Unity dependencies in principle.</p>
 <hr />
-<h2 id="summary">Summary</h2>
-<p><strong>Your Current Architecture:</strong></p>
-<pre><code>✅ Scene Controller (multi-panel coordination)
-✅ Panel Host (lifecycle, Show/Hide, animations)
-✅ View (UI generation)
-⚠️ ViewModel (add only when needed)
-</code></pre>
-<p><strong>This is BETTER than standard MVVM for Unity because:</strong>
-1. Separates scene-level vs panel-level concerns
-2. Panel lifecycle is explicit (Host layer)
-3. Animations/transitions managed in one place
-4. ViewModel only added when there's actual presentation logic</p>
-<p><strong>What to change:</strong>
-1. Minor cleanup in StartMenuController (remove redundant SubscribeEvents call)
-2. Consider generating panels once, then Show/Hide
-3. Add ViewModel layer when panels get complex (Settings, Inventory, Stats)</p>
-<p><strong>You're already doing it right!</strong> Just add ViewModel when you have:
-- Formatting logic
-- Validation
-- Computed properties
-- Complex state management</p>
-<p>For simple menus like your StartMenu, your current pattern is perfect! 🎯</p>
+<h2 id="what-to-watch-as-it-scales">What to Watch as It Scales</h2>
+<p><strong>Host proliferation.</strong> As the project grows, you'll have many Hosts. Consider whether BasePanelHost needs more shared behaviour (e.g. standard fade animations) or whether each Host reimplements the same Show/Hide pattern independently.</p>
+<p><strong>Event chain length.</strong> Currently: View fires event → Host rebroadcasts → Controller handles. For simple panels that's fine. If you find Controllers subscribing to events that tunnel through multiple Hosts, consider whether a shared event bus or direct reference is cleaner at that point.</p>
+<p><strong>Factory as the single source of element creation.</strong> The Factory approach means visual consistency is enforced at creation time rather than per-panel. As the style system grows (ScriptableObject themes, USS variable swapping), the Factory is the natural place to apply those — keep it the only place elements are instantiated.</p>
+<hr />
+<p><em>Architecture description reflects the actual implementation. Improvement suggestions are provisional — verify against the full codebase before applying.</em></p>
 
 
 

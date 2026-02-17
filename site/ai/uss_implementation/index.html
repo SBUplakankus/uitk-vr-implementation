@@ -1,0 +1,2172 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sbuplakankus.github.io/uitk-vr-implementation/ai/uss_implementation/">
+      
+      
+        <link rel="prev" href="../cs_implementation/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/tablet.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>USS Implementation - UITK Implementation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#uss-theming-scriptableobjects-variables-runtime-switching" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="UITK Implementation" class="md-header__button md-logo" aria-label="UITK Implementation" data-md-component="logo">
+      
+  <img src="../../assets/images/tablet.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            UITK Implementation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              USS Implementation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4m0-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SBUplakankus/uitk-vr-implementation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="UITK Implementation" class="md-nav__button md-logo" aria-label="UITK Implementation" data-md-component="logo">
+      
+  <img src="../../assets/images/tablet.svg" alt="logo">
+
+    </a>
+    UITK Implementation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SBUplakankus/uitk-vr-implementation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/uitk_refs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/shader_graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shader Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/vr_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VR Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research/web_to_uss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web To USS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bg_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bagel Game Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../industry_uitk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Industry UITK Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../layer_architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mvvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M-V-VM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cs_implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C# Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USS Implementation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USS Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-tokens-the-token-naming-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Tokens — the Token Naming Convention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uitheme-scriptableobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UITheme ScriptableObject
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#themeregistry-scriptableobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ThemeRegistry ScriptableObject
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uss-structure-component-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        USS Structure — Component Files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="USS Structure — Component Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-variablesuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        base-variables.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#theme-darkuss-theme-high-contrastuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        theme-dark.uss / theme-high-contrast.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buttonsuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        buttons.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panelsuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        panels.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typographyuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typography.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inputsuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        inputs.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#animationsuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        animations.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uss-load-order-in-panel-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        USS Load Order in Panel Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thememanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ThemeManager
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ThemeManager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setcustomproperty-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetCustomProperty Extension
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#userpreferences-scriptableobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserPreferences ScriptableObject
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-it-into-the-settings-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring It into the Settings Host
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#designer-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designer Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-tokens-the-token-naming-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Tokens — the Token Naming Convention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uitheme-scriptableobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UITheme ScriptableObject
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#themeregistry-scriptableobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ThemeRegistry ScriptableObject
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uss-structure-component-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        USS Structure — Component Files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="USS Structure — Component Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#base-variablesuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        base-variables.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#theme-darkuss-theme-high-contrastuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        theme-dark.uss / theme-high-contrast.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buttonsuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        buttons.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panelsuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        panels.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typographyuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typography.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inputsuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        inputs.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#animationsuss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        animations.uss
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uss-load-order-in-panel-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        USS Load Order in Panel Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thememanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ThemeManager
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ThemeManager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setcustomproperty-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetCustomProperty Extension
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#userpreferences-scriptableobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UserPreferences ScriptableObject
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-it-into-the-settings-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wiring It into the Settings Host
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#designer-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designer Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="uss-theming-scriptableobjects-variables-runtime-switching">USS Theming — ScriptableObjects, Variables, Runtime Switching</h1>
+<blockquote>
+<p><strong>Approach</strong>: Swap full StyleSheet assets for major themes + patch CSS custom
+properties for user tweaks<br />
+<strong>Designer control</strong>: Colours, typography, spacing, animation<br />
+<strong>Persistence</strong>: PlayerPrefs<br />
+<strong>Note</strong>: Code samples are demonstrative — not production-complete</p>
+</blockquote>
+<hr />
+<h2 id="system-overview">System Overview</h2>
+<pre><code>UITheme (ScriptableObject)
+    │  stores all designable values as serialized fields
+    │  inspector-editable, no code required for designers
+    │
+    ▼
+UIThemePreset (USS asset, one per theme)
+    │  declares :root custom properties matching the ScriptableObject fields
+    │  applied as the base stylesheet on the Panel Settings
+    │
+    ▼
+ThemeManager (MonoBehaviour singleton)
+    │  swaps StyleSheet assets for theme changes
+    │  patches individual custom properties for user tweaks
+    │  writes preferences to PlayerPrefs
+    │
+    ▼
+Component USS files (buttons.uss, panels.uss, typography.uss …)
+    │  consume var(--token-name) throughout
+    │  never hardcode colour or size values
+</code></pre>
+<p>The key principle: <strong>USS files never contain hardcoded values</strong>. Every colour, size, duration, and font reference goes through a custom property (<code>var(--token)</code>). The theme system controls what those tokens resolve to. Swapping a theme changes everything in one operation.</p>
+<hr />
+<h2 id="design-tokens-the-token-naming-convention">Design Tokens — the Token Naming Convention</h2>
+<p>All custom properties follow a three-level naming convention:</p>
+<pre><code>--category-role-variant
+
+--color-primary            base primary colour
+--color-primary-hover      primary on hover
+--color-primary-disabled   primary when disabled
+--color-surface            panel background
+--color-surface-raised     card / elevated surface
+--color-on-surface         text sitting on a surface
+--color-on-primary         text sitting on a primary button
+
+--size-text-body           body text size
+--size-text-label          label text size
+--size-text-title-sm       small title
+--size-text-title-lg       large title
+
+--space-xs                 4px
+--space-sm                 8px
+--space-md                 16px
+--space-lg                 24px
+--space-xl                 40px
+
+--radius-sm                4px
+--radius-md                8px
+--radius-lg                16px
+--radius-pill              999px
+
+--duration-fast            0.1s
+--duration-normal          0.25s
+--duration-slow            0.4s
+--ease-out                 cubic-bezier(0.0, 0.0, 0.2, 1)
+</code></pre>
+<p>Naming things this way means a designer can read any USS rule and know exactly what token to change to affect it, without reading C# code.</p>
+<hr />
+<h2 id="uitheme-scriptableobject">UITheme ScriptableObject</h2>
+<p>The ScriptableObject is the designer-facing interface. Every property maps to a CSS custom property token. Field names mirror token names to make the mapping obvious.</p>
+<pre><code class="language-csharp">[CreateAssetMenu(fileName = &quot;NewTheme&quot;, menuName = &quot;Training App/UI Theme&quot;)]
+public class UITheme : ScriptableObject
+{
+    [Header(&quot;Meta&quot;)]
+    public string ThemeName = &quot;Default&quot;;
+    public StyleSheet StyleSheetAsset; // the USS file to swap in
+
+    [Header(&quot;Colours — Primary&quot;)]
+    public Color ColorPrimary         = new Color(0.27f, 0.51f, 0.95f);
+    public Color ColorPrimaryHover    = new Color(0.38f, 0.60f, 1.00f);
+    public Color ColorPrimaryDisabled = new Color(0.27f, 0.51f, 0.95f, 0.4f);
+    public Color ColorOnPrimary       = Color.white;
+
+    [Header(&quot;Colours — Surface&quot;)]
+    public Color ColorBackground      = new Color(0.06f, 0.06f, 0.10f);
+    public Color ColorSurface         = new Color(0.10f, 0.12f, 0.18f);
+    public Color ColorSurfaceRaised   = new Color(0.14f, 0.17f, 0.24f);
+    public Color ColorOnSurface       = new Color(0.90f, 0.90f, 0.95f);
+    public Color ColorOnSurfaceMuted  = new Color(0.55f, 0.57f, 0.65f);
+
+    [Header(&quot;Colours — Semantic&quot;)]
+    public Color ColorSuccess         = new Color(0.20f, 0.80f, 0.50f);
+    public Color ColorWarning         = new Color(0.95f, 0.75f, 0.20f);
+    public Color ColorError           = new Color(0.95f, 0.35f, 0.35f);
+
+    [Header(&quot;Colours — Glass / Overlay&quot;)]
+    [Range(0f, 1f)]
+    public float GlassFillAlpha       = 0.12f;
+    [Range(0f, 1f)]
+    public float GlassBorderAlpha     = 0.15f;
+
+    [Header(&quot;Typography&quot;)]
+    public Font  BodyFont;
+    public float SizeTextBody         = 16f;
+    public float SizeTextLabel        = 13f;
+    public float SizeTextCaption      = 11f;
+    public float SizeTextTitleSm      = 20f;
+    public float SizeTextTitleLg      = 32f;
+
+    [Header(&quot;Spacing&quot;)]
+    public float SpaceXS              = 4f;
+    public float SpaceSM              = 8f;
+    public float SpaceMD              = 16f;
+    public float SpaceLG              = 24f;
+    public float SpaceXL              = 40f;
+
+    [Header(&quot;Border Radius&quot;)]
+    public float RadiusSM             = 4f;
+    public float RadiusMD             = 8f;
+    public float RadiusLG             = 16f;
+
+    [Header(&quot;Animation&quot;)]
+    public float DurationFast         = 0.1f;
+    public float DurationNormal       = 0.25f;
+    public float DurationSlow         = 0.4f;
+}
+</code></pre>
+<p>Designers create theme assets via <strong>Assets → Create → Training App → UI Theme</strong>, fill in the inspector, and hand the asset to a developer to register. No code is touched.</p>
+<hr />
+<h2 id="themeregistry-scriptableobject">ThemeRegistry ScriptableObject</h2>
+<p>A single asset that lists all available themes. Referenced by <code>ThemeManager</code> and the settings dropdown. Designers add themes here by dragging assets in — no code required.</p>
+<pre><code class="language-csharp">[CreateAssetMenu(fileName = &quot;ThemeRegistry&quot;, menuName = &quot;Training App/Theme Registry&quot;)]
+public class ThemeRegistry : ScriptableObject
+{
+    public UITheme DefaultTheme;
+    public List&lt;UITheme&gt; AllThemes = new();
+
+    public UITheme GetByName(string name)
+        =&gt; AllThemes.Find(t =&gt; t.ThemeName == name) ?? DefaultTheme;
+
+    public List&lt;string&gt; GetThemeNames()
+        =&gt; AllThemes.ConvertAll(t =&gt; t.ThemeName);
+}
+</code></pre>
+<hr />
+<h2 id="uss-structure-component-files">USS Structure — Component Files</h2>
+<p>USS files are split by concern. They never hardcode values — everything goes through tokens.</p>
+<h3 id="base-variablesuss">base-variables.uss</h3>
+<p>This file is the fallback. It declares every token with a default value so the UI is never broken if a theme hasn't been applied yet. Loaded first in Panel Settings.</p>
+<pre><code class="language-css">:root {
+    /* Colours */
+    --color-primary:          rgb(69, 130, 242);
+    --color-primary-hover:    rgb(97, 153, 255);
+    --color-primary-disabled: rgba(69, 130, 242, 0.4);
+    --color-on-primary:       rgb(255, 255, 255);
+
+    --color-background:       rgb(15, 15, 26);
+    --color-surface:          rgb(26, 31, 46);
+    --color-surface-raised:   rgb(36, 43, 64);
+    --color-on-surface:       rgb(230, 230, 242);
+    --color-on-surface-muted: rgb(140, 145, 166);
+
+    --color-success:          rgb(51, 204, 128);
+    --color-warning:          rgb(242, 191, 51);
+    --color-error:            rgb(242, 89, 89);
+
+    /* Typography */
+    --size-text-body:         16px;
+    --size-text-label:        13px;
+    --size-text-caption:      11px;
+    --size-text-title-sm:     20px;
+    --size-text-title-lg:     32px;
+
+    /* Spacing */
+    --space-xs:               4px;
+    --space-sm:               8px;
+    --space-md:               16px;
+    --space-lg:               24px;
+    --space-xl:               40px;
+
+    /* Radius */
+    --radius-sm:              4px;
+    --radius-md:              8px;
+    --radius-lg:              16px;
+    --radius-pill:            999px;
+
+    /* Animation */
+    --duration-fast:          0.1s;
+    --duration-normal:        0.25s;
+    --duration-slow:          0.4s;
+}
+</code></pre>
+<h3 id="theme-darkuss-theme-high-contrastuss">theme-dark.uss / theme-high-contrast.uss</h3>
+<p>One file per theme. Overrides only the tokens that differ from the default. Swapping this file in is the entire theme change operation.</p>
+<pre><code class="language-css">/* theme-high-contrast.uss — only overrides what changes */
+:root {
+    --color-primary:          rgb(255, 255, 0);
+    --color-primary-hover:    rgb(255, 255, 153);
+    --color-on-primary:       rgb(0, 0, 0);
+
+    --color-background:       rgb(0, 0, 0);
+    --color-surface:          rgb(20, 20, 20);
+    --color-on-surface:       rgb(255, 255, 255);
+    --color-on-surface-muted: rgb(200, 200, 200);
+}
+</code></pre>
+<h3 id="buttonsuss">buttons.uss</h3>
+<pre><code class="language-css">.btn-primary {
+    background-color: var(--color-primary);
+    color:            var(--color-on-primary);
+    border-radius:    var(--radius-md);
+    padding:          var(--space-sm) var(--space-md);
+    font-size:        var(--size-text-label);
+
+    transition-property:   background-color, scale;
+    transition-duration:   var(--duration-fast), var(--duration-fast);
+    transition-timing-function: ease-out;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    scale:            1.03 1.03;
+}
+
+.btn-primary:active {
+    scale: 0.97 0.97;
+}
+
+.btn-primary:disabled {
+    background-color: var(--color-primary-disabled);
+    opacity:          0.6;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color:            var(--color-primary);
+    border-color:     var(--color-primary);
+    border-width:     1px;
+    border-radius:    var(--radius-md);
+    padding:          var(--space-sm) var(--space-md);
+    font-size:        var(--size-text-label);
+
+    transition-property: border-color, color;
+    transition-duration: var(--duration-fast);
+}
+
+.btn-secondary:hover {
+    border-color: var(--color-primary-hover);
+    color:        var(--color-primary-hover);
+}
+
+.btn-ghost {
+    background-color: transparent;
+    color:            var(--color-on-surface-muted);
+    border-width:     0;
+    padding:          var(--space-sm);
+    border-radius:    var(--radius-sm);
+
+    transition-property: color, background-color;
+    transition-duration: var(--duration-fast);
+}
+
+.btn-ghost:hover {
+    color:            var(--color-on-surface);
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.btn-tab {
+    background-color: transparent;
+    color:            var(--color-on-surface-muted);
+    border-width:     0 0 2px 0;
+    border-color:     transparent;
+    border-radius:    0;
+    padding:          var(--space-sm) var(--space-md);
+    font-size:        var(--size-text-label);
+
+    transition-property: color, border-color;
+    transition-duration: var(--duration-fast);
+}
+
+.btn-tab--active {
+    color:        var(--color-primary);
+    border-color: var(--color-primary);
+}
+</code></pre>
+<h3 id="panelsuss">panels.uss</h3>
+<pre><code class="language-css">.panel-root {
+    flex-grow:        1;
+    background-color: var(--color-background);
+    padding:          var(--space-lg);
+}
+
+.panel-header {
+    flex-direction:  row;
+    justify-content: space-between;
+    align-items:     center;
+    margin-bottom:   var(--space-lg);
+    padding-bottom:  var(--space-md);
+    border-bottom-width: 1px;
+    border-color:    rgba(255, 255, 255, 0.08);
+}
+
+.panel-body {
+    flex-grow: 1;
+    gap:       var(--space-md);
+}
+
+.panel-footer {
+    margin-top:      var(--space-lg);
+    padding-top:     var(--space-md);
+    border-top-width: 1px;
+    border-color:    rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-width:     1px;
+    border-color:     rgba(255, 255, 255, 0.12);
+    border-radius:    var(--radius-lg);
+    padding:          var(--space-lg);
+}
+
+.card {
+    background-color: var(--color-surface-raised);
+    border-radius:    var(--radius-md);
+    padding:          var(--space-md);
+    margin-bottom:    var(--space-sm);
+
+    transition-property: background-color;
+    transition-duration: var(--duration-fast);
+}
+
+.card:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.card--locked {
+    opacity: 0.45;
+}
+
+.divider {
+    height:           1px;
+    background-color: rgba(255, 255, 255, 0.08);
+    margin:           var(--space-md) 0;
+}
+
+.progress-track {
+    height:           6px;
+    background-color: var(--color-surface-raised);
+    border-radius:    var(--radius-pill);
+    overflow:         hidden;
+}
+
+.progress-fill {
+    height:           100%;
+    background-color: var(--color-primary);
+    border-radius:    var(--radius-pill);
+
+    transition-property: width;
+    transition-duration: var(--duration-slow);
+}
+</code></pre>
+<h3 id="typographyuss">typography.uss</h3>
+<pre><code class="language-css">.title-large {
+    font-size:    var(--size-text-title-lg);
+    color:        var(--color-on-surface);
+    -unity-font-style: bold;
+    letter-spacing: 0.5px;
+}
+
+.title-medium {
+    font-size:    var(--size-text-title-sm);
+    color:        var(--color-on-surface);
+    -unity-font-style: bold;
+}
+
+.body-text {
+    font-size: var(--size-text-body);
+    color:     var(--color-on-surface);
+}
+
+.label-text {
+    font-size: var(--size-text-label);
+    color:     var(--color-on-surface);
+    -unity-font-style: bold;
+}
+
+.caption-text {
+    font-size: var(--size-text-caption);
+    color:     var(--color-on-surface-muted);
+}
+
+.input-label {
+    font-size:     var(--size-text-caption);
+    color:         var(--color-on-surface-muted);
+    margin-bottom: var(--space-xs);
+    -unity-font-style: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase; /* Note: check Unity 6.3 text-transform support */
+}
+</code></pre>
+<h3 id="inputsuss">inputs.uss</h3>
+<pre><code class="language-css">.input-group {
+    gap:           var(--space-xs);
+    margin-bottom: var(--space-md);
+}
+
+.input-field {
+    background-color: var(--color-surface-raised);
+    border-color:     rgba(255, 255, 255, 0.12);
+    border-width:     1px;
+    border-radius:    var(--radius-md);
+    color:            var(--color-on-surface);
+    padding:          var(--space-sm) var(--space-md);
+    font-size:        var(--size-text-body);
+
+    transition-property: border-color;
+    transition-duration: var(--duration-fast);
+}
+
+.input-field:focus {
+    border-color: var(--color-primary);
+}
+
+.input-field--error {
+    border-color: var(--color-error);
+}
+
+/* Slider track */
+.input-field .unity-base-slider__tracker {
+    background-color: var(--color-surface-raised);
+    border-radius:    var(--radius-pill);
+    height:           4px;
+}
+
+/* Slider fill */
+.input-field .unity-base-slider__dragger {
+    background-color: var(--color-primary);
+    border-radius:    var(--radius-pill);
+    width:            18px;
+    height:           18px;
+    margin-top:       -7px;
+    border-width:     0;
+}
+
+/* Tab bar */
+.tab-bar {
+    flex-direction: row;
+    border-bottom-width: 1px;
+    border-color:   rgba(255, 255, 255, 0.08);
+    margin-bottom:  var(--space-md);
+}
+</code></pre>
+<h3 id="animationsuss">animations.uss</h3>
+<pre><code class="language-css">/* Panel entry — add class on Show(), remove on Hide() */
+.fade-in {
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: var(--duration-normal);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Step list items */
+.step-item {
+    flex-direction: row;
+    align-items:    center;
+    padding:        var(--space-sm) var(--space-md);
+    border-radius:  var(--radius-sm);
+    gap:            var(--space-sm);
+    color:          var(--color-on-surface-muted);
+
+    transition-property: color, background-color;
+    transition-duration: var(--duration-fast);
+}
+
+.step-item--active {
+    color:            var(--color-on-surface);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.step-item--complete {
+    color: var(--color-success);
+}
+
+/* Reduced motion support — add to root element when user opts in */
+.reduced-motion * {
+    transition-duration: 0s !important;
+}
+</code></pre>
+<hr />
+<h2 id="uss-load-order-in-panel-settings">USS Load Order in Panel Settings</h2>
+<p>Order matters — later files override earlier ones for the same selector.</p>
+<pre><code>Panel Settings → Style Sheets (loaded in this order):
+  1. base-variables.uss    ← token defaults, never removed
+  2. theme-dark.uss        ← swapped for theme changes
+  3. typography.uss        ← consumes tokens
+  4. panels.uss
+  5. buttons.uss
+  6. inputs.uss
+  7. animations.uss
+</code></pre>
+<p>Only slot 2 changes at runtime. Everything else stays loaded.</p>
+<hr />
+<h2 id="thememanager">ThemeManager</h2>
+<p>Handles stylesheet swapping and individual token patching. The patching path is used for user tweaks (e.g. a custom accent colour) that don't warrant a full theme swap.</p>
+<pre><code class="language-csharp">public class ThemeManager : MonoBehaviour
+{
+    public static ThemeManager Instance { get; private set; }
+
+    [SerializeField] private ThemeRegistry _registry;
+    [SerializeField] private PanelSettings _panelSettings; // drag in from inspector
+
+    private UITheme   _activeTheme;
+    private StyleSheet _activeThemeSheet;
+
+    // ── Lifecycle ──────────────────────────────────────────────────────────
+
+    private void Awake()
+    {
+        if (Instance != null) { Destroy(gameObject); return; }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        var savedTheme = PlayerPrefs.GetString(&quot;ThemeName&quot;, _registry.DefaultTheme.ThemeName);
+        Apply(_registry.GetByName(savedTheme));
+    }
+
+    // ── Public API ─────────────────────────────────────────────────────────
+
+    // Called by SettingsHost when a theme is selected
+    public void Apply(string themeName)
+        =&gt; Apply(_registry.GetByName(themeName));
+
+    public void Apply(UITheme theme)
+    {
+        if (theme == null) return;
+
+        SwapThemeStyleSheet(theme);
+        PatchTokensFromTheme(theme);
+
+        _activeTheme = theme;
+        PlayerPrefs.SetString(&quot;ThemeName&quot;, theme.ThemeName);
+    }
+
+    // Patch a single colour token — for user accent colour customisation
+    public void PatchColor(string token, Color color)
+    {
+        var root = GetPanelRoot();
+        if (root == null) return;
+        root.style.SetCustomProperty(token, color);
+    }
+
+    public void SetHighContrast(bool on)
+    {
+        var root = GetPanelRoot();
+        if (root == null) return;
+        root.EnableInClassList(&quot;high-contrast&quot;, on);
+        PlayerPrefs.SetInt(&quot;HighContrast&quot;, on ? 1 : 0);
+    }
+
+    public void SetReducedMotion(bool on)
+    {
+        var root = GetPanelRoot();
+        if (root == null) return;
+        root.EnableInClassList(&quot;reduced-motion&quot;, on);
+        PlayerPrefs.SetInt(&quot;ReducedMotion&quot;, on ? 1 : 0);
+    }
+
+    // ── Internal ──────────────────────────────────────────────────────────
+
+    private void SwapThemeStyleSheet(UITheme theme)
+    {
+        if (theme.StyleSheetAsset == null) return;
+
+        var root = GetPanelRoot();
+        if (root == null) return;
+
+        // Remove previous theme sheet if present
+        if (_activeThemeSheet != null &amp;&amp; root.styleSheets.Contains(_activeThemeSheet))
+            root.styleSheets.Remove(_activeThemeSheet);
+
+        // Insert theme sheet at index 1 (after base-variables, before components)
+        root.styleSheets.Insert(1, theme.StyleSheetAsset);
+        _activeThemeSheet = theme.StyleSheetAsset;
+    }
+
+    private void PatchTokensFromTheme(UITheme theme)
+    {
+        var root = GetPanelRoot();
+        if (root == null) return;
+
+        // Colours
+        root.style.SetCustomProperty(&quot;--color-primary&quot;,          theme.ColorPrimary);
+        root.style.SetCustomProperty(&quot;--color-primary-hover&quot;,    theme.ColorPrimaryHover);
+        root.style.SetCustomProperty(&quot;--color-primary-disabled&quot;, theme.ColorPrimaryDisabled);
+        root.style.SetCustomProperty(&quot;--color-on-primary&quot;,       theme.ColorOnPrimary);
+        root.style.SetCustomProperty(&quot;--color-background&quot;,       theme.ColorBackground);
+        root.style.SetCustomProperty(&quot;--color-surface&quot;,          theme.ColorSurface);
+        root.style.SetCustomProperty(&quot;--color-surface-raised&quot;,   theme.ColorSurfaceRaised);
+        root.style.SetCustomProperty(&quot;--color-on-surface&quot;,       theme.ColorOnSurface);
+        root.style.SetCustomProperty(&quot;--color-on-surface-muted&quot;, theme.ColorOnSurfaceMuted);
+        root.style.SetCustomProperty(&quot;--color-success&quot;,          theme.ColorSuccess);
+        root.style.SetCustomProperty(&quot;--color-warning&quot;,          theme.ColorWarning);
+        root.style.SetCustomProperty(&quot;--color-error&quot;,            theme.ColorError);
+
+        // Spacing
+        root.style.SetCustomProperty(&quot;--space-xs&quot;, new Length(theme.SpaceXS, LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--space-sm&quot;, new Length(theme.SpaceSM, LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--space-md&quot;, new Length(theme.SpaceMD, LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--space-lg&quot;, new Length(theme.SpaceLG, LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--space-xl&quot;, new Length(theme.SpaceXL, LengthUnit.Pixel));
+
+        // Typography
+        root.style.SetCustomProperty(&quot;--size-text-body&quot;,     new Length(theme.SizeTextBody,     LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--size-text-label&quot;,    new Length(theme.SizeTextLabel,    LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--size-text-caption&quot;,  new Length(theme.SizeTextCaption,  LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--size-text-title-sm&quot;, new Length(theme.SizeTextTitleSm,  LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--size-text-title-lg&quot;, new Length(theme.SizeTextTitleLg,  LengthUnit.Pixel));
+
+        // Radius
+        root.style.SetCustomProperty(&quot;--radius-sm&quot;, new Length(theme.RadiusSM, LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--radius-md&quot;, new Length(theme.RadiusMD, LengthUnit.Pixel));
+        root.style.SetCustomProperty(&quot;--radius-lg&quot;, new Length(theme.RadiusLG, LengthUnit.Pixel));
+
+        // Animation
+        root.style.SetCustomProperty(&quot;--duration-fast&quot;,   new TimeValue(theme.DurationFast,   TimeUnit.Second));
+        root.style.SetCustomProperty(&quot;--duration-normal&quot;, new TimeValue(theme.DurationNormal, TimeUnit.Second));
+        root.style.SetCustomProperty(&quot;--duration-slow&quot;,   new TimeValue(theme.DurationSlow,   TimeUnit.Second));
+    }
+
+    private VisualElement GetPanelRoot()
+        =&gt; _panelSettings?.visualTree?.rootVisualElement;
+}
+</code></pre>
+<h3 id="setcustomproperty-extension">SetCustomProperty Extension</h3>
+<p>Unity 6.3 doesn't yet expose a fully clean public API for setting arbitrary custom properties on a <code>IStyle</code>. This extension method handles the current workaround using the inline style override path. Verify against your Unity version — this API surface is actively evolving.</p>
+<pre><code class="language-csharp">public static class StyleExtensions
+{
+    public static void SetCustomProperty(this IStyle style, string property, Color value)
+    {
+        // Unity 6.x: custom property patching on VisualElement inline styles
+        // The exact API depends on Unity version — check release notes for your build.
+        // This is the pattern used in Unity's own samples as of 6.3.
+        var colorValue = new StyleColor(value);
+        style.SetCustomProperty(property, colorValue.ToString());
+    }
+
+    public static void SetCustomProperty(this IStyle style, string property, Length value)
+    {
+        style.SetCustomProperty(property, value.ToString());
+    }
+
+    public static void SetCustomProperty(this IStyle style, string property, TimeValue value)
+    {
+        style.SetCustomProperty(property, $&quot;{value.value}s&quot;);
+    }
+}
+</code></pre>
+<hr />
+<h2 id="userpreferences-scriptableobject">UserPreferences ScriptableObject</h2>
+<p>Separate from theme presets — this holds the user's personal overrides and accessibility flags. Saved to <code>PlayerPrefs</code> as JSON.</p>
+<pre><code class="language-csharp">[CreateAssetMenu(fileName = &quot;UserPreferences&quot;, menuName = &quot;Training App/User Preferences&quot;)]
+public class UserPreferences : ScriptableObject
+{
+    [Header(&quot;Theme&quot;)]
+    public string SelectedTheme   = &quot;Default&quot;;
+
+    [Header(&quot;Accessibility&quot;)]
+    public bool   HighContrast    = false;
+    public bool   ReducedMotion   = false;
+
+    [Header(&quot;Custom Accent&quot;)]
+    public bool   UseCustomAccent = false;
+    public Color  CustomAccent    = new Color(0.27f, 0.51f, 0.95f);
+
+    private const string PrefsKey = &quot;UserPreferences&quot;;
+
+    public void Save()
+    {
+        PlayerPrefs.SetString(PrefsKey, JsonUtility.ToJson(this));
+        PlayerPrefs.Save();
+    }
+
+    public void Load()
+    {
+        if (PlayerPrefs.HasKey(PrefsKey))
+            JsonUtility.FromJsonOverwrite(PlayerPrefs.GetString(PrefsKey), this);
+    }
+
+    public void Apply(ThemeManager themeManager)
+    {
+        themeManager.Apply(SelectedTheme);
+        themeManager.SetHighContrast(HighContrast);
+        themeManager.SetReducedMotion(ReducedMotion);
+
+        if (UseCustomAccent)
+            themeManager.PatchColor(&quot;--color-primary&quot;, CustomAccent);
+    }
+}
+</code></pre>
+<hr />
+<h2 id="wiring-it-into-the-settings-host">Wiring It into the Settings Host</h2>
+<p>The Settings Host now connects the View's events to both the theme system and the preferences object.</p>
+<pre><code class="language-csharp">public class SettingsPanelHost : BasePanelHost, IPokeTarget
+{
+    [SerializeField] private UserPreferences _prefs;
+
+    public event Action OnBackRequested;
+
+    private SettingsPanelView _view;
+
+    public override void Generate()
+    {
+        base.Generate();
+        _view = new SettingsPanelView(Root);
+
+        _view.OnBackClicked         += () =&gt; OnBackRequested?.Invoke();
+
+        _view.OnThemeChanged        += name =&gt;
+        {
+            _prefs.SelectedTheme = name;
+            _prefs.Save();
+            ThemeManager.Instance.Apply(name);
+        };
+
+        _view.OnHighContrastChanged += on =&gt;
+        {
+            _prefs.HighContrast = on;
+            _prefs.Save();
+            ThemeManager.Instance.SetHighContrast(on);
+        };
+
+        _view.OnMasterVolumeChanged += value =&gt;
+        {
+            _prefs.MasterVolume = value;  // add to UserPreferences if needed
+            AudioManager.SetMaster(value);
+        };
+
+        Hide();
+    }
+
+    public override void Show()
+    {
+        _view?.SetValues(
+            AudioManager.Master,
+            AudioManager.Music,
+            AudioManager.SFX,
+            _prefs.SelectedTheme,
+            _prefs.HighContrast
+        );
+        base.Show();
+    }
+
+    public void OnPoked(string buttonId) =&gt; _view?.HandlePoke(buttonId);
+}
+</code></pre>
+<hr />
+<h2 id="designer-workflow">Designer Workflow</h2>
+<p>With this setup, a designer can:</p>
+<ol>
+<li>
+<p><strong>Create a new theme</strong>: Assets → Create → Training App → UI Theme, fill in the inspector colour pickers and sliders, drag the corresponding USS file into the StyleSheetAsset field.</p>
+</li>
+<li>
+<p><strong>Register the theme</strong>: Drag the new asset into the <code>ThemeRegistry.AllThemes</code> list. It will appear automatically in the settings dropdown.</p>
+</li>
+<li>
+<p><strong>Adjust spacing or type scale</strong>: Open any theme asset, change the spacing or font size values, hit play. No code touched.</p>
+</li>
+<li>
+<p><strong>Test in editor</strong>: ThemeManager.Apply() can be called from a custom inspector button (or just hit play with the desired theme asset set as DefaultTheme).</p>
+</li>
+</ol>
+<p>The USS files themselves are still designer-editable for fine-grained control — but because they only contain <code>var(--token)</code> references, changing a value in the token system propagates everywhere without hunting through component files.</p>
+<hr />
+<h2 id="file-structure">File Structure</h2>
+<pre><code>Assets/
+├── Settings/
+│   ├── ThemeRegistry.asset
+│   ├── UserPreferences.asset
+│   └── Themes/
+│       ├── Theme_Default.asset
+│       ├── Theme_Dark.asset
+│       ├── Theme_Light.asset
+│       └── Theme_HighContrast.asset
+│
+└── UI/
+    ├── Styles/
+    │   ├── base-variables.uss    ← token defaults
+    │   ├── theme-dark.uss        ← theme overrides (one per theme)
+    │   ├── theme-high-contrast.uss
+    │   ├── typography.uss
+    │   ├── panels.uss
+    │   ├── buttons.uss
+    │   ├── inputs.uss
+    │   └── animations.uss
+    │
+    └── Scripts/
+        ├── UITheme.cs
+        ├── ThemeRegistry.cs
+        ├── UserPreferences.cs
+        ├── ThemeManager.cs
+        └── StyleExtensions.cs
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
