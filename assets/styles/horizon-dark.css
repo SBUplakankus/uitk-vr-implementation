@@ -1,0 +1,44 @@
+/* Horizon Dark Theme - Color Variables Only */
+
+:root {
+  /* Horizon Dark Base Colors */
+  --md-primary-fg-color: #25B2BC;
+  --md-primary-fg-color--light: #27D796;
+  --md-primary-fg-color--dark: #21BFC2;
+  --md-accent-fg-color: #E95678;
+  --md-accent-fg-color--transparent: rgba(233, 86, 120, 0.1);
+  
+  /* Backgrounds */
+  --md-default-bg-color: #16161C;
+  --md-default-fg-color: #E9E9E9;
+  --md-default-fg-color--light: #CCCCCC;
+  --md-default-fg-color--lighter: #999999;
+  --md-default-fg-color--lightest: #666666;
+  
+  /* Paper (secondary backgrounds) */
+  --md-code-bg-color: #1C1E26;
+  --md-code-fg-color: #E9E9E9;
+  --md-code-hl-color: rgba(233, 86, 120, 0.15);
+  --md-code-hl-number-color: #FAB795;
+  --md-code-hl-special-color: #F09383;
+  --md-code-hl-function-color: #B877DB;
+  --md-code-hl-constant-color: #25B2BC;
+  --md-code-hl-string-color: #09F7A0;
+  --md-code-hl-name-color: #FAC29A;
+  --md-code-hl-operator-color: #F09383;
+  --md-code-hl-punctuation-color: #6C6F93;
+  --md-code-hl-comment-color: #2E303E;
+  --md-code-hl-generic-color: #FAB795;
+  --md-code-hl-variable-color: #FAB795;
+  
+  /* Borders & Dividers */
+  --md-border-color: #2E303E;
+  
+  /* Tables & Content */
+  --md-table-border-color: #232530;
+  
+  /* Semantic Colors */
+  --md-typeset-color: #E9E9E9;
+  --md-typeset-a-color: #25B2BC;
+  --md-typeset-mark-color: rgba(233, 86, 120, 0.2);
+}
