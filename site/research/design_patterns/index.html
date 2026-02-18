@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://sbuplakankus.github.io/uitk-vr-implementation/research/shader_graph/">
+        <link rel="canonical" href="https://sbuplakankus.github.io/uitk-vr-implementation/research/design_patterns/">
       
       
-        <link rel="prev" href="../design_patterns/">
+        <link rel="prev" href="../../references/uitk_refs/">
       
       
-        <link rel="next" href="../vr_integration/">
+        <link rel="next" href="../shader_graph/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Shader Graph - UITK Implementation</title>
+        <title>Design Patterns - UITK Implementation</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#shader-graph-in-ui-toolkit" class="md-skip">
+        <a href="#design-patterns-for-ui-toolkit" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Shader Graph
+              Design Patterns
             
           </span>
         </div>
@@ -423,34 +423,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../design_patterns/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Design Patterns
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -470,7 +442,7 @@
   <span class="md-ellipsis">
     
   
-    Shader Graph
+    Design Patterns
   
 
     
@@ -488,7 +460,7 @@
   <span class="md-ellipsis">
     
   
-    Shader Graph
+    Design Patterns
   
 
     
@@ -514,24 +486,52 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#design-patterns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        Design Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factories
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#constants-and-references" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Implementation
+        Constants and References
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Builder
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -539,6 +539,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shader_graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shader Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1004,24 +1032,52 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#design-patterns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        Design Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Factories
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#constants-and-references" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Implementation
+        Constants and References
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Builder
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1045,16 +1101,14 @@
   
 
 
-<h1 id="shader-graph-in-ui-toolkit">Shader Graph in UI Toolkit</h1>
-<h2 id="overview">Overview</h2>
-<p>As of Unity 6.3, Shader Graph Materials can now be applied directly to UITK Visual Elements to improve the graphical quality while maintaining the performance.</p>
-<p>Some effects are still bad for VR and some effects like gradients should be done in USS, but for vector graphics backgrounds, scanlines, vignette, clouds, these can all be added now.</p>
-<p>It is a very new implementation so resources are scarce but at least Unity are doing a big push promoting it right now. </p>
-<hr />
-<h2 id="implementation">Implementation</h2>
-<p>When generating UI Toolkit through code, it is very easy to quickly add effects and styles through a factory and the builder pattern which is what I have done in the past.</p>
-<p>From what I have seen I should be able to get material implementation working alright. The main challenge will be finding what looks good without tanking performance too much. </p>
-<h1 id="_1"></h1>
+<h1 id="design-patterns-for-ui-toolkit">Design Patterns for UI Toolkit</h1>
+<h2 id="design-patterns">Design Patterns</h2>
+<h3 id="factories">Factories</h3>
+<p>You can code the UXML Documents for specific static panels that won't change at run time. This is just like making a html page. For generating in C# it is best to use factories for visual element creation. All of the UXML Elements can be made through C# but it is alot of boilerplate so you can just ask AI to generate them for you and they will work perfectly. It's then easy to modify each of the functions and add variations for specific styles where needed. I use Claude Sonnet 4.5 on the free tier which is pretty good.</p>
+<h3 id="constants-and-references">Constants and References</h3>
+<p>The main downside to UITK right now is that it is ran on strings so a constants class is crucial for passing through styles in C#. I just make a UIToolkitStyles class to store them all in for type-safety. It is also good to cache the visual elements on creation so you don't need to run string queries to find the element when trying to update at runtime. </p>
+<h3 id="builder">Builder</h3>
+<p>It'll also be good to implement the builder pattern to quickly and safely generate the panels in the C# view classes. The main problem I came across myself was all my view classes becoming repetetive long lists of Factory calls and adding to elements so this could be done much more smoothly on a bigger project. Would need to figure out the specifics but it'll still probably be better to create elements that need to be cached directly from the factory then add them, but the builder can easily set the containers, styles, text, images, shaders, etc.</p>
 
 
 

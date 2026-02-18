@@ -1,6 +1,7 @@
 site_name: UITK Implementation
 site_url: https://sbuplakankus.github.io/uitk-vr-implementation/
 repo_url: https://github.com/SBUplakankus/uitk-vr-implementation  
+repo_name: UITK VR
 
 theme:
   name: material
@@ -37,18 +38,21 @@ nav:
   - Reference:
       - Unity: references/uitk_refs.md
   - Research:
+      - Design Patterns: research/design_patterns.md
       - Shader Graph: research/shader_graph.md
       - VR Integration: research/vr_integration.md
       - Web To USS: research/web_to_uss.md
-  - AI Docs:
+  - AI Overview:
       - Performance: ai/performance.md
       - Bagel Game Analysis: ai/bg_analysis.md
       - Industry UITK Practices: ai/industry_uitk.md
       - Layer Architecture: ai/layer_architecture.md
       - M-V-VM: ai/mvvm.md
+  - AI Examples:
       - C# Implementation: ai/cs_implementation.md
       - USS Implementation: ai/uss_implementation.md
-
+      - USS Analysis: ai/uss_analysis.md
+      - USS Overlay (Bonus): ai/uss_overlay_bonus.md
 
 plugins:
   - search    

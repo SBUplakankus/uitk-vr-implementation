@@ -2,50 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/bg_analysis/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/cs_implementation/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/industry_uitk/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/layer_architecture/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/mvvm/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/performance/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/uss_analysis/</loc>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/uss_implementation/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sbuplakankus.github.io/uitk-vr-implementation/ai/uss_overlay_bonus/</loc>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/references/uitk_refs/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
+    </url>
+    <url>
+         <loc>https://sbuplakankus.github.io/uitk-vr-implementation/research/design_patterns/</loc>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/research/shader_graph/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/research/vr_integration/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
     <url>
          <loc>https://sbuplakankus.github.io/uitk-vr-implementation/research/web_to_uss/</loc>
-         <lastmod>2026-02-17</lastmod>
+         <lastmod>2026-02-18</lastmod>
     </url>
 </urlset>

@@ -8,13 +8,11 @@
       
       
       
-        <link rel="canonical" href="https://sbuplakankus.github.io/uitk-vr-implementation/research/shader_graph/">
+        <link rel="canonical" href="https://sbuplakankus.github.io/uitk-vr-implementation/ai/uss_overlay_bonus/">
       
       
-        <link rel="prev" href="../design_patterns/">
+        <link rel="prev" href="../uss_analysis/">
       
-      
-        <link rel="next" href="../vr_integration/">
       
       
         
@@ -25,7 +23,7 @@
     
     
       
-        <title>Shader Graph - UITK Implementation</title>
+        <title>USS Overlay (Bonus) - UITK Implementation</title>
       
     
     
@@ -76,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#shader-graph-in-ui-toolkit" class="md-skip">
+        <a href="#bonus-global-render-texture-overlay" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Shader Graph
+              USS Overlay (Bonus)
             
           </span>
         </div>
@@ -369,8 +367,6 @@
       
   
   
-    
-  
   
   
     
@@ -383,11 +379,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -408,7 +404,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -426,7 +422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../design_patterns/" class="md-nav__link">
+      <a href="../../research/design_patterns/" class="md-nav__link">
         
   
   
@@ -451,37 +447,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Shader Graph
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../research/shader_graph/" class="md-nav__link">
         
   
   
@@ -497,48 +466,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Overview
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -551,7 +478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vr_integration/" class="md-nav__link">
+      <a href="../../research/vr_integration/" class="md-nav__link">
         
   
   
@@ -579,7 +506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../web_to_uss/" class="md-nav__link">
+      <a href="../../research/web_to_uss/" class="md-nav__link">
         
   
   
@@ -666,7 +593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ai/performance/" class="md-nav__link">
+      <a href="../performance/" class="md-nav__link">
         
   
   
@@ -694,7 +621,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ai/bg_analysis/" class="md-nav__link">
+      <a href="../bg_analysis/" class="md-nav__link">
         
   
   
@@ -722,7 +649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ai/industry_uitk/" class="md-nav__link">
+      <a href="../industry_uitk/" class="md-nav__link">
         
   
   
@@ -750,7 +677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ai/layer_architecture/" class="md-nav__link">
+      <a href="../layer_architecture/" class="md-nav__link">
         
   
   
@@ -778,7 +705,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ai/mvvm/" class="md-nav__link">
+      <a href="../mvvm/" class="md-nav__link">
         
   
   
@@ -810,8 +737,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -822,11 +751,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -847,7 +776,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -865,7 +794,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ai/cs_implementation/" class="md-nav__link">
+      <a href="../cs_implementation/" class="md-nav__link">
         
   
   
@@ -893,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ai/uss_implementation/" class="md-nav__link">
+      <a href="../uss_implementation/" class="md-nav__link">
         
   
   
@@ -921,7 +850,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ai/uss_analysis/" class="md-nav__link">
+      <a href="../uss_analysis/" class="md-nav__link">
         
   
   
@@ -946,10 +875,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../ai/uss_overlay_bonus/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USS Overlay (Bonus)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -965,6 +921,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-overlay-shader-shader-graph-canvas-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Overlay Shader (Shader Graph, Canvas target)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Overlay Shader (Shader Graph, Canvas target)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vignette-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vignette pass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanlines-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanlines pass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chromatic-aberration-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chromatic aberration pass
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-on-quest-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance on Quest 2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C# Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1004,10 +1063,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#the-architecture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        The Architecture
       
     </span>
   </a>
@@ -1015,10 +1074,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#implementation" class="md-nav__link">
+  <a href="#the-overlay-shader-shader-graph-canvas-target" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Implementation
+        The Overlay Shader (Shader Graph, Canvas target)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Overlay Shader (Shader Graph, Canvas target)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vignette-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vignette pass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanlines-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanlines pass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chromatic-aberration-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chromatic aberration pass
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-on-quest-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance on Quest 2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C# Setup
       
     </span>
   </a>
@@ -1045,16 +1165,121 @@
   
 
 
-<h1 id="shader-graph-in-ui-toolkit">Shader Graph in UI Toolkit</h1>
-<h2 id="overview">Overview</h2>
-<p>As of Unity 6.3, Shader Graph Materials can now be applied directly to UITK Visual Elements to improve the graphical quality while maintaining the performance.</p>
-<p>Some effects are still bad for VR and some effects like gradients should be done in USS, but for vector graphics backgrounds, scanlines, vignette, clouds, these can all be added now.</p>
-<p>It is a very new implementation so resources are scarce but at least Unity are doing a big push promoting it right now. </p>
+<h1 id="bonus-global-render-texture-overlay">Bonus: Global Render Texture Overlay</h1>
+<blockquote>
+<p><strong>Optional addition</strong> — everything in the main styling doc works without this<br />
+<strong>What this adds</strong>: Full-screen scanlines, vignette, chromatic aberration as a
+single pass over the entire VR panel after all UITK content is drawn<br />
+<strong>Pipeline</strong>: uGUI RawImage or URP Blit sitting above the render texture</p>
+</blockquote>
 <hr />
-<h2 id="implementation">Implementation</h2>
-<p>When generating UI Toolkit through code, it is very easy to quickly add effects and styles through a factory and the builder pattern which is what I have done in the past.</p>
-<p>From what I have seen I should be able to get material implementation working alright. The main challenge will be finding what looks good without tanking performance too much. </p>
-<h1 id="_1"></h1>
+<h2 id="the-architecture">The Architecture</h2>
+<p>The UITK panel renders to a <code>RenderTexture</code>. That texture is displayed on a world-space quad in the scene. The global overlay is a second uGUI <code>Image</code> or <code>RawImage</code> component that sits above the render texture in screen space, using a Shader Graph material that samples the render texture and applies effects to it as a full-screen pass.</p>
+<pre><code>Scene Camera
+    ↓
+UITK Panel → RenderTexture A
+    ↓
+World-space quad (displays RenderTexture A)
+    ↓
+Canvas (Screen Space - Camera)
+    └─ RawImage (full-screen, Overlay material)
+           ↓
+           Shader samples RenderTexture A
+           Applies: scanlines, vignette, chromatic aberration
+           Outputs to screen
+</code></pre>
+<p>This is entirely separate from the UITK pipeline. The UITK document and all its panels are unaware of it. It is additive — disable the RawImage and the UI looks like the main styling doc. Enable it and the screen-wide effects layer on top.</p>
+<hr />
+<h2 id="the-overlay-shader-shader-graph-canvas-target">The Overlay Shader (Shader Graph, Canvas target)</h2>
+<p>This shader is assigned to the fullscreen RawImage. It samples the render texture and applies the effects.</p>
+<p><strong>Required nodes:</strong>
+- <code>Sample Texture 2D</code> — sample the render texture passed as a Blackboard property <code>_MainTex</code>
+- <code>Element Layout UV</code> or screen UV for sampling position
+- Standard math nodes for each effect</p>
+<h3 id="vignette-pass">Vignette pass</h3>
+<pre><code>Screen UV → remap to -1..1
+    → Length
+    → Power(vignetteExp: 1.8)
+    → Multiply(_VignetteStrength)
+    → Clamp(0,1)
+    → 1 - result       ← centre bright, edges dark
+    → Multiply(sampled render texture colour)
+</code></pre>
+<h3 id="scanlines-pass">Scanlines pass</h3>
+<pre><code>Screen UV → Y component
+    → Multiply(_LineFrequency: 200.0)   ← more lines than per-panel version
+    → Fraction
+    → Step(0.5)
+    → 1 - result
+    → Multiply(_LineIntensity: 0.02)
+    → 1 - result
+    → Multiply(after-vignette colour)
+</code></pre>
+<h3 id="chromatic-aberration-pass">Chromatic aberration pass</h3>
+<p>Samples the render texture three times at slightly offset UVs, one per colour channel:</p>
+<pre><code>UV offset for R channel: UV + float2(_Aberration, 0)
+UV offset for G channel: UV (no offset)
+UV offset for B channel: UV - float2(_Aberration, 0)
+
+Sample R from offset R UV
+Sample G from base UV
+Sample B from offset B UV
+
+Combine: float4(R.r, G.g, B.b, 1.0)
+</code></pre>
+<p>At <code>_Aberration: 0.002</code> this is nearly imperceptible — just enough that the panel reads as a screen with slightly imperfect optics. At <code>0.01</code> it reads as visible distortion. Default should be <code>0.001–0.003</code>.</p>
+<hr />
+<h2 id="performance-on-quest-2">Performance on Quest 2</h2>
+<p>This is an extra full-screen pass on top of all UITK rendering. At Quest 2 resolution:</p>
+<ul>
+<li>Additional render texture read: bandwidth cost, not compute</li>
+<li>Chromatic aberration: 3 texture samples per pixel — noticeable cost</li>
+<li>Scanlines + vignette only: 1 texture sample + cheap arithmetic — acceptable</li>
+</ul>
+<p><strong>Recommendation:</strong> Ship with scanlines + vignette only. Add chromatic aberration as an option that defaults off and only enable it if profiling shows headroom.</p>
+<hr />
+<h2 id="c-setup">C# Setup</h2>
+<pre><code class="language-csharp">public class RenderTextureOverlay : MonoBehaviour
+{
+    [SerializeField] private RenderTexture _uitkRenderTexture;
+    [SerializeField] private RawImage      _overlayImage;
+    [SerializeField] private Material      _overlayMaterial;
+
+    [Range(0f, 0.4f)]
+    [SerializeField] private float _vignetteStrength = 0.20f;
+
+    [Range(0f, 0.06f)]
+    [SerializeField] private float _lineIntensity = 0.020f;
+
+    [Range(0f, 0.010f)]
+    [SerializeField] private float _aberration = 0.001f;
+
+    private void Start()
+    {
+        _overlayImage.texture  = _uitkRenderTexture;
+        _overlayImage.material = _overlayMaterial;
+        ApplyProperties();
+    }
+
+    private void ApplyProperties()
+    {
+        _overlayMaterial.SetFloat(&quot;_VignetteStrength&quot;, _vignetteStrength);
+        _overlayMaterial.SetFloat(&quot;_LineIntensity&quot;,    _lineIntensity);
+        _overlayMaterial.SetFloat(&quot;_Aberration&quot;,       _aberration);
+    }
+
+    // Called by ThemeManager if overlay settings are in UITheme
+    public void ApplyTheme(UITheme theme)
+    {
+        _vignetteStrength = theme.OverlayVignetteStrength;
+        _lineIntensity    = theme.OverlayLineIntensity;
+        _aberration       = theme.OverlayAberration;
+        ApplyProperties();
+    }
+}
+</code></pre>
+<hr />
+<p><em>This doc covers the optional global overlay pipeline. It is not required for the main UITK visual system described in the primary styling doc.</em></p>
 
 
 

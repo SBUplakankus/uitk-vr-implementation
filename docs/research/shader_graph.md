@@ -8,16 +8,16 @@ Some effects are still bad for VR and some effects like gradients should be done
 
 It is a very new implementation so resources are scarce but at least Unity are doing a big push promoting it right now. 
 
+
+
+---
+
+
+
 ## Implementation
 
 When generating UI Toolkit through code, it is very easy to quickly add effects and styles through a factory and the builder pattern which is what I have done in the past.
 
 From what I have seen I should be able to get material implementation working alright. The main challenge will be finding what looks good without tanking performance too much. 
 
-## Resources
-
-### YouTube Videos
-
-- [Shader Graph in UITK](https://www.youtube.com/watch?v=xAOBBW9hsjA)
-
-- [Cam Ayres Vid (He Works for Unity)](https://www.youtube.com/watch?v=rW7qBt9i6Kg)
+# 
