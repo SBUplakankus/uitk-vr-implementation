@@ -4,11 +4,9 @@
 
 ### Intro
 
-This site is looking into implemnenting UI Toolkit andthe latest Unity UI Workflows in a VR Application based off the Meta XR SDK.
+This site is looking into implemnenting UI Toolkit and the latest Unity UI Workflows in a VR Application based off the Meta XR SDK.
 
 The main challenge will be transitioning all possible visual elements from UGUI to UITK while keeping the Meta Poke Interactables for the tactile VR Experience.
-
-From what I have seen Avatar Academy right now uses UGUI layered on top of a 3D Tablet Model with the poke interactables on top of the UGUI with an audio filter at the bottom.
 
 Aiming to work with the Meta Quest 2 as a baseline for performance. If you're brand new to UI Toolkit, to official Unity E-Book is the best resource to get started with.
 
